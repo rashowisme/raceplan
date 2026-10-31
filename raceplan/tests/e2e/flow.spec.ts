@@ -182,3 +182,39 @@ test("time trial result turns an effort-only plan into a paced plan", async ({ p
   await page.reload();
   await expect(page.getByText(/Paces from your time trial/)).toBeVisible();
 });
+
+test("search engines get canonical URLs, hreflang, previews, robots and a sitemap", async ({
+  page,
+  request,
+}) => {
+  await page.goto("/fr");
+  const head = page.locator("head");
+  await expect(head.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/fr$/);
+  await expect(head.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute(
+    "href",
+    /\/en$/,
+  );
+  await expect(head.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveCount(1);
+  await expect(head.locator('meta[property="og:locale"]')).toHaveAttribute("content", "fr_FR");
+  const ogImage = await head.locator('meta[property="og:image"]').getAttribute("content");
+  expect(ogImage).toBeTruthy();
+  const image = await request.get(new URL(ogImage!).pathname);
+  expect(image.headers()["content-type"]).toBe("image/png");
+
+  const ld = JSON.parse(
+    (await page.locator('script[type="application/ld+json"]').textContent()) ?? "{}",
+  );
+  expect(ld["@type"]).toBe("WebApplication");
+  expect(ld.inLanguage).toBe("fr");
+
+  // The personal plan page stays out of search results.
+  await page.goto("/en/plan");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+
+  const robots = await (await request.get("/robots.txt")).text();
+  expect(robots).toMatch(/Sitemap: .*\/sitemap\.xml/);
+  const sitemap = await (await request.get("/sitemap.xml")).text();
+  for (const path of ["/en</loc>", "/fr</loc>", "/en/plan/new</loc>", "/fr/plan/new</loc>"])
+    expect(sitemap).toContain(path);
+  expect((await request.get("/apple-icon")).headers()["content-type"]).toBe("image/png");
+});

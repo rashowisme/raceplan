@@ -1,7 +1,9 @@
 {
   "meta": {
     "title": "RacePlan — a safe training plan for your next race",
-    "description": "Free, personalized training plans for amateur runners, from 5K to marathon and trail."
+    "description": "Free, personalized training plans for amateur runners, from 5K to marathon and trail.",
+    "newPlanDescription": "Answer a few questions about your race and your running and get a free, week-by-week training plan with paces.",
+    "appCategory": "Running training plan generator"
   },
   "nav": {
     "home": "Home",

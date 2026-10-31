@@ -49,4 +49,4 @@ PROPERTY_RUNS=2000 PROPERTY_SEED=1 pnpm vitest run tests/unit/safety.property.te
 
 ## Deployment (Vercel)
 
-`vercel.json` pins functions to Paris (`cdg1`). No environment variables or secrets are needed; nothing is stored server-side. Deploying is done by the owner (`vercel` / Git integration).
+`vercel.json` pins functions to Paris (`cdg1`). Optional `NEXT_PUBLIC_SITE_URL` (public origin for canonical URLs, sitemap and social previews; defaults to the Vercel production domain). No secrets are needed; nothing is stored server-side. Deploying is done by the owner (`vercel` / Git integration).

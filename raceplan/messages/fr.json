@@ -1,7 +1,9 @@
 {
   "meta": {
     "title": "RacePlan — un plan d'entraînement sûr pour votre prochaine course",
-    "description": "Des plans d'entraînement personnalisés et gratuits pour coureurs amateurs, du 5 km au marathon et au trail."
+    "description": "Des plans d'entraînement personnalisés et gratuits pour coureurs amateurs, du 5 km au marathon et au trail.",
+    "newPlanDescription": "Répondez à quelques questions sur votre course et votre pratique, et recevez un plan d'entraînement gratuit, semaine par semaine, avec vos allures.",
+    "appCategory": "Générateur de plans d'entraînement course à pied"
   },
   "nav": {
     "home": "Accueil",

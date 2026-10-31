@@ -4,12 +4,30 @@ import { setRequestLocale } from "next-intl/server";
 import { use } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { localePath, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export default function LandingPage({ params }: PageProps<"/[locale]">) {
   const { locale } = use(params);
   setRequestLocale(locale);
   const t = useTranslations("landing");
+  const meta = useTranslations("meta");
+
+  // schema.org description of the app for search engines.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: SITE_NAME,
+    url: new URL(localePath(locale, "/"), SITE_URL).href,
+    description: meta("description"),
+    applicationCategory: "HealthApplication",
+    applicationSubCategory: meta("appCategory"),
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    inLanguage: locale,
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: 0, priceCurrency: "EUR" },
+  };
 
   const features = [
     { icon: ShieldCheck, title: t("features.safeTitle"), body: t("features.safeBody") },
@@ -19,6 +37,11 @@ export default function LandingPage({ params }: PageProps<"/[locale]">) {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4">
+      <script
+        type="application/ld+json"
+        // `<` is escaped so the JSON can never close the script tag.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       <section className="py-12 sm:py-20">
         <p className="text-primary text-sm font-semibold tracking-wide">{t("eyebrow")}</p>
         <h1 className="mt-3 max-w-2xl text-3xl leading-tight font-bold tracking-tight text-balance sm:text-5xl">

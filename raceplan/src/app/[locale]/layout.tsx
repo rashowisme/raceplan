@@ -7,6 +7,7 @@ import { AppFooter } from "@/components/AppFooter";
 import { AppHeader } from "@/components/AppHeader";
 import { THEME_INIT_SCRIPT } from "@/features/theme/theme";
 import { routing } from "@/i18n/routing";
+import { alternates, OG_LOCALES, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "../globals.css";
 
 const geistSans = Geist({ variable: "--font-sans", subsets: ["latin"] });
@@ -25,7 +26,23 @@ export const viewport: Viewport = {
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
-  return { title: t("title"), description: t("description") };
+  return {
+    metadataBase: SITE_URL,
+    title: { default: t("title"), template: `%s · ${SITE_NAME}` },
+    description: t("description"),
+    applicationName: SITE_NAME,
+    alternates: alternates(locale, "/"),
+    openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
+      title: t("title"),
+      description: t("description"),
+      locale: OG_LOCALES[locale],
+      alternateLocale: routing.locales.filter((l) => l !== locale).map((l) => OG_LOCALES[l]!),
+      url: `/${locale}`,
+    },
+    twitter: { card: "summary_large_image", title: t("title"), description: t("description") },
+  };
 }
 
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {

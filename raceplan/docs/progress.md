@@ -23,10 +23,11 @@ M2 — Input form (next)
 - **Dark mode (post-v1):** header toggle cycling system → light → dark (localStorage `raceplan.theme`), applied before first paint by an inline script, live OS-preference following in system mode; dark values for brand, phase, success and warning colours. PDF stays light (print). Tests: `tests/unit/theme.test.ts`, e2e theme test; messages test now parses ICU `select`.
 - **Owner review (2026-10-31):** two-run 50/50 split and post-cutback rule confirmed; long-run share raised 30% → 33% (spec §7.6 updated); even-split rule generalised to any run count (fixes 3-day runners losing volume).
 - **Time trial result entry:** effort-only plans show a "Ran your time trial?" card (also reachable from the time trial workout). The result becomes a fitness source (`profile.timeTrialResult`, Riegel to race distance, aged like a PR); `applyTimeTrialResult()` keeps started weeks and rebuilds later ones with paces, the builder continuing from the kept weeks (`assemblePlan(..., keptWeeks)`). The result is kept when answers are edited. Tests: `tests/unit/time-trial.test.ts` (incl. property test), e2e flow.
+- **SEO:** canonical URLs, hreflang, sitemap, robots, translated social preview image, app manifest and icons, JSON-LD; plan page `noindex`. e2e test checks the head tags, robots.txt, sitemap and images.
 
 ## Next (not v1)
 
-- Owner review of the items below, then deploy to Vercel.
+- Owner review of the items below, then deploy to Vercel. After choosing a domain, set `NEXT_PUBLIC_SITE_URL` (otherwise the Vercel production domain is used) and submit `/sitemap.xml` in Google Search Console.
 - Future: accounts + EU DB (`ApiPlanRepository`), adaptive plans, FIT export, more languages.
 
 ## Dev tools
