@@ -97,11 +97,24 @@ describe("workout library", () => {
     expect(timeTrial(effortOnly, 3000).optional).toBe(true);
   });
 
-  it("appends easy running", () => {
+  it("merges extra easy running with the warm-up", () => {
     const w = buildQuality("tempo", withPaces, generous, opts)!;
-    const x = withExtraEasy(withPaces, w, 3000);
-    expect(x.estDistanceM).toBeGreaterThanOrEqual(w.estDistanceM + 2900);
-    expect(x.easyDurationS).toBeGreaterThan(w.easyDurationS);
+    const runs = (x: typeof w) => x.steps.filter((s) => s.kind === "run").length;
+    // A little: a longer warm-up.
+    const small = withExtraEasy(withPaces, w, 2000);
+    expect(small.estDistanceM).toBeGreaterThanOrEqual(w.estDistanceM + 1800);
+    expect(small.estDistanceM).toBeLessThanOrEqual(w.estDistanceM + 2000);
+    expect(small.steps).toHaveLength(w.steps.length);
+    expect(small.steps[0]!.kind).toBe("warmup");
+    expect(runs(small)).toBe(runs(w));
+    // A lot: one easy run instead of the warm-up (no 70-minute "warm-up").
+    const big = withExtraEasy(withPaces, w, 8000);
+    expect(big.estDistanceM).toBeGreaterThanOrEqual(w.estDistanceM + 7800);
+    expect(big.estDistanceM).toBeLessThanOrEqual(w.estDistanceM + 8000);
+    expect(big.steps).toHaveLength(w.steps.length);
+    expect(big.steps[0]!.kind).toBe("run");
+    expect(big.steps.some((s) => s.kind === "warmup")).toBe(false);
+    expect(big.easyDurationS).toBeGreaterThan(w.easyDurationS);
   });
 });
 

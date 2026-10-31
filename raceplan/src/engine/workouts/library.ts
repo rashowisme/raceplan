@@ -85,26 +85,43 @@ export function makeWorkout(
   return w;
 }
 
-/** Add easy running before a session (fills weekly volume when there are no easy days). */
+/** Longest warm-up written as a warm-up; more easy running before a session is an easy run. */
+const MAX_WARMUP_S = 30 * MIN;
+
+/**
+ * Add easy running before a session (fills weekly volume when there are no
+ * easy days). It is merged with the warm-up, so the session never reads
+ * "easy run, then warm-up": a longer warm-up (by distance) up to about
+ * 30 min, otherwise one easy run that serves as the warm-up. Never more
+ * than `extraM` is added.
+ */
 export function withExtraEasy(ctx: PaceContext, w: Workout, extraM: number): Workout {
   const extra = floorTo(extraM, 500);
   if (extra <= 0) return w;
-  return makeWorkout(
-    ctx,
-    w.type,
-    [step("run", byDistance(extra), zoneTarget(ctx, "E")), ...w.steps],
-    {
-      tags: w.tags,
-      intensity: w.intensity,
-      isHard: w.isHard,
-      isLongRun: w.isLongRun,
-      title: w.title,
-      notes: w.notes,
-      optional: w.optional,
-      strides: w.strides,
-      elevationGainM: w.elevationGainM,
-    },
-  );
+  const easy = (m: number) => step("run", byDistance(m), zoneTarget(ctx, "E"));
+  const [first, ...rest] = w.steps;
+  let steps: WorkoutStep[] = [easy(extra), ...w.steps];
+  if (first?.kind === "warmup" && first.duration.type === "time") {
+    // Not rounded: the week's volume must stay exactly the same (the
+    // even-split and long-run caps follow the other runs). Display rounds it.
+    const totalM = estimateSteps(ctx, [first]).distanceM + extra;
+    const merged = easy(totalM);
+    steps =
+      estimateSteps(ctx, [merged]).durationS <= MAX_WARMUP_S
+        ? [{ ...first, duration: byDistance(totalM) }, ...rest]
+        : [merged, ...rest];
+  }
+  return makeWorkout(ctx, w.type, steps, {
+    tags: w.tags,
+    intensity: w.intensity,
+    isHard: w.isHard,
+    isLongRun: w.isLongRun,
+    title: w.title,
+    notes: w.notes,
+    optional: w.optional,
+    strides: w.strides,
+    elevationGainM: w.elevationGainM,
+  });
 }
 
 /** Hard (non-easy) seconds of a step list. */

@@ -97,7 +97,7 @@ describe("FIT workout files", () => {
             expect(m.fields[2]).toBe(s.duration.seconds * 1000);
           } else {
             expect(m.fields[1]).toBe(1);
-            expect(m.fields[2]).toBe(s.duration.meters * 100);
+            expect(m.fields[2]).toBe(Math.round(s.duration.meters * 100));
           }
           if (s.target.pace) {
             expect(m.fields[3]).toBe(0); // speed

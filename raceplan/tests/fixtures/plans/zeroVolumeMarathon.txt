@@ -71,7 +71,7 @@ W17 2027-02-22 specific    20.4/20.5km long 8.0
    thu easy 7.5km 61min {r:6900m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
    sat long 8.0km 64min {r:8000m E/easy}
 W18 2027-03-01 taper       15.3/15.3km long 5.5
-   tue fartlek 4.4km 34min [H] {r:1000m E/easy; w:600s E/easy; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy}
+   tue fartlek 4.4km 34min [H] {w:2247.4012474012475m E/easy; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy}
    thu easy 5.4km 44min {r:4800m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
    sat long 5.5km 44min {r:5500m E/easy}
 W19 2027-03-08 taper       5.8/12.2km long 0.0 RACE
