@@ -172,9 +172,16 @@ export function adaptPlan(plan: TrainingPlan): TrainingPlan {
     },
     directive(w, weeks, reference) {
       refBefore[w] = reference;
-      if (w === 0) return undefined;
       const notes: Message[] = [];
       const d: WeekDirective = { notes };
+      if (w === 0) {
+        // Tired in the week before the plan starts: the first week adapts.
+        const monday = plan.weeks[0]!.startDate;
+        const tired = effects.tiredDates.some((t) => t >= addDays(monday, -7) && t < monday);
+        if (!tired) return undefined;
+        notes.push({ key: "adapt.fatigue" });
+        return { ...d, hold: true, easyQuality: 1 };
+      }
       const prev = weeks[w - 1]!;
 
       // Still sick or injured on Monday: nothing to decide yet (13.4 applies once back).

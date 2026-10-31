@@ -78,6 +78,18 @@ describe("fatigue (13.5)", () => {
     expectSameUpTo(base, adapted, sunday);
   });
 
+  it("tired before the plan starts: the first week adapts", () => {
+    const monday = base.weeks[0]!.startDate;
+    const adapted = adaptPlan(checkIn(base, "tired", addDays(monday, -2)));
+    expectSafe(adapted);
+    expect(noteKeys(adapted.weeks[0]!)).toEqual(["adapt.fatigue"]);
+    if (qualityCount(base.weeks[0]!) > 0)
+      expect(qualityCount(adapted.weeks[0]!)).toBe(qualityCount(base.weeks[0]!) - 1);
+    expect(adapted.weeks[0]!.plannedVolumeM).toBeLessThanOrEqual(base.weeks[0]!.plannedVolumeM);
+    // More than a week before the start: nothing changes.
+    expect(adaptPlan(checkIn(base, "tired", addDays(monday, -8))).weeks).toEqual(base.weeks);
+  });
+
   it("'felt hard' twice in a week does the same; once doesn't", () => {
     const [a, b] = runDays(week);
     expect(adaptPlan(withLog(base, { [a!.date]: "hard" })).weeks).toEqual(base.weeks);
