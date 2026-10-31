@@ -3,8 +3,247 @@
     "title": "RacePlan — un plan d'entraînement sûr pour votre prochaine course",
     "description": "Des plans d'entraînement personnalisés et gratuits pour coureurs amateurs, du 5 km au marathon et au trail."
   },
+  "nav": {
+    "home": "Accueil",
+    "newPlan": "Nouveau plan",
+    "myPlan": "Mon plan",
+    "skipToContent": "Aller au contenu"
+  },
+  "header": {
+    "language": "Langue",
+    "units": "Unités",
+    "km": "km",
+    "mi": "mi"
+  },
+  "footer": {
+    "disclaimer": "Conseils généraux, pas un avis médical.",
+    "privacy": "Vos données ne quittent jamais votre navigateur.",
+    "madeWith": "Les plans sont générés par des règles d'entraînement transparentes — sans IA."
+  },
   "landing": {
     "title": "RacePlan",
-    "subtitle": "Un plan d'entraînement sûr et personnalisé pour votre prochaine course."
+    "eyebrow": "Gratuit · Sans compte · Privé",
+    "headline": "Un plan d'entraînement sûr et personnalisé pour votre prochaine course",
+    "subtitle": "Parlez-nous de votre course et de votre pratique. Obtenez un calendrier clair, semaine par semaine, avec vos allures, fondé sur des principes d'entraînement éprouvés — du 5 km au marathon et au trail.",
+    "cta": "Créer mon plan",
+    "ctaResume": "Ouvrir mon plan",
+    "features": {
+      "safeTitle": "Sûr par conception",
+      "safeBody": "Progression du volume graduelle, semaines allégées, jours de repos et un vrai affûtage — toujours dans les limites que vous fixez.",
+      "personalTitle": "Fait pour vous",
+      "personalBody": "Votre course, votre forme actuelle, vos jours disponibles et vos blessures passées façonnent chaque semaine.",
+      "exportTitle": "Emportez-le",
+      "exportBody": "Consultez-le sur votre téléphone, passez des km aux miles et exportez tout le plan en PDF."
+    },
+    "howTitle": "Comment ça marche",
+    "how1": "Répondez à quelques questions (environ 3 minutes).",
+    "how2": "Recevez votre plan : phases, volume hebdomadaire, allures et chaque séance.",
+    "how3": "Suivez-le semaine après semaine — touchez un jour pour voir le détail."
+  },
+  "common": {
+    "weekdays": {
+      "mon": "Lundi",
+      "tue": "Mardi",
+      "wed": "Mercredi",
+      "thu": "Jeudi",
+      "fri": "Vendredi",
+      "sat": "Samedi",
+      "sun": "Dimanche"
+    },
+    "weekdaysShort": {
+      "mon": "Lun",
+      "tue": "Mar",
+      "wed": "Mer",
+      "thu": "Jeu",
+      "fri": "Ven",
+      "sat": "Sam",
+      "sun": "Dim"
+    },
+    "optional": "facultatif"
+  },
+  "form": {
+    "title": "Créez votre plan",
+    "stepOf": "Étape {current} sur {total}",
+    "steps": {
+      "race": "Votre course",
+      "fitness": "Votre forme",
+      "training": "Votre entraînement",
+      "health": "Vous",
+      "style": "Style de plan"
+    },
+    "stepIntro": {
+      "race": "Quelle course préparez-vous ?",
+      "fitness": "Tout est facultatif — ces informations servent à fixer vos allures. Sans elles, vous vous entraînerez aux sensations.",
+      "training": "Votre pratique récente et le temps dont vous disposez.",
+      "health": "Ces informations rendent le plan sûr pour vous.",
+      "style": "Comment aimez-vous vous entraîner ?"
+    },
+    "back": "Retour",
+    "next": "Continuer",
+    "submit": "Générer mon plan",
+    "generating": "Génération…",
+    "draftRestored": "Nous avons restauré vos réponses précédentes.",
+    "startOver": "Recommencer",
+    "raceType": {
+      "label": "Type de course",
+      "5k": "5 km",
+      "10k": "10 km",
+      "half": "Semi-marathon",
+      "marathon": "Marathon",
+      "custom": "Autre distance sur route",
+      "trail": "Trail"
+    },
+    "distance": {
+      "label": "Distance de la course",
+      "hint": "Route jusqu'au marathon ; trail jusqu'à 60 km-effort."
+    },
+    "elevationGain": {
+      "label": "Dénivelé positif (D+)",
+      "hint": "Total de la montée sur la course."
+    },
+    "raceDate": {
+      "label": "Date de la course"
+    },
+    "startDate": {
+      "label": "Début du plan",
+      "hint": "Laissez vide pour commencer lundi prochain."
+    },
+    "prTime": {
+      "label": "Record personnel sur cette distance",
+      "hint": "Format h:mm:ss ou mm:ss, par ex. 52:30.",
+      "placeholder": "par ex. 52:30"
+    },
+    "prDate": {
+      "label": "Quand l'avez-vous réalisé ?",
+      "hint": "Un record ancien compte un peu moins."
+    },
+    "watchTime": {
+      "label": "Prédiction de votre montre",
+      "hint": "Celle de votre montre de sport, si elle en affiche une pour cette distance.",
+      "placeholder": "par ex. 50:45"
+    },
+    "targetTime": {
+      "label": "Temps visé",
+      "hint": "Nous vous dirons s'il semble trop ambitieux.",
+      "placeholder": "par ex. 49:59"
+    },
+    "currentVolume": {
+      "label": "Distance hebdomadaire actuelle",
+      "hint": "Moyenne des 4 dernières semaines. 0 est accepté."
+    },
+    "longestRun": {
+      "label": "Plus longue sortie des 4 dernières semaines"
+    },
+    "maxVolume": {
+      "label": "Distance hebdomadaire maximale",
+      "hint": "Le maximum que vous voulez ou pouvez courir en une semaine. Le plan ne le dépassera jamais."
+    },
+    "yearsRunning": {
+      "label": "Depuis combien de temps courez-vous ?",
+      "lt1": "Moins d'un an",
+      "1to3": "1 à 3 ans",
+      "3plus": "Plus de 3 ans"
+    },
+    "availableDays": {
+      "label": "Jours où vous pouvez courir",
+      "hint": "Choisissez-en au moins 2. Nous garderons toujours des jours de repos."
+    },
+    "longRunDay": {
+      "label": "Jour préféré pour la sortie longue",
+      "placeholder": "Choisissez un jour"
+    },
+    "age": {
+      "label": "Âge"
+    },
+    "sex": {
+      "label": "Sexe",
+      "hint": "Conservé pour de futures fonctionnalités — il ne change pas votre plan.",
+      "female": "Femme",
+      "male": "Homme",
+      "other": "Autre / je préfère ne pas répondre",
+      "none": "Non précisé"
+    },
+    "injuries": {
+      "label": "Blessures passées",
+      "hint": "Cochez celles que vous avez eues, et à quelle fréquence.",
+      "shinSplints": "Périostite tibiale",
+      "plantarFasciitis": "Aponévrosite plantaire",
+      "achillesCalf": "Tendon d'Achille / mollet",
+      "runnersKnee": "Syndrome rotulien",
+      "itBand": "Bandelette ilio-tibiale (TFL)",
+      "stressFracture": "Fracture de fatigue (antécédent)",
+      "hamstring": "Ischio-jambiers",
+      "ankleSprain": "Entorses de la cheville",
+      "other": "Autre",
+      "frequency": "À quelle fréquence ?"
+    },
+    "frequency": {
+      "once": "Une fois",
+      "occasionally": "De temps en temps",
+      "often": "Souvent"
+    },
+    "currentlyInjured": {
+      "label": "Je suis actuellement blessé·e ou j'ai mal",
+      "warning": "Ne commencez pas un plan d'entraînement en étant blessé·e. Consultez d'abord un médecin ou un kinésithérapeute — revenez quand vous n'aurez plus mal."
+    },
+    "planStyle": {
+      "label": "Style de plan",
+      "balanced": "Équilibré",
+      "balancedDesc": "Un mélange varié de seuil, fractionné, côtes et allure spécifique. Recommandé pour la plupart des coureurs.",
+      "vdot": "Style VDOT",
+      "vdotDesc": "Des séances structurées et pilotées par l'allure, dans l'esprit des zones de Jack Daniels.",
+      "polarized": "80/20",
+      "polarizedDesc": "Au moins 80 % de course très facile, avec quelques séances vraiment dures."
+    },
+    "preferences": {
+      "label": "Préférences de séances",
+      "hint": "Nous remplacerons les séances que vous n'aimez pas par d'autres à l'effet similaire.",
+      "like": "J'aime",
+      "neutral": "Neutre",
+      "dislike": "Je n'aime pas",
+      "shortIntervals": "Fractionné court",
+      "longIntervals": "Fractionné long",
+      "hills": "Côtes",
+      "track": "Séances sur piste",
+      "tempo": "Tempo / seuil"
+    },
+    "errors": {
+      "required": "Ce champ est obligatoire.",
+      "number": "Veuillez saisir un nombre.",
+      "integer": "Veuillez saisir un nombre entier.",
+      "too_small": "Minimum : {min}.",
+      "too_large": "Maximum : {max}.",
+      "time_format": "Utilisez h:mm:ss ou mm:ss, par ex. 1:45:00 ou 25:30.",
+      "date_format": "Veuillez choisir une date.",
+      "race_in_past": "La course doit être dans le futur.",
+      "start_in_past": "Le plan ne peut pas commencer dans le passé.",
+      "start_after_race": "Le plan doit commencer avant le jour de la course.",
+      "after_race": "Le plan doit commencer avant le jour de la course.",
+      "in_past": "Le plan ne peut pas commencer dans le passé.",
+      "date_in_future": "Cette date est dans le futur.",
+      "in_future": "Cette date est dans le futur.",
+      "min_days": "Choisissez au moins 2 jours.",
+      "long_day_not_available": "Choisissez l'un des jours où vous pouvez courir.",
+      "not_available": "Choisissez l'un des jours où vous pouvez courir.",
+      "currently_injured": "Nous ne pouvons pas créer de plan tant que vous êtes blessé·e.",
+      "implausible_time": "Ce temps ne semble pas cohérent avec la distance.",
+      "inconsistent": "C'est plus que votre distance totale récente.",
+      "conflict": "Une séance ne peut pas être à la fois aimée et non aimée.",
+      "too_short": "Distance trop courte.",
+      "generic": "Veuillez vérifier ce champ."
+    },
+    "refusal": {
+      "currently_injured": "Nous ne pouvons pas créer de plan tant que vous êtes blessé·e. Consultez d'abord un professionnel de santé.",
+      "race_in_past": "La date de votre course est passée. Choisissez une date future.",
+      "distance_not_supported": "Les ultras ne sont pas encore pris en charge (route jusqu'au marathon, trail jusqu'à 60 km-effort).",
+      "invalid_input": "Certaines réponses sont à revoir."
+    },
+    "perWeek": "{unit}/sem"
+  },
+  "plan": {
+    "title": "Votre plan d'entraînement",
+    "empty": "Pas encore de plan.",
+    "createOne": "Créer un plan",
+    "disclaimer": "Ce plan est un conseil général, pas un avis médical. Consultez un médecin avant de commencer si vous avez le moindre doute sur votre santé. Arrêtez-vous et reposez-vous si une douleur persiste."
   }
 }
