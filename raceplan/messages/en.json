@@ -499,5 +499,13 @@
     "error": "Sorry, the PDF could not be created. Please try again.",
     "page": "Page {page} / {total}",
     "generatedOn": "generated on {date}"
+  },
+  "watch": {
+    "workoutName": "W{week} {day} · {title}",
+    "exportPlan": "Watch files",
+    "exportPlanHint": "Upcoming workouts as FIT files (.zip), for GPS watches and apps that support FIT workouts.",
+    "exportWorkout": "Download for my watch (.FIT)",
+    "help": "Copy the file to your watch (folder for new files) or import it in your watch's app. Paces become target ranges; steps without a pace use effort.",
+    "error": "Sorry, the watch file could not be created. Please try again."
   }
 }

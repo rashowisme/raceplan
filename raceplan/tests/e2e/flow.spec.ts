@@ -62,8 +62,31 @@ test.describe("full flow", () => {
     await expect(dialog).toBeVisible();
     await expect(dialog.getByText("Workout structure")).toBeVisible();
     await expect(dialog.getByText("Warm-up", { exact: false }).first()).toBeVisible();
+    const { readFileSync, statSync } = await import("node:fs");
+
+    // This workout as a watch file.
+    const fitDownload = page.waitForEvent("download");
+    await dialog.getByRole("button", { name: "Download for my watch (.FIT)" }).click();
+    const fit = await fitDownload;
+    expect(fit.suggestedFilename()).toMatch(/^w0[45]-\d{4}-\d{2}-\d{2}-[a-zA-Z]+\.fit$/);
+    expect(
+      readFileSync(await fit.path())
+        .subarray(8, 12)
+        .toString(),
+    ).toBe(".FIT");
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
+
+    // Upcoming workouts as a ZIP of watch files.
+    const zipDownload = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Watch files" }).click();
+    const zip = await zipDownload;
+    expect(zip.suggestedFilename()).toMatch(/^raceplan-10k-\d{4}-\d{2}-\d{2}-watch\.zip$/);
+    expect(
+      readFileSync(await zip.path())
+        .subarray(0, 4)
+        .toString("hex"),
+    ).toBe("504b0304");
 
     // PDF download.
     const download = page.waitForEvent("download");
@@ -71,7 +94,6 @@ test.describe("full flow", () => {
     const file = await download;
     expect(file.suggestedFilename()).toMatch(/^raceplan-10k-\d{4}-\d{2}-\d{2}\.pdf$/);
     const path = await file.path();
-    const { statSync } = await import("node:fs");
     expect(statSync(path).size).toBeGreaterThan(5_000);
 
     expect(errors).toEqual([]);
@@ -217,4 +239,18 @@ test("search engines get canonical URLs, hreflang, previews, robots and a sitema
   for (const path of ["/en</loc>", "/fr</loc>", "/en/plan/new</loc>", "/fr/plan/new</loc>"])
     expect(sitemap).toContain(path);
   expect((await request.get("/apple-icon")).headers()["content-type"]).toBe("image/png");
+});
+
+test("plan header and workout dialog fit at 360px in French", async ({ page }) => {
+  await fillForm(page);
+  await page.getByRole("button", { name: "fr", exact: true }).click();
+  await page.waitForURL(/\/fr\/plan$/);
+  await page.setViewportSize({ width: 360, height: 780 });
+  await expect(page.getByRole("button", { name: "Fichiers montre" })).toBeVisible();
+  const overflow = () =>
+    page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(await overflow()).toBeLessThanOrEqual(0);
+  await page.locator("#week-2 button").first().click();
+  await expect(page.getByRole("button", { name: /Télécharger pour ma montre/ })).toBeVisible();
+  await page.getByRole("button", { name: /Télécharger pour ma montre/ }).scrollIntoViewIfNeeded();
 });

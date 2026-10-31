@@ -10,6 +10,7 @@ import { Link } from "@/i18n/navigation";
 import { localToday } from "@/lib/today";
 import { formatClock, formatDistance } from "@/lib/units";
 import { cn } from "@/lib/utils";
+import { WatchPlanButton, WatchWorkoutButton } from "@/features/export/fit/WatchExportButtons";
 import { ExportPdfButton } from "@/features/export/pdf/ExportPdfButton";
 import { formatDateLong, type Formatter } from "./format";
 import { PaceZonesCard, PhaseTimeline, PlanAlerts } from "./PlanSections";
@@ -87,6 +88,7 @@ function PlanContent({ plan }: { plan: TrainingPlan }) {
         f={f}
         day={selected}
         onOpenChange={(open) => !open && setSelected(null)}
+        actions={selected && <WatchWorkoutButton plan={plan} f={f} date={selected.date} />}
         onEnterResult={
           plan.summary.paceZones
             ? undefined
@@ -138,6 +140,7 @@ function PlanHeader({ f, plan, today }: { f: Formatter; plan: TrainingPlan; toda
         </div>
         <div className="flex flex-wrap gap-2 print:hidden" data-slot="plan-actions">
           <ExportPdfButton plan={plan} f={f} />
+          <WatchPlanButton plan={plan} f={f} today={today} />
           <Link href="/plan/new" className={buttonVariants({ variant: "outline" })}>
             <Pencil aria-hidden />
             {f.t("plan.edit")}

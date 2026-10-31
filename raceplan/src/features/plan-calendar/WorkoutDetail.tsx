@@ -132,12 +132,15 @@ export function WorkoutDialog({
   day,
   onOpenChange,
   onEnterResult,
+  actions,
 }: {
   f: Formatter;
   day: PlanDay | null;
   onOpenChange: (open: boolean) => void;
   /** Effort-only plans: jump to the time trial result card. */
   onEnterResult?: () => void;
+  /** Rendered below the workout (e.g. the watch download). */
+  actions?: React.ReactNode;
 }) {
   const workout = day?.workout ?? null;
   // Set when closing via "Enter my result": focus goes to the card, not back to the day.
@@ -184,6 +187,7 @@ export function WorkoutDialog({
                 {f.t("plan.enterResult")}
               </Button>
             )}
+            {actions}
           </>
         )}
       </DialogContent>

@@ -499,5 +499,13 @@
     "error": "Désolé, le PDF n'a pas pu être créé. Veuillez réessayer.",
     "page": "Page {page} / {total}",
     "generatedOn": "généré le {date}"
+  },
+  "watch": {
+    "workoutName": "S{week} {day} · {title}",
+    "exportPlan": "Fichiers montre",
+    "exportPlanHint": "Les séances à venir en fichiers FIT (.zip), pour les montres GPS et applis compatibles avec les séances FIT.",
+    "exportWorkout": "Télécharger pour ma montre (.FIT)",
+    "help": "Copiez le fichier sur votre montre (dossier des nouveaux fichiers) ou importez-le dans l'appli de votre montre. Les allures deviennent des plages cibles ; les étapes sans allure se font à l'effort.",
+    "error": "Désolé, le fichier montre n'a pas pu être créé. Veuillez réessayer."
   }
 }

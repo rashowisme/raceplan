@@ -24,11 +24,12 @@ M2 — Input form (next)
 - **Owner review (2026-10-31):** two-run 50/50 split and post-cutback rule confirmed; long-run share raised 30% → 33% (spec §7.6 updated); even-split rule generalised to any run count (fixes 3-day runners losing volume).
 - **Time trial result entry:** effort-only plans show a "Ran your time trial?" card (also reachable from the time trial workout). The result becomes a fitness source (`profile.timeTrialResult`, Riegel to race distance, aged like a PR); `applyTimeTrialResult()` keeps started weeks and rebuilds later ones with paces, the builder continuing from the kept weeks (`assemblePlan(..., keptWeeks)`). The result is kept when answers are edited. Tests: `tests/unit/time-trial.test.ts` (incl. property test), e2e flow.
 - **SEO:** canonical URLs, hreflang, sitemap, robots, translated social preview image, app manifest and icons, JSON-LD; plan page `noindex`. e2e test checks the head tags, robots.txt, sitemap and images.
+- **Watch export (FIT):** "Download for my watch (.FIT)" in each workout dialog and "Watch files" (ZIP of upcoming workouts) in the plan header. Structured steps → FIT workout steps (repeats, distance/time durations, pace → speed targets, effort names in the plan language). Tests: `tests/unit/fit-export.test.ts` (independent decoder in `tests/unit/fit-decode.ts`), e2e downloads.
 
 ## Next (not v1)
 
 - Owner review of the items below, then deploy to Vercel. After choosing a domain, set `NEXT_PUBLIC_SITE_URL` (otherwise the Vercel production domain is used) and submit `/sitemap.xml` in Google Search Console.
-- Future: accounts + EU DB (`ApiPlanRepository`), adaptive plans, FIT export, more languages.
+- Future: accounts + EU DB (`ApiPlanRepository`), adaptive plans, more languages.
 
 ## Dev tools
 
@@ -36,5 +37,7 @@ M2 — Input form (next)
 - More property runs: `PROPERTY_RUNS=2000 PROPERTY_SEED=1 pnpm vitest run tests/unit/safety.property.test.ts`.
 
 ## Known issues / to confirm with owner
+
+- FIT files are validated by tests only: try one on a real watch before announcing the feature.
 
 - Trail long-run distances are flat-road estimates of a time-on-feet prescription.

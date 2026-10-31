@@ -6,6 +6,7 @@ import { pdf } from "@react-pdf/renderer";
 import { createElement } from "react";
 import type { TrainingPlan } from "@/engine/types";
 import type { Formatter } from "@/features/plan-calendar/format";
+import { downloadBlob } from "@/lib/download";
 import { PlanDocument } from "./PlanDocument";
 
 export function pdfFileName(plan: TrainingPlan): string {
@@ -19,13 +20,5 @@ export async function renderPlanPdf(plan: TrainingPlan, f: Formatter): Promise<B
 }
 
 export async function downloadPlanPdf(plan: TrainingPlan, f: Formatter): Promise<void> {
-  const blob = await renderPlanPdf(plan, f);
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = pdfFileName(plan);
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  downloadBlob(await renderPlanPdf(plan, f), pdfFileName(plan));
 }
