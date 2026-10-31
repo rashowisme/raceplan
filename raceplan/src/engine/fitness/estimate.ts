@@ -1,0 +1,97 @@
+/**
+ * Spec §3: turn PR / watch prediction / target into a conservative fitness
+ * estimate, race pace and warnings.
+ */
+import { CONFIG } from "../config";
+import { monthsBetween } from "../dates";
+import type { FitnessEstimate, IsoDate, PlanWarning, RunnerProfile } from "../types";
+import { clampVdot, predictTimeS, vdotFromPerformance } from "./vdot";
+
+export interface FitnessResult {
+  fitness: FitnessEstimate | null;
+  /** Race pace (s/km) for race-pace work, or null when effort-only. */
+  racePaceSPerKm: number | null;
+  warnings: PlanWarning[];
+}
+
+interface Candidate {
+  timeS: number;
+  source: FitnessEstimate["source"];
+  lowConfidence: boolean;
+}
+
+/**
+ * @param distanceM distance used for fitness: race distance (road) or
+ *   effort distance (trail), so trail times map to flat-equivalent fitness.
+ */
+export function estimateFitness(
+  profile: RunnerProfile,
+  distanceM: number,
+  today: IsoDate,
+  totalWeeks: number,
+): FitnessResult {
+  const cfg = CONFIG.fitness;
+  const warnings: PlanWarning[] = [];
+  const candidates: Candidate[] = [];
+
+  const pr = profile.personalRecord;
+  if (pr) {
+    let factor = 1;
+    let lowConfidence = false;
+    if (pr.achievedOn) {
+      const months = monthsBetween(pr.achievedOn, today);
+      if (months > cfg.prOldMonths) {
+        factor = 1 + cfg.prSlowdownOld;
+        lowConfidence = true;
+      } else if (months >= cfg.prFullWeightMonths) {
+        factor = 1 + cfg.prSlowdownMid;
+      }
+      if (months >= cfg.prFullWeightMonths) warnings.push({ code: "old_pr", params: { months } });
+    }
+    candidates.push({ timeS: pr.timeS * factor, source: "personalRecord", lowConfidence });
+  }
+  if (profile.watchPrediction) {
+    candidates.push({
+      timeS: profile.watchPrediction.timeS * (1 + cfg.watchPenalty),
+      source: "watchPrediction",
+      lowConfidence: false,
+    });
+  }
+
+  if (candidates.length === 0) {
+    warnings.push({ code: "no_performance_data" });
+    return { fitness: null, racePaceSPerKm: null, warnings };
+  }
+
+  // Slower (more conservative) candidate wins.
+  const chosen = candidates.reduce((a, b) => (b.timeS > a.timeS ? b : a));
+  const vdot = clampVdot(vdotFromPerformance(distanceM, chosen.timeS));
+  const predictedRaceTimeS = Math.round(predictTimeS(vdot, distanceM));
+  const fitness: FitnessEstimate = {
+    vdot: Math.round(vdot * 10) / 10,
+    predictedRaceTimeS,
+    source: chosen.source,
+    lowConfidence: chosen.lowConfidence,
+  };
+
+  let raceTimeS = predictedRaceTimeS;
+  if (profile.targetTimeS !== undefined) {
+    const targetVdot = vdotFromPerformance(distanceM, profile.targetTimeS);
+    const gain = targetVdot / vdot - 1;
+    const limit = totalWeeks >= cfg.longPlanWeeks ? cfg.ambitiousGainLong : cfg.ambitiousGainShort;
+    if (gain > limit) {
+      warnings.push({
+        code: "goal_ambitious",
+        params: { gainPct: Math.round(gain * 1000) / 10, limitPct: limit * 100 },
+      });
+    } else if (profile.targetTimeS < predictedRaceTimeS) {
+      raceTimeS = profile.targetTimeS;
+    }
+  }
+
+  return {
+    fitness,
+    racePaceSPerKm: Math.round(raceTimeS / (distanceM / 1000)),
+    warnings,
+  };
+}

@@ -67,7 +67,7 @@ export const runnerProfileSchema = z
     currentWeeklyVolumeM: z.number().min(0).max(L.maxWeeklyVolumeM),
     longestRecentRunM: z.number().min(0).max(L.maxTrailDistanceM).optional(),
     maxWeeklyVolumeM: z.number().min(L.minMaxWeeklyVolumeM).max(L.maxWeeklyVolumeM),
-    availableDays: z.array(weekdaySchema).min(1).max(7),
+    availableDays: z.array(weekdaySchema).min(2).max(7),
     longRunDay: weekdaySchema,
     yearsRunning: z.enum(YEARS_RUNNING),
     injuries: z.array(injuryEntrySchema).max(INJURY_TYPES.length),

@@ -327,6 +327,8 @@ export interface TrainingPlan {
   raceDate: IsoDate;
   weeks: PlanWeek[];
   warnings: PlanWarning[];
+  /** Plan-level coaching advice (injury notes, effort-only explanation…). */
+  adviceNotes: Message[];
   /** Always shown — key of the disclaimer text. */
   disclaimer: Message;
 }

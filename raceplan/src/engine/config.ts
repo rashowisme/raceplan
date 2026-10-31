@@ -78,11 +78,15 @@ export const CONFIG = {
   riskFlaggedSingleQualityWeeks: 4,
   minEasyShare: 0.78,
   minEasySharePolarized: 0.8,
+  /** Hard floor checked on every week (spec: ≥ 75–80%). */
+  minEasyShareFloor: 0.75,
 
   // §7 safety
   ramp: { normal: 0.1, conservative: 0.07 },
   smallVolumeThresholdM: 30 * KM,
   smallVolumeAllowanceM: 3 * KM,
+  /** Builder-only (stricter than spec): tiny weeks grow by at most +50%. */
+  smallVolumeMaxGrowth: 0.5,
   cutbackEvery: { normal: 4, conservative: 3 },
   /** Cutback reduces volume by 20–25%; we use 22%. */
   cutbackReduction: 0.22,
@@ -95,11 +99,16 @@ export const CONFIG = {
     number
   >,
   longRunMaxDurationS: 3 * 3600,
-  /** Minimum long-run distance when volume allows. */
-  minLongRunM: 3 * KM,
-  minRunM: 2 * KM,
-  /** Default starting long run when not provided: share of current volume. */
-  defaultLongRunShareOfCurrent: 0.3,
+  minRunM: 1 * KM,
+  /** Strides only on runs at least this long. */
+  minStridesRunM: 2500,
+  /** Recovery runs get this share of a normal easy run. */
+  recoveryRunWeight: 0.7,
+  /** Long runs with fast segments need a long enough run. */
+  minProgressiveLongRunM: 10 * KM,
+  minRacePaceLongRunM: 12 * KM,
+  /** Smallest per-type work cap (s) so low-volume runners still get a session. */
+  minQualityWorkS: 6 * 60,
 
   peakVolumeM: {
     "5k": { beginner: 25 * KM, intermediate: 35 * KM, experienced: 50 * KM },
@@ -109,8 +118,6 @@ export const CONFIG = {
   } satisfies Record<StandardRace, PerLevel>,
   /** `low_max_volume` if user max < this share of the beginner target. */
   lowMaxVolumeShare: 0.67,
-  /** Starting volume when the runner currently runs 0. */
-  zeroVolumeStartM: 8 * KM,
 
   // §11 taper (days)
   taperDays: {

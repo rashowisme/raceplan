@@ -1,0 +1,40 @@
+level=beginner risk=[] weeks=9 days/wk=3 peak=18.5km taper=7d
+fitness=none racePace=-
+zones=effort-only
+warnings=[no_performance_data] advice=[advice.effortOnly]
+W01 2026-11-02 base        7.9/8.0km long 3.0
+   tue easy 2.4km 20min {r:1800m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 2.5km 21min {r:1900m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 3.0km 24min {r:3000m E/easy}
+W02 2026-11-09 base        10.8/10.9km long 4.0
+   tue easy 3.3km 27min {r:2700m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 3.5km 29min {r:2900m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 4.0km 32min {r:4000m E/easy}
+W03 2026-11-16 base        13.2/13.8km long 5.0
+   tue timeTrial 4.8km 33min [H,opt] {w:600s E/easy; w:3000m I/race; c:300s E/easy}
+   thu easy 3.4km 28min {r:2800m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 5.0km 40min {r:5000m E/easy}
+W04 2026-11-23 build       10.2/10.3km long 3.5 CUTBACK
+   tue easy 3.3km 27min {r:2700m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 3.4km 28min {r:2800m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 3.5km 28min {r:3500m E/easy}
+W05 2026-11-30 build       13.1/13.2km long 5.0
+   tue fartlek 3.4km 26min [H] {w:600s E/easy; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy}
+   thu easy 4.7km 38min {r:4100m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 5.0km 40min {r:5000m E/easy}
+W06 2026-12-07 build       15.6/16.1km long 6.0
+   tue tempo 3.7km 28min [H] {w:600s E/easy; w:600s T/threshold; c:480s E/easy}
+   thu easy 5.9km 48min {r:5300m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 6.0km 48min {r:6000m E/easy}
+W07 2026-12-14 specific    18.5/18.6km long 7.0
+   tue racePace 4.8km 36min [H] {w:600s E/easy; 3×(w:240s racePace/race / r:120s E/recovery); c:480s E/easy}
+   thu easy 6.7km 54min {r:6100m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 7.0km 56min {r:7000m E/easy}
+W08 2026-12-21 specific    14.3/14.4km long 5.0 CUTBACK
+   tue fartlek 4.4km 34min [H] {w:600s E/easy; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy; r:1000m E/easy}
+   thu easy 4.9km 40min {r:4300m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 5.0km 40min {r:5000m E/easy}
+W09 2026-12-28 taper       5.8/11.4km long 0.0 RACE
+   tue easy 2.9km 24min {r:2300m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 2.9km 24min {r:2300m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
+   sun race 5.0km 31min [H] {w:5000m racePace/race}

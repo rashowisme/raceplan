@@ -1,0 +1,14 @@
+level=intermediate risk=[] weeks=2 days/wk=4 peak=29.9km taper=10d
+fitness=vdot 38.2 (personalRecord) racePace=5:12
+zones=E:6:20-6:58 M:5:34-5:44 T:5:14-5:23 I:4:46-4:56 R:4:29-4:37
+warnings=[race_ready_mini_plan,plan_too_short] advice=[]
+W01 2026-11-02 specific    29.9/30.0km long 9.0
+   mon easy 7.3km 49min {r:6100m E/easy@6:20-6:58; 6×(w:20s R/repetition / r:60s E/recovery)}
+   wed racePace 6.2km 38min [H] {w:900s E/easy@6:20-6:58; 2×(w:1000m racePace/race@5:09-5:15 / r:90s E/recovery@6:20-6:58); c:600s E/easy@6:20-6:58}
+   fri easy 7.4km 49min {r:6200m E/easy@6:20-6:58; 6×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 9.0km 60min {r:9000m E/easy@6:20-6:58}
+W02 2026-11-09 taper       13.0/23.9km long 0.0 RACE
+   mon easy 4.3km 29min {r:3500m E/easy@6:20-6:58; 4×(w:20s R/repetition / r:60s E/recovery)}
+   wed easy 4.3km 29min {r:3500m E/easy@6:20-6:58; 4×(w:20s R/repetition / r:60s E/recovery)}
+   fri easy 4.4km 29min {r:4400m E/easy@6:20-6:58}
+   sun race 10.0km 52min [H] {w:10000m racePace/race@5:09-5:15}
