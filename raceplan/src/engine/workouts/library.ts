@@ -481,27 +481,33 @@ export function racePaceSession(
           },
     });
   }
-  // Short sharpening version (taper / low volume): race-pace reps of 1/2 size.
-  const halfRep = byDist ? byDistance(floorTo(spec.repM / 2, 100)) : byTime(spec.repS / 2);
-  const small = fitReps(ctx, { ...sizing, progress: 0 }, 2, 4, (reps) => [
-    warmup(ctx, wu),
-    repeat(reps, [step("work", halfRep, t), jog(ctx, 90)]),
-    cooldown(ctx, cd),
-  ]);
-  if (!small) return null;
-  return makeWorkout(ctx, "racePace", small.steps, {
-    intensity: "hard",
-    isHard: true,
-    title: byDist
-      ? {
-          key: "workout.racePace.titleDistance",
-          params: { reps: small.reps, repM: floorTo(spec.repM / 2, 100) },
-        }
-      : {
-          key: "workout.racePace.titleTime",
-          params: { reps: small.reps, minutes: spec.repS / 2 / MIN },
-        },
-  });
+  // Short sharpening versions (taper / low volume): race-pace reps of 1/2,
+  // then 1/4 size — short, sharp efforts at race pace (spec §11).
+  for (const divisor of [2, 4]) {
+    const repM = Math.max(400, floorTo(spec.repM / divisor, 100));
+    const repS = Math.max(2 * MIN, spec.repS / divisor);
+    const rep = byDist ? byDistance(repM) : byTime(repS);
+    const small = fitReps(
+      ctx,
+      { ...sizing, progress: 0 },
+      divisor === 2 ? 2 : 3,
+      divisor === 2 ? 4 : 6,
+      (reps) => [
+        warmup(ctx, wu),
+        repeat(reps, [step("work", rep, t), jog(ctx, 90)]),
+        cooldown(ctx, cd),
+      ],
+    );
+    if (!small) continue;
+    return makeWorkout(ctx, "racePace", small.steps, {
+      intensity: "hard",
+      isHard: true,
+      title: byDist
+        ? { key: "workout.racePace.titleDistance", params: { reps: small.reps, repM } }
+        : { key: "workout.racePace.titleTime", params: { reps: small.reps, minutes: repS / MIN } },
+    });
+  }
+  return null;
 }
 
 /** Builders for quality session types, keyed by workout type. */

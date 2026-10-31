@@ -10,6 +10,7 @@ import { Link } from "@/i18n/navigation";
 import { localToday } from "@/lib/today";
 import { formatClock, formatDistance } from "@/lib/units";
 import { cn } from "@/lib/utils";
+import { ExportPdfButton } from "@/features/export/pdf/ExportPdfButton";
 import { formatDateLong, type Formatter } from "./format";
 import { PaceZonesCard, PhaseTimeline, PlanAlerts } from "./PlanSections";
 import { useCurrentPlan } from "./useCurrentPlan";
@@ -121,6 +122,7 @@ function PlanHeader({ f, plan, today }: { f: Formatter; plan: TrainingPlan; toda
           </p>
         </div>
         <div className="flex flex-wrap gap-2 print:hidden" data-slot="plan-actions">
+          <ExportPdfButton plan={plan} f={f} />
           <Link href="/plan/new" className={buttonVariants({ variant: "outline" })}>
             <Pencil aria-hidden />
             {f.t("plan.edit")}

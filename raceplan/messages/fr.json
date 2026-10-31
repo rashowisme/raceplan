@@ -462,5 +462,12 @@
     "recovery50": "Après chaque sortie longue, vous avez au moins deux jours faciles ou de repos avant la séance difficile suivante.",
     "minor": "Un corps en croissance a besoin de récupération : dormez bien, mangez suffisamment et signalez toute douleur à un adulte ou à votre coach.",
     "effortOnly": "Les descriptions d'effort remplacent les allures. Le test de la parole est votre meilleur repère."
+  },
+  "pdf": {
+    "export": "Exporter en PDF",
+    "exporting": "Préparation du PDF…",
+    "error": "Désolé, le PDF n'a pas pu être créé. Veuillez réessayer.",
+    "page": "Page {page} / {total}",
+    "generatedOn": "généré le {date}"
   }
 }

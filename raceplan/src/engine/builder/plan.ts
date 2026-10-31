@@ -555,8 +555,13 @@ function buildTrainingWeek(
       hardDatesSoFar.includes(addDays(date, -1)) ||
       (longDate !== null && date === addDays(longDate, 1));
     const beforeHard = hardDatesSoFar.includes(addDays(date, 1));
+    // Never strides on a recovery run.
     const giveStrides =
-      stridesLeft > 0 && !afterHard && !beforeHard && dist >= CONFIG.minStridesRunM;
+      !isRecovery(date) &&
+      stridesLeft > 0 &&
+      !afterHard &&
+      !beforeHard &&
+      dist >= CONFIG.minStridesRunM;
     const run = easyRun(c.pace, dist, {
       recovery: isRecovery(date),
       strides: giveStrides ? strides : undefined,

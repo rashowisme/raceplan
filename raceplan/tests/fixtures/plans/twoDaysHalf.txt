@@ -35,15 +35,15 @@ W10 2027-01-04 specific    29.1/30.0km long 14.5
 W11 2027-01-11 specific    29.1/30.0km long 14.5
    wed racePace 14.6km 96min [H] {r:7500m E/easy@6:30-7:09; w:900s E/easy@6:30-7:09; 2×(w:1500m racePace/race@5:34-5:40 / r:90s E/recovery@6:30-7:09); c:600s E/easy@6:30-7:09}
    sun longProgressive 14.5km 96min [H] {r:11500m E/easy@6:30-7:09; w:3000m M/steady@5:43-5:53}
-W12 2027-01-18 specific    22.0/22.7km long 11.0 CUTBACK
-   wed fartlek 11.0km 74min [H] {r:6000m E/easy@6:30-7:09; w:900s E/easy@6:30-7:09; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy@6:30-7:09}
-   sun long 11.0km 75min {r:11000m E/easy@6:30-7:09}
+W12 2027-01-18 specific    21.4/22.7km long 10.5 CUTBACK
+   wed racePace 10.9km 72min [H] {r:4500m E/easy@6:30-7:09; w:900s E/easy@6:30-7:09; 3×(w:700m racePace/race@5:34-5:40 / r:90s E/recovery@6:30-7:09); c:600s E/easy@6:30-7:09}
+   sun long 10.5km 72min {r:10500m E/easy@6:30-7:09}
 W13 2027-01-25 specific    28.1/29.1km long 14.0
    wed racePace 14.1km 93min [H] {r:7000m E/easy@6:30-7:09; w:900s E/easy@6:30-7:09; 2×(w:1500m racePace/race@5:34-5:40 / r:90s E/recovery@6:30-7:09); c:600s E/easy@6:30-7:09}
    sun longProgressive 14.0km 92min [H] {r:11000m E/easy@6:30-7:09; w:3000m M/steady@5:43-5:53}
-W14 2027-02-01 taper       19.0/21.0km long 9.5
-   wed fartlek 9.5km 64min [H] {r:4500m E/easy@6:30-7:09; w:900s E/easy@6:30-7:09; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy@6:30-7:09}
-   sun long 9.5km 65min {r:9500m E/easy@6:30-7:09}
-W15 2027-02-08 taper       2.9/15.2km long 0.0 RACE
+W14 2027-02-01 taper       18.4/21.0km long 9.0
+   wed racePace 9.4km 62min [H] {r:3000m E/easy@6:30-7:09; w:900s E/easy@6:30-7:09; 3×(w:700m racePace/race@5:34-5:40 / r:90s E/recovery@6:30-7:09); c:600s E/easy@6:30-7:09}
+   sun long 9.0km 61min {r:9000m E/easy@6:30-7:09}
+W15 2027-02-08 taper       2.9/14.7km long 0.0 RACE
    wed easy 2.9km 20min {r:2100m E/easy@6:30-7:09; 4×(w:20s R/repetition / r:60s E/recovery)}
    sun race 21.0km 118min [H] {w:21097.5m racePace/race@5:34-5:40}

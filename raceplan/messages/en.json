@@ -462,5 +462,12 @@
     "recovery50": "After each long run you get at least two easy or rest days before the next hard session.",
     "minor": "Growing bodies need recovery: sleep well, eat enough, and tell an adult or coach about any pain.",
     "effortOnly": "Effort descriptions replace paces. The talk test is your best guide."
+  },
+  "pdf": {
+    "export": "Export PDF",
+    "exporting": "Preparing PDF…",
+    "error": "Sorry, the PDF could not be created. Please try again.",
+    "page": "Page {page} / {total}",
+    "generatedOn": "generated on {date}"
   }
 }
