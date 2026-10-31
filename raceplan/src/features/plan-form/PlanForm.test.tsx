@@ -6,6 +6,10 @@ import messages from "../../../messages/en.json";
 import { PlanForm } from "./PlanForm";
 
 const push = vi.fn();
+let search = "";
+vi.mock("next/navigation", () => ({
+  useSearchParams: () => new URLSearchParams(search),
+}));
 vi.mock("@/i18n/navigation", () => ({
   useRouter: () => ({ push, replace: vi.fn() }),
   usePathname: () => "/plan/new",
@@ -27,7 +31,10 @@ describe("PlanForm", () => {
     window.localStorage.clear();
     window.scrollTo = vi.fn();
   });
-  afterEach(cleanup);
+  afterEach(() => {
+    cleanup();
+    search = "";
+  });
 
   it("shows translated errors and blocks the step until fixed", async () => {
     renderForm();
@@ -57,6 +64,20 @@ describe("PlanForm", () => {
     );
     renderForm();
     expect(await screen.findByRole("heading", { name: "Your fitness" })).toBeTruthy();
+  });
+
+  it("pre-fills the race from a race guide link, keeping the rest of the draft", async () => {
+    window.localStorage.setItem(
+      "raceplan.formDraft.v1",
+      JSON.stringify({ values: { raceType: "10k", age: "40" }, unit: "km", step: 2 }),
+    );
+    search = "course=marathon-de-paris";
+    renderForm();
+    expect(await screen.findByRole("heading", { name: "Your race" })).toBeTruthy();
+    expect(screen.getByRole("status").textContent).toContain("Race pre-filled: Marathon de Paris");
+    expect((screen.getByLabelText("Marathon") as HTMLInputElement).checked).toBe(true);
+    const draft = JSON.parse(window.localStorage.getItem("raceplan.formDraft.v1")!);
+    expect(draft.values.age).toBe("40");
   });
 
   it("warns and blocks currently injured runners", async () => {

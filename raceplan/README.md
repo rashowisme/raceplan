@@ -34,6 +34,7 @@ pnpm exec playwright install chromium    # once, for e2e tests
 - `src/features/plan-calendar` — plan page, calendar, workout details; `format.ts` turns engine translation keys into text.
 - `src/features/export/pdf` — client-side PDF (react-pdf, built-in fonts).
 - `src/features/export/fit` — watch files: minimal FIT workout encoder + ZIP writer (no dependency).
+- `src/content/races` + `src/features/race-guides` — race landing pages (SEO); how to add one: `docs/race-guides.md`.
 - `src/storage` — `PlanRepository` interface; v1 = `LocalStorageRepository`. `backup.ts` = backup file (save/load, validated).
 - `src/lib/units.ts` — the only place km/mi conversion and formatting happen.
 - `messages/{en,fr}.json` — translations. Add a language: add its code in `src/i18n/routing.ts` and a messages file (tests check keys/placeholders match).

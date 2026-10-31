@@ -2,7 +2,8 @@
 
 import { AlertTriangle, ArrowLeft, ArrowRight, Loader2, RotateCcw, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { generatePlan } from "@/engine";
@@ -14,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { CURRENT_PLAN_ID } from "@/features/plan-calendar/useCurrentPlan";
 import { getPlanRepository, PLAN_CHANGED_EVENT } from "@/storage";
 import { clearDraft, loadDraft, saveDraft, type FormDraft } from "./draft";
+import { racePrefill } from "./race-prefill";
 import {
   convertUnits,
   DEFAULT_VALUES,
@@ -42,24 +44,54 @@ const STEP_COMPONENTS = {
 };
 
 /** The form reads its draft from localStorage, so it only renders after hydration. */
+const FORM_SKELETON = (
+  <div className="mx-auto h-96 w-full max-w-xl animate-pulse px-4 py-10" aria-busy />
+);
+
+/** Reading the search params needs a Suspense boundary on a static page. */
 export function PlanForm() {
-  const hydrated = useHydrated();
-  if (!hydrated) {
-    return <div className="mx-auto h-96 w-full max-w-xl animate-pulse px-4 py-10" aria-busy />;
-  }
-  return <PlanFormInner initialDraft={loadDraft()} />;
+  return (
+    <Suspense fallback={FORM_SKELETON}>
+      <HydratedPlanForm />
+    </Suspense>
+  );
 }
 
-function PlanFormInner({ initialDraft }: { initialDraft: FormDraft | null }) {
+function HydratedPlanForm() {
+  const hydrated = useHydrated();
+  const course = useSearchParams().get("course");
+  if (!hydrated) return FORM_SKELETON;
+  return <PlanFormInner initialDraft={loadDraft()} course={course} />;
+}
+
+function PlanFormInner({
+  initialDraft,
+  course,
+}: {
+  initialDraft: FormDraft | null;
+  /** Race guide slug from "Create my plan for <race>" links. */
+  course: string | null;
+}) {
   const t = useTranslations("form");
   const router = useRouter();
   const [unit] = useUnit();
+  // "Create my plan for <race>" links pre-fill the race step.
+  const [prefill] = useState(() =>
+    racePrefill(
+      initialDraft ? convertUnits(initialDraft.values, initialDraft.unit, unit) : DEFAULT_VALUES,
+      course,
+      unit,
+      localToday(),
+    ),
+  );
   const form = useForm<PlanFormValues>({
-    defaultValues: initialDraft
-      ? convertUnits(initialDraft.values, initialDraft.unit, unit)
-      : DEFAULT_VALUES,
+    defaultValues:
+      prefill?.values ??
+      (initialDraft ? convertUnits(initialDraft.values, initialDraft.unit, unit) : DEFAULT_VALUES),
   });
-  const [step, setStep] = useState(() => Math.min(initialDraft?.step ?? 0, STEPS.length - 1));
+  const [step, setStep] = useState(() =>
+    prefill ? 0 : Math.min(initialDraft?.step ?? 0, STEPS.length - 1),
+  );
   const [errors, setErrors] = useState<StepErrors>({});
   const [refusal, setRefusal] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -222,7 +254,12 @@ function PlanFormInner({ initialDraft }: { initialDraft: FormDraft | null }) {
           <p className="text-muted-foreground mt-1 text-sm">{t(`stepIntro.${stepId}`)}</p>
         </div>
 
-        {restored && step === 0 && (
+        {prefill && step === 0 && (
+          <p role="status" className="bg-primary/5 mb-6 rounded-lg px-3 py-2 text-sm">
+            {t("racePrefilled", { name: prefill.guide.name })}
+          </p>
+        )}
+        {restored && !prefill && step === 0 && (
           <div className="bg-muted mb-6 flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm">
             <span>{t("draftRestored")}</span>
             <Button type="button" variant="ghost" size="sm" onClick={startOver}>
