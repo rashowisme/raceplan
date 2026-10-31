@@ -38,6 +38,8 @@ export interface RaceGuide {
   course: { title: string; body: string }[];
   /** Notes about the training calendar for this race (season, holidays, tune-up races). */
   calendar: { title: string; body: string }[];
+  /** Dates on the preparation timeline (plan starts and race day are added automatically). */
+  milestones: { date: IsoDate; label: string }[];
   /** Race-specific questions (the generic ones are generated from the sample plans). */
   faq: { q: string; a: string }[];
   /** Where the facts come from. */

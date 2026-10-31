@@ -594,7 +594,6 @@
     "factsTitle": "The race at a glance",
     "factDate": "Next edition",
     "factStart": "Start training",
-    "factStartValue": "between {from} and {to}",
     "ctaTitle": "Your plan for the {name}",
     "ctaBody": "The form is pre-filled with the race and its date: add your level and availability, and your week-by-week plan is ready. Free, no account, your data stays in your browser.",
     "ctaButton": "Create my plan for the {name}",
@@ -622,6 +621,21 @@
     "sourcesTitle": "Sources",
     "checkedOn": "Information checked on {date}.",
     "notChecked": "Information from public sources: confirm it on the race's official website.",
-    "seeAll": "See all races"
+    "seeAll": "See all races",
+    "heroWeeks": "Recommended preparation",
+    "heroWeeksValue": "{min} to {max} weeks",
+    "heroDistance": "Distance",
+    "timelineStart": "Start of a {weeks}-week plan",
+    "timelineRace": "Race day: {name}",
+    "chartTitle": "Kilometres per week",
+    "chartTable": "See week-by-week details",
+    "chartWeekShort": "W{n}",
+    "chartRace": "Race",
+    "chartBar": "Week {n}: {distance}, {phase}",
+    "chartCutback": "lighter week",
+    "chartWeek": "Week",
+    "chartVolume": "Volume",
+    "chartPhase": "Phase",
+    "chartLegend": "Plan phases"
   }
 }

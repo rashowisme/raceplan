@@ -17,7 +17,6 @@ export const marathonDeParis: RaceGuide = {
   intro:
     "Le Marathon de Paris est l'un des plus grands marathons du monde : des dizaines de milliers de coureurs au départ, un parcours urbain globalement plat et une date de début avril. Pour la plupart des coureurs, cela veut dire une préparation de décembre à mars, avec des sorties longues dans le froid et des fêtes de fin d'année au milieu du plan. Voici comment s'y préparer, avec des exemples de plans calculés pour l'édition 2027.",
   facts: [
-    { label: "Distance", value: "42,195 km" },
     { label: "Type de parcours", value: "Urbain, globalement plat" },
     { label: "Saison de préparation", value: "Hiver (décembre à mars)" },
     { label: "Participants", value: "Plusieurs dizaines de milliers" },
@@ -53,6 +52,11 @@ export const marathonDeParis: RaceGuide = {
       title: "Le lundi de Pâques en semaine de course",
       body: "Le lundi de Pâques tombe le 29 mars 2027, dans la semaine du marathon. Un jour férié bienvenu pour se reposer, mais attention aux repas de Pâques la veille et aux déplacements du week-end : la semaine de course se joue sur le sommeil et la régularité, pas sur de nouvelles habitudes.",
     },
+  ],
+  milestones: [
+    { date: "2026-12-25", label: "Noël : semaine souple bienvenue" },
+    { date: "2027-03-07", label: "Semi-marathon de Paris, à allure marathon" },
+    { date: "2027-03-29", label: "Lundi de Pâques, en semaine de course" },
   ],
   faq: [
     {

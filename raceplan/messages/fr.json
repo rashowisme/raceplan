@@ -594,7 +594,6 @@
     "factsTitle": "La course en bref",
     "factDate": "Prochaine édition",
     "factStart": "Début de préparation",
-    "factStartValue": "entre le {from} et le {to}",
     "ctaTitle": "Votre plan pour le {name}",
     "ctaBody": "Le formulaire est prérempli avec la course et sa date : indiquez votre niveau et vos disponibilités, et votre plan semaine par semaine est prêt. Gratuit, sans compte, vos données restent dans votre navigateur.",
     "ctaButton": "Créer mon plan pour le {name}",
@@ -622,6 +621,21 @@
     "sourcesTitle": "Sources",
     "checkedOn": "Informations vérifiées le {date}.",
     "notChecked": "Informations issues de sources publiques : confirmez-les sur le site officiel de la course.",
-    "seeAll": "Voir toutes les courses"
+    "seeAll": "Voir toutes les courses",
+    "heroWeeks": "Préparation conseillée",
+    "heroWeeksValue": "{min} à {max} semaines",
+    "heroDistance": "Distance",
+    "timelineStart": "Début d'un plan de {weeks} semaines",
+    "timelineRace": "Jour de course : {name}",
+    "chartTitle": "Kilomètres par semaine",
+    "chartTable": "Voir le détail semaine par semaine",
+    "chartWeekShort": "S{n}",
+    "chartRace": "Course",
+    "chartBar": "Semaine {n} : {distance}, {phase}",
+    "chartCutback": "semaine allégée",
+    "chartWeek": "Semaine",
+    "chartVolume": "Volume",
+    "chartPhase": "Phase",
+    "chartLegend": "Phases du plan"
   }
 }
