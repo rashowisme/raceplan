@@ -14,7 +14,8 @@
     "language": "Langue",
     "units": "Unités",
     "km": "km",
-    "mi": "mi"
+    "mi": "mi",
+    "theme": "Thème : {theme, select, light {clair} dark {sombre} other {système}}. Changer de thème"
   },
   "footer": {
     "disclaimer": "Conseils généraux, pas un avis médical.",

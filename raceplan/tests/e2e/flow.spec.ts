@@ -130,3 +130,26 @@ test("no horizontal scrolling at 360px", async ({ page }) => {
     expect(overflow, path).toBeLessThanOrEqual(0);
   }
 });
+
+test("theme toggle switches to dark, persists, and follows the OS by default", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/en");
+  const html = page.locator("html");
+  await expect(html).not.toHaveClass(/\bdark\b/);
+
+  await page.getByRole("button", { name: /^Theme: system/ }).click();
+  await page.getByRole("button", { name: /^Theme: light/ }).click();
+  await expect(html).toHaveClass(/\bdark\b/);
+
+  // Applied before hydration on reload (no light flash).
+  await page.reload({ waitUntil: "commit" });
+  await page.waitForSelector("html.dark", { state: "attached" });
+  await expect(page.getByRole("button", { name: /^Theme: dark/ })).toBeVisible();
+
+  // Back to system: follows the OS preference.
+  await page.getByRole("button", { name: /^Theme: dark/ }).click();
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(html).toHaveClass(/\bdark\b/);
+  await page.emulateMedia({ colorScheme: "light" });
+  await expect(html).not.toHaveClass(/\bdark\b/);
+});

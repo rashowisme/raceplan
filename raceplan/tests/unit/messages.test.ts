@@ -21,8 +21,44 @@ function flatten(tree: Tree, prefix = ""): Record<string, string> {
 
 const load = (locale: string) =>
   flatten(JSON.parse(readFileSync(join(dir, `${locale}.json`), "utf8")));
-/** ICU argument names (`{name}` or `{name, plural, …}`), ignoring plural branch text. */
-const placeholders = (s: string) => [...s.matchAll(/\{(\w+)(?=[,}])/g)].map((m) => m[1]).sort();
+/**
+ * ICU argument names (`{name}`, `{name, plural|select, …}`), recursing into
+ * branch messages so branch delimiters (`one {…}`, `light {light}`) aren't
+ * mistaken for arguments.
+ */
+function placeholders(s: string): string[] {
+  const names: string[] = [];
+  let i = 0;
+  // Parses a message until an unmatched "}" (or the end).
+  const message = () => {
+    while (i < s.length && s[i] !== "}") {
+      if (s[i] === "{") {
+        i++;
+        argument();
+      } else i++;
+    }
+  };
+  const argument = () => {
+    const head = /^\s*(\w+)\s*(?:,\s*(\w+)\s*)?/.exec(s.slice(i))!;
+    names.push(head[1]!);
+    i += head[0].length;
+    if (head[2] === "plural" || head[2] === "select" || head[2] === "selectordinal") {
+      i++; // the "," before the branches
+      while (i < s.length && s[i] !== "}") {
+        if (s[i] === "{") {
+          i++;
+          message();
+        }
+        i++;
+      }
+    } else {
+      while (i < s.length && s[i] !== "}") i++;
+    }
+    i++; // closing "}"
+  };
+  message();
+  return [...new Set(names)].sort();
+}
 
 describe("messages", () => {
   const en = load("en");

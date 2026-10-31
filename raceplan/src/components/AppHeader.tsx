@@ -2,6 +2,7 @@ import { CalendarDays, Footprints } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
 import { UnitToggle } from "./UnitToggle";
 
 export function AppHeader() {
@@ -14,7 +15,7 @@ export function AppHeader() {
       >
         {t("skipToContent")}
       </a>
-      <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-2 px-4">
+      <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-1 px-3 sm:gap-2 sm:px-4">
         <Link
           href="/"
           className="focus-visible:ring-ring mr-auto flex items-center gap-2 rounded-md font-bold tracking-tight focus-visible:ring-2 focus-visible:outline-none"
@@ -39,6 +40,7 @@ export function AppHeader() {
         >
           <CalendarDays className="size-5" aria-hidden />
         </Link>
+        <ThemeToggle />
         <UnitToggle />
         <LocaleSwitcher />
       </div>
