@@ -244,6 +244,223 @@
     "title": "Votre plan d'entraînement",
     "empty": "Pas encore de plan.",
     "createOne": "Créer un plan",
-    "disclaimer": "Ce plan est un conseil général, pas un avis médical. Consultez un médecin avant de commencer si vous avez le moindre doute sur votre santé. Arrêtez-vous et reposez-vous si une douleur persiste."
+    "disclaimer": "Ce plan est un conseil général, pas un avis médical. Consultez un médecin avant de commencer si vous avez le moindre doute sur votre santé. Arrêtez-vous et reposez-vous si une douleur persiste.",
+    "distance": "Distance",
+    "duration": "Durée",
+    "elevation": "D+",
+    "effort": "Effort",
+    "structure": "Déroulé de la séance",
+    "optional": "Facultatif",
+    "optionalNote": "Séance facultative — passez-la si vous êtes fatigué·e.",
+    "crossTraining": "Facultatif : remplacez cette sortie par 30 à 45 minutes d'activité sans impact (vélo, natation, elliptique) si vos jambes ont besoin de souffler.",
+    "week": "Semaine {n}",
+    "thisWeek": "Cette semaine",
+    "cutback": "Semaine allégée",
+    "raceWeek": "Semaine de course",
+    "rest": "Repos",
+    "warningsTitle": "À lire",
+    "adviceTitle": "Conseils",
+    "zonesTitle": "Vos allures d'entraînement",
+    "effortsTitle": "Vos niveaux d'effort",
+    "effortOnlyIntro": "Sans temps de course récent, vous vous entraînerez aux sensations. Utilisez ces niveaux d'effort ; le test chronométré des premières semaines vous situera.",
+    "phasesTitle": "Phases d'entraînement",
+    "weeksCount": "{count, plural, one {# semaine} other {# semaines}}",
+    "calendarTitle": "Semaine par semaine",
+    "edit": "Modifier mes réponses",
+    "daysToGo": "{count, plural, one {J-#} other {J-#}}",
+    "stats": {
+      "weeks": "Semaines",
+      "runsPerWeek": "Sorties par semaine",
+      "peak": "Semaine la plus chargée",
+      "prediction": "Temps estimé",
+      "style": "Style de plan"
+    }
+  },
+  "phase": {
+    "maintenance": "Entretien foncier",
+    "base": "Foncier",
+    "build": "Développement",
+    "specific": "Spécifique",
+    "taper": "Affûtage"
+  },
+  "intensity": {
+    "easy": "Facile",
+    "moderate": "Modérée",
+    "hard": "Difficile"
+  },
+  "workoutType": {
+    "easy": "Footing",
+    "recovery": "Footing récup",
+    "long": "Sortie longue",
+    "longProgressive": "Sortie longue progressive",
+    "longRacePace": "Sortie longue + allure course",
+    "tempo": "Tempo",
+    "cruiseIntervals": "Fractionné au seuil",
+    "shortIntervals": "Fractionné court",
+    "longIntervals": "Fractionné long",
+    "hillSprints": "Sprints en côte",
+    "hillRepeats": "Côtes",
+    "fartlek": "Fartlek",
+    "racePace": "Allure course",
+    "timeTrial": "Test chronométré",
+    "downhillPractice": "Travail de descente",
+    "race": "Jour de course"
+  },
+  "workout": {
+    "easy": {
+      "title": "Footing",
+      "titleStrides": "Footing + {count} accélérations"
+    },
+    "recovery": {
+      "title": "Footing de récupération",
+      "titleStrides": "Footing de récupération + {count} accélérations"
+    },
+    "long": {
+      "title": "Sortie longue"
+    },
+    "longProgressive": {
+      "title": "Sortie longue avec {fastM} finaux soutenus"
+    },
+    "longRacePace": {
+      "title": "Sortie longue avec {rpM} à allure course"
+    },
+    "race": {
+      "title": "Jour de course !"
+    },
+    "timeTrial": {
+      "title": "Test chronométré : {distanceM}"
+    },
+    "tempo": {
+      "title": "Tempo : {minutes} min au seuil"
+    },
+    "cruiseIntervals": {
+      "titleDistance": "Fractionné au seuil : {reps} × {repM}",
+      "titleTime": "Fractionné au seuil : {reps} × {minutes} min"
+    },
+    "longIntervals": {
+      "titleDistance": "Fractionné : {reps} × {repM}",
+      "titleTime": "Fractionné : {reps} × {minutes} min"
+    },
+    "shortIntervals": {
+      "titleDistance": "Fractionné court : {reps} × {repM}",
+      "titleTime": "Fractionné court : {reps} × {seconds}"
+    },
+    "hillSprints": {
+      "title": "Sprints en côte : {reps} × 10 s"
+    },
+    "hillRepeats": {
+      "title": "Côtes : {reps} × {seconds}"
+    },
+    "fartlek": {
+      "title": "Fartlek : {reps} × {onS} vite / {offS} lent"
+    },
+    "racePace": {
+      "titleDistance": "Allure course : {reps} × {repM}",
+      "titleTime": "Allure course : {reps} × {minutes} min"
+    },
+    "downhillPractice": {
+      "title": "Travail de descente"
+    },
+    "note": {
+      "raceDay": "Échauffez-vous avec 10 à 15 minutes de footing et quelques accélérations. Partez prudemment et profitez !",
+      "timeTrial": "Courez-le à un effort soutenu et régulier, sur parcours plat. Notez votre temps : il indique votre forme actuelle.",
+      "hillSprints": "Efforts très courts et puissants sur une pente raide. Redescendez en marchant ou en trottinant, récupérez complètement.",
+      "hillRepeats": "Montez à un effort fort mais contrôlé. Redescendez en trottinant.",
+      "fartlek": "Jouez avec la vitesse : les parties rapides se font aux sensations, pas besoin de regarder la montre.",
+      "shakeout": "Juste 15 à 20 minutes très tranquilles pour se délier les jambes — ou du repos si vous préférez."
+    }
+  },
+  "step": {
+    "warmup": "Échauffement",
+    "work": "Effort",
+    "recovery": "Récupération",
+    "cooldown": "Retour au calme",
+    "run": "Course",
+    "repeat": "Répéter {count} fois"
+  },
+  "terrain": {
+    "flat": "plat",
+    "uphill": "en montée",
+    "downhill": "en descente",
+    "rolling": "vallonné"
+  },
+  "zone": {
+    "E": "Endurance",
+    "M": "Marathon",
+    "T": "Seuil",
+    "I": "Intervalle (VMA)",
+    "R": "Répétition",
+    "racePace": "Allure course",
+    "z1": "Zone 1 (basse)",
+    "z2": "Zone 2 (modérée)",
+    "z3": "Zone 3 (haute)"
+  },
+  "effort": {
+    "recovery": {
+      "label": "Très facile",
+      "desc": "Plus lent que le footing — on se délie. Respiration totalement relâchée."
+    },
+    "easy": {
+      "label": "Facile",
+      "desc": "Allure conversation : vous pouvez parler en phrases complètes. L'essentiel de vos sorties."
+    },
+    "steady": {
+      "label": "Soutenu",
+      "desc": "Allure vive mais confortable : vous pouvez encore dire de courtes phrases."
+    },
+    "marathon": {
+      "label": "Effort marathon",
+      "desc": "Contrôlé et tenable longtemps ; quelques phrases courtes."
+    },
+    "threshold": {
+      "label": "Assez difficile",
+      "desc": "Tenable environ une heure ; seulement quelques mots à la fois."
+    },
+    "interval": {
+      "label": "Difficile",
+      "desc": "Effort fort tenable 10 à 15 minutes ; parler est difficile."
+    },
+    "repetition": {
+      "label": "Vite et relâché",
+      "desc": "Rapide, fluide et contrôlé — pas un sprint. Récupération complète entre les efforts."
+    },
+    "race": {
+      "label": "Effort course",
+      "desc": "L'effort que vous comptez tenir le jour de la course."
+    },
+    "powerHike": {
+      "label": "Marche active",
+      "desc": "Marche rapide et déterminée en montée, mains sur les cuisses si c'est raide."
+    }
+  },
+  "warning": {
+    "plan_too_short": "Votre course est dans {weeks} semaines ; nous en recommandons au moins {minWeeks}. Le plan est condensé, sans hausse de volume pour « rattraper ».",
+    "goal_ambitious": "Votre objectif suppose un gain de forme de {gainPct} % (réaliste : jusqu'à {limitPct} %). Vos allures sont basées sur votre forme actuelle.",
+    "low_max_volume": "Votre maximum de {maxM} par semaine est faible pour cette course (nous suggérons environ {suggestedM}). Envisagez une course plus courte ou soyez très prudent·e.",
+    "few_days_available": "Courir seulement {days} jours par semaine, c'est peu pour cette distance. Le plan reste sûr mais peut sembler limité.",
+    "no_performance_data": "Pas de temps de course récent : vous vous entraînerez à l'effort. Faites le test chronométré facultatif au début.",
+    "old_pr": "Votre record date de {months} mois : nous l'avons ajusté de façon plus prudente.",
+    "preference_unmet": "Nous n'avons pas pu éviter toutes les séances « {tag} » sans perdre un effet d'entraînement important.",
+    "minor_runner": "Vous avez moins de 18 ans : les volumes sont plafonnés. Entraînez-vous avec un coach ou impliquez un parent.",
+    "risk_flagged": "Pour votre sécurité, le plan est plus prudent ({flags}).",
+    "race_ready_mini_plan": "Votre course est très proche : voici un court plan de préparation finale — entretenir, aiguiser, récupérer.",
+    "max_below_current": "Votre maximum est inférieur à votre volume actuel : le plan démarre à votre maximum.",
+    "long_base_block": "Votre course est loin : les {weeks} premières semaines sont un bloc d'entretien foncier facile avant le plan de 24 semaines."
+  },
+  "riskFlag": {
+    "injuryOften": "blessures fréquentes",
+    "multipleInjuries": "plusieurs types de blessures",
+    "stressFractureHistory": "antécédent de fracture de fatigue",
+    "age50plus": "50 ans et plus"
+  },
+  "advice": {
+    "softSurfaces": "Vu vos antécédents (tibia, os), courez sur des surfaces souples (chemins, herbe, piste) quand c'est possible, et gardez les footings vraiment faciles.",
+    "cadence": "Pour le genou / la bandelette, gardez une foulée un peu plus rapide et plus courte, et évitez les longues descentes.",
+    "achilles": "Pour votre tendon d'Achille / mollet, les sprints en côte et la vitesse pure sont évités pendant le premier tiers du plan. Échauffez-vous bien.",
+    "plantar": "Avec un antécédent d'aponévrosite plantaire, côtes et vitesse ne sont jamais dans la même semaine.",
+    "crossTraining": "Une activité croisée (vélo, natation) peut remplacer un footing dès que vous avez besoin d'une journée sans impact.",
+    "recovery50": "Après chaque sortie longue, vous avez au moins deux jours faciles ou de repos avant la séance difficile suivante.",
+    "minor": "Un corps en croissance a besoin de récupération : dormez bien, mangez suffisamment et signalez toute douleur à un adulte ou à votre coach.",
+    "effortOnly": "Les descriptions d'effort remplacent les allures. Le test de la parole est votre meilleur repère."
   }
 }

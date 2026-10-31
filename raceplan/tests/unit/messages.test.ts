@@ -21,7 +21,8 @@ function flatten(tree: Tree, prefix = ""): Record<string, string> {
 
 const load = (locale: string) =>
   flatten(JSON.parse(readFileSync(join(dir, `${locale}.json`), "utf8")));
-const placeholders = (s: string) => [...s.matchAll(/\{(\w+)/g)].map((m) => m[1]).sort();
+/** ICU argument names (`{name}` or `{name, plural, …}`), ignoring plural branch text. */
+const placeholders = (s: string) => [...s.matchAll(/\{(\w+)(?=[,}])/g)].map((m) => m[1]).sort();
 
 describe("messages", () => {
   const en = load("en");

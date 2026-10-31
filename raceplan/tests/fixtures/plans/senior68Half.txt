@@ -9,62 +9,62 @@ W01 2026-11-02 base        29.9/30.0km long 9.0
    sun long 9.0km 71min {r:9000m E/easy@7:29-8:12}
 W02 2026-11-09 base        32.9/32.9km long 9.5
    mon recovery 7.7km 61min {r:6700m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed fartlek 6.3km 49min [H] {w:900s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12; r:2000m E/easy@7:29-8:12}
+   wed fartlek 6.3km 49min [H] {r:2000m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12}
    fri easy 9.4km 74min {r:8400m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 9.5km 74min {r:9500m E/easy@7:29-8:12}
 W03 2026-11-16 base        25.5/25.7km long 7.0 CUTBACK
    mon recovery 6.1km 48min {r:5100m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed fartlek 5.5km 42min [H] {w:600s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy@7:29-8:12; r:2000m E/easy@7:29-8:12}
+   wed fartlek 5.5km 42min [H] {r:2000m E/easy@7:29-8:12; w:600s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy@7:29-8:12}
    fri easy 6.9km 54min {r:5900m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 7.0km 55min {r:7000m E/easy@7:29-8:12}
 W04 2026-11-23 base        32.6/32.9km long 9.5
    mon recovery 7.6km 60min {r:6600m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed fartlek 6.1km 47min [H] {w:900s E/easy@7:29-8:12; 5×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12; r:1500m E/easy@7:29-8:12}
+   wed fartlek 6.1km 47min [H] {r:1500m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; 5×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12}
    fri easy 9.4km 74min {r:8400m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 9.5km 74min {r:9500m E/easy@7:29-8:12}
 W05 2026-11-30 base        34.7/34.8km long 10.0
    mon recovery 8.2km 64min {r:7200m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed fartlek 6.6km 51min [H] {w:900s E/easy@7:29-8:12; 5×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12; r:2000m E/easy@7:29-8:12}
+   wed fartlek 6.6km 51min [H] {r:2000m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; 5×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12}
    fri easy 9.9km 78min {r:8900m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 10.0km 78min {r:10000m E/easy@7:29-8:12}
 W06 2026-12-07 base        26.9/27.1km long 7.5 CUTBACK
    mon recovery 6.5km 51min {r:5500m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed fartlek 5.5km 42min [H] {w:600s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy@7:29-8:12; r:2000m E/easy@7:29-8:12}
+   wed fartlek 5.5km 42min [H] {r:2000m E/easy@7:29-8:12; w:600s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy@7:29-8:12}
    fri easy 7.4km 58min {r:6400m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 7.5km 59min {r:7500m E/easy@7:29-8:12}
 W07 2026-12-14 build       34.7/34.7km long 10.0
    mon recovery 7.8km 61min {r:6800m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed tempo 7.0km 52min [H] {w:900s E/easy@7:29-8:12; w:900s T/threshold@6:12-6:22; c:600s E/easy@7:29-8:12; r:1500m E/easy@7:29-8:12}
+   wed tempo 7.0km 52min [H] {r:1500m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; w:900s T/threshold@6:12-6:22; c:600s E/easy@7:29-8:12}
    fri easy 9.9km 78min {r:8900m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 10.0km 78min {r:10000m E/easy@7:29-8:12}
 W08 2026-12-21 build       37.0/37.1km long 11.0
    mon recovery 8.8km 69min {r:7800m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed fartlek 6.3km 49min [H] {w:900s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12; r:2000m E/easy@7:29-8:12}
+   wed fartlek 6.3km 49min [H] {r:2000m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12}
    fri easy 10.9km 86min {r:9900m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun longProgressive 11.0km 84min [H] {r:9000m E/easy@7:29-8:12; w:2000m M/steady@6:36-6:49}
 W09 2026-12-28 build       28.9/28.9km long 8.5 CUTBACK
    mon recovery 6.4km 50min {r:5400m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed tempo 5.6km 41min [H] {w:600s E/easy@7:29-8:12; w:900s T/threshold@6:12-6:22; c:480s E/easy@7:29-8:12; r:1000m E/easy@7:29-8:12}
+   wed tempo 5.6km 41min [H] {r:1000m E/easy@7:29-8:12; w:600s E/easy@7:29-8:12; w:900s T/threshold@6:12-6:22; c:480s E/easy@7:29-8:12}
    fri easy 8.4km 66min {r:7400m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 8.5km 67min {r:8500m E/easy@7:29-8:12}
 W10 2027-01-04 build       37.0/37.0km long 11.0
    mon recovery 8.8km 69min {r:7800m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed fartlek 6.3km 49min [H] {w:900s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12; r:2000m E/easy@7:29-8:12}
+   wed fartlek 6.3km 49min [H] {r:2000m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy@7:29-8:12}
    fri easy 10.9km 86min {r:9900m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun longProgressive 11.0km 84min [H] {r:9000m E/easy@7:29-8:12; w:2000m M/steady@6:36-6:49}
 W11 2027-01-11 build       39.5/39.5km long 11.5
    mon recovery 8.8km 69min {r:7800m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed tempo 7.8km 57min [H] {w:900s E/easy@7:29-8:12; w:1200s T/threshold@6:12-6:22; c:600s E/easy@7:29-8:12; r:1500m E/easy@7:29-8:12}
+   wed tempo 7.8km 57min [H] {r:1500m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; w:1200s T/threshold@6:12-6:22; c:600s E/easy@7:29-8:12}
    fri easy 11.4km 90min {r:10400m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 11.5km 90min {r:11500m E/easy@7:29-8:12}
 W12 2027-01-18 build       30.6/30.8km long 8.5 CUTBACK
    mon recovery 7.1km 56min {r:6100m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed tempo 6.6km 49min [H] {w:600s E/easy@7:29-8:12; w:900s T/threshold@6:12-6:22; c:480s E/easy@7:29-8:12; r:2000m E/easy@7:29-8:12}
+   wed tempo 6.6km 49min [H] {r:2000m E/easy@7:29-8:12; w:600s E/easy@7:29-8:12; w:900s T/threshold@6:12-6:22; c:480s E/easy@7:29-8:12}
    fri easy 8.4km 66min {r:7400m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 8.5km 67min {r:8500m E/easy@7:29-8:12}
 W13 2027-01-25 build       39.5/39.5km long 11.5
    mon recovery 8.8km 69min {r:7800m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed tempo 7.8km 57min [H] {w:900s E/easy@7:29-8:12; w:1200s T/threshold@6:12-6:22; c:600s E/easy@7:29-8:12; r:1500m E/easy@7:29-8:12}
+   wed tempo 7.8km 57min [H] {r:1500m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; w:1200s T/threshold@6:12-6:22; c:600s E/easy@7:29-8:12}
    fri easy 11.4km 90min {r:10400m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun long 11.5km 90min {r:11500m E/easy@7:29-8:12}
 W14 2027-02-01 specific    37.1/40.0km long 11.0
@@ -84,7 +84,7 @@ W16 2027-02-15 specific    35.3/37.1km long 10.5
    sun long 10.5km 82min {r:10500m E/easy@7:29-8:12}
 W17 2027-02-22 specific    37.6/37.7km long 11.0
    mon recovery 8.2km 64min {r:7200m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed racePace 7.5km 55min [H] {w:900s E/easy@7:29-8:12; 2×(w:1500m racePace/race@6:28-6:36 / r:90s E/recovery@7:29-8:12); c:600s E/easy@7:29-8:12; r:1000m E/easy@7:29-8:12}
+   wed racePace 7.5km 55min [H] {r:1000m E/easy@7:29-8:12; w:900s E/easy@7:29-8:12; 2×(w:1500m racePace/race@6:28-6:36 / r:90s E/recovery@7:29-8:12); c:600s E/easy@7:29-8:12}
    fri easy 10.9km 86min {r:9900m E/easy@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)}
    sun longProgressive 11.0km 84min [H] {r:9000m E/easy@7:29-8:12; w:2000m M/steady@6:36-6:49}
 W18 2027-03-01 specific    28.6/29.3km long 8.5 CUTBACK
@@ -94,7 +94,7 @@ W18 2027-03-01 specific    28.6/29.3km long 8.5 CUTBACK
    sun long 8.5km 67min {r:8500m E/easy@7:29-8:12}
 W19 2027-03-08 taper       28.2/28.2km long 7.5
    mon recovery 6.1km 48min {r:5100m E/recovery@7:29-8:12; 6×(w:20s R/repetition / r:60s E/recovery)} +XT
-   wed racePace 7.1km 52min [H] {w:600s E/easy@7:29-8:12; 2×(w:1500m racePace/race@6:28-6:36 / r:90s E/recovery@7:29-8:12); c:480s E/easy@7:29-8:12; r:1500m E/easy@7:29-8:12}
+   wed racePace 7.1km 52min [H] {r:1500m E/easy@7:29-8:12; w:600s E/easy@7:29-8:12; 2×(w:1500m racePace/race@6:28-6:36 / r:90s E/recovery@7:29-8:12); c:480s E/easy@7:29-8:12}
    fri easy 7.5km 59min {r:7500m E/easy@7:29-8:12}
    sun long 7.5km 59min {r:7500m E/easy@7:29-8:12}
 W20 2027-03-15 taper       12.4/22.5km long 0.0 RACE

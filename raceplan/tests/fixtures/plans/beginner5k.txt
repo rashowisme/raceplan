@@ -31,7 +31,7 @@ W07 2026-12-14 specific    18.5/18.6km long 7.0
    thu easy 6.7km 54min {r:6100m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
    sun long 7.0km 56min {r:7000m E/easy}
 W08 2026-12-21 specific    14.3/14.4km long 5.0 CUTBACK
-   tue fartlek 4.4km 34min [H] {w:600s E/easy; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy; r:1000m E/easy}
+   tue fartlek 4.4km 34min [H] {r:1000m E/easy; w:600s E/easy; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy}
    thu easy 4.9km 40min {r:4300m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
    sun long 5.0km 40min {r:5000m E/easy}
 W09 2026-12-28 taper       5.8/11.4km long 0.0 RACE

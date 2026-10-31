@@ -244,6 +244,223 @@
     "title": "Your training plan",
     "empty": "No plan yet.",
     "createOne": "Create a plan",
-    "disclaimer": "This plan is general guidance, not medical advice. See a doctor before starting if you have any health concerns. Stop and rest if pain persists."
+    "disclaimer": "This plan is general guidance, not medical advice. See a doctor before starting if you have any health concerns. Stop and rest if pain persists.",
+    "distance": "Distance",
+    "duration": "Time",
+    "elevation": "Climb",
+    "effort": "Effort",
+    "structure": "Workout structure",
+    "optional": "Optional",
+    "optionalNote": "This session is optional — skip it if you feel tired.",
+    "crossTraining": "Optional: swap this run for 30–45 minutes of low-impact cross-training (cycling, swimming, elliptical) if your legs need a break.",
+    "week": "Week {n}",
+    "thisWeek": "This week",
+    "cutback": "Recovery week",
+    "raceWeek": "Race week",
+    "rest": "Rest",
+    "warningsTitle": "Please read",
+    "adviceTitle": "Coaching notes",
+    "zonesTitle": "Your training paces",
+    "effortsTitle": "Your training efforts",
+    "effortOnlyIntro": "Without a recent race time, you'll train by feel. Use these effort levels; the time trial in the first weeks shows you where you stand.",
+    "phasesTitle": "Training phases",
+    "weeksCount": "{count, plural, one {# week} other {# weeks}}",
+    "calendarTitle": "Week by week",
+    "edit": "Edit answers",
+    "daysToGo": "{count, plural, one {# day to go} other {# days to go}}",
+    "stats": {
+      "weeks": "Weeks",
+      "runsPerWeek": "Runs per week",
+      "peak": "Peak week",
+      "prediction": "Predicted time",
+      "style": "Plan style"
+    }
+  },
+  "phase": {
+    "maintenance": "Base maintenance",
+    "base": "Base",
+    "build": "Build",
+    "specific": "Race-specific",
+    "taper": "Taper"
+  },
+  "intensity": {
+    "easy": "Easy",
+    "moderate": "Moderate",
+    "hard": "Hard"
+  },
+  "workoutType": {
+    "easy": "Easy run",
+    "recovery": "Recovery run",
+    "long": "Long run",
+    "longProgressive": "Long run, fast finish",
+    "longRacePace": "Long run + race pace",
+    "tempo": "Tempo",
+    "cruiseIntervals": "Cruise intervals",
+    "shortIntervals": "Short intervals",
+    "longIntervals": "Long intervals",
+    "hillSprints": "Hill sprints",
+    "hillRepeats": "Hill repeats",
+    "fartlek": "Fartlek",
+    "racePace": "Race pace",
+    "timeTrial": "Time trial",
+    "downhillPractice": "Downhill practice",
+    "race": "Race day"
+  },
+  "workout": {
+    "easy": {
+      "title": "Easy run",
+      "titleStrides": "Easy run + {count} strides"
+    },
+    "recovery": {
+      "title": "Recovery run",
+      "titleStrides": "Recovery run + {count} strides"
+    },
+    "long": {
+      "title": "Long run"
+    },
+    "longProgressive": {
+      "title": "Long run with a {fastM} steady finish"
+    },
+    "longRacePace": {
+      "title": "Long run with {rpM} at race pace"
+    },
+    "race": {
+      "title": "Race day!"
+    },
+    "timeTrial": {
+      "title": "Time trial: {distanceM}"
+    },
+    "tempo": {
+      "title": "Tempo run: {minutes} min at threshold"
+    },
+    "cruiseIntervals": {
+      "titleDistance": "Cruise intervals: {reps} × {repM}",
+      "titleTime": "Cruise intervals: {reps} × {minutes} min"
+    },
+    "longIntervals": {
+      "titleDistance": "Intervals: {reps} × {repM}",
+      "titleTime": "Intervals: {reps} × {minutes} min"
+    },
+    "shortIntervals": {
+      "titleDistance": "Short intervals: {reps} × {repM}",
+      "titleTime": "Short intervals: {reps} × {seconds}"
+    },
+    "hillSprints": {
+      "title": "Hill sprints: {reps} × 10 s"
+    },
+    "hillRepeats": {
+      "title": "Hill repeats: {reps} × {seconds}"
+    },
+    "fartlek": {
+      "title": "Fartlek: {reps} × {onS} hard / {offS} easy"
+    },
+    "racePace": {
+      "titleDistance": "Race pace: {reps} × {repM}",
+      "titleTime": "Race pace: {reps} × {minutes} min"
+    },
+    "downhillPractice": {
+      "title": "Downhill practice"
+    },
+    "note": {
+      "raceDay": "Warm up with 10–15 minutes of easy jogging and a few strides. Start conservatively and enjoy it!",
+      "timeTrial": "Run it as a hard, even effort on a flat route. Note your time — it tells you your current fitness.",
+      "hillSprints": "Very short, powerful uphill efforts on a steep slope. Walk or jog back down slowly and recover fully.",
+      "hillRepeats": "Run uphill at a strong, controlled effort. Jog back down easily.",
+      "fartlek": "Play with speed: the hard parts are by feel, no need to look at your watch.",
+      "shakeout": "Just 15–20 minutes very easy to loosen up — or rest if you prefer."
+    }
+  },
+  "step": {
+    "warmup": "Warm-up",
+    "work": "Work",
+    "recovery": "Recovery",
+    "cooldown": "Cool-down",
+    "run": "Run",
+    "repeat": "Repeat {count} times"
+  },
+  "terrain": {
+    "flat": "flat",
+    "uphill": "uphill",
+    "downhill": "downhill",
+    "rolling": "rolling"
+  },
+  "zone": {
+    "E": "Easy",
+    "M": "Marathon",
+    "T": "Threshold",
+    "I": "Interval",
+    "R": "Repetition",
+    "racePace": "Race pace",
+    "z1": "Zone 1 (low)",
+    "z2": "Zone 2 (moderate)",
+    "z3": "Zone 3 (high)"
+  },
+  "effort": {
+    "recovery": {
+      "label": "Very easy",
+      "desc": "Slower than easy — just loosening up. Breathing fully relaxed."
+    },
+    "easy": {
+      "label": "Easy",
+      "desc": "Conversational: you can talk in full sentences. Most of your running."
+    },
+    "steady": {
+      "label": "Steady",
+      "desc": "Comfortably brisk: you can still talk in short sentences."
+    },
+    "marathon": {
+      "label": "Marathon effort",
+      "desc": "Controlled and sustainable for a long time; talking in short phrases."
+    },
+    "threshold": {
+      "label": "Comfortably hard",
+      "desc": "You could hold it for about an hour; only a few words at a time."
+    },
+    "interval": {
+      "label": "Hard",
+      "desc": "Strong effort you could sustain for 10–15 minutes; talking is difficult."
+    },
+    "repetition": {
+      "label": "Fast and relaxed",
+      "desc": "Quick, smooth and controlled — not a sprint. Full recovery between."
+    },
+    "race": {
+      "label": "Race effort",
+      "desc": "The effort you plan to hold on race day."
+    },
+    "powerHike": {
+      "label": "Power hike",
+      "desc": "Brisk uphill walking with purpose, hands on knees if steep."
+    }
+  },
+  "warning": {
+    "plan_too_short": "Your race is in {weeks} weeks; we recommend at least {minWeeks}. The plan is compressed, without catching-up jumps in volume.",
+    "goal_ambitious": "Your goal implies a {gainPct}% fitness gain (realistic: up to {limitPct}%). Your paces are based on your current fitness.",
+    "low_max_volume": "Your maximum of {maxM} per week is low for this race (we'd suggest about {suggestedM}). Consider a shorter race or be very cautious.",
+    "few_days_available": "Running only {days} days a week is little for this distance. The plan stays safe but may feel limited.",
+    "no_performance_data": "No recent race time: you'll train by effort. Try the optional time trial early on.",
+    "old_pr": "Your personal record is {months} months old, so we've adjusted it to be more conservative.",
+    "preference_unmet": "We couldn't avoid every \"{tag}\" session without losing an important training effect.",
+    "minor_runner": "You're under 18: volumes are capped. Please train with a coach or a parent involved.",
+    "risk_flagged": "For your safety, the plan is more conservative ({flags}).",
+    "race_ready_mini_plan": "Your race is very close: this is a short race-ready plan — maintain, sharpen, rest.",
+    "max_below_current": "Your maximum is below your current volume, so the plan starts at your maximum.",
+    "long_base_block": "Your race is far away: the first {weeks} weeks are an easy base-maintenance block before the 24-week plan."
+  },
+  "riskFlag": {
+    "injuryOften": "frequent injuries",
+    "multipleInjuries": "several injury types",
+    "stressFractureHistory": "stress fracture history",
+    "age50plus": "age 50+"
+  },
+  "advice": {
+    "softSurfaces": "With your shin/bone history, run on softer surfaces (trails, grass, track) when you can, and keep easy runs truly easy.",
+    "cadence": "For knee / IT band history, keep a slightly quicker, shorter stride and avoid long downhills.",
+    "achilles": "For your Achilles/calf, hill sprints and very fast running are avoided in the first third of the plan. Warm up well.",
+    "plantar": "With plantar fasciitis history, hills and speed work never appear in the same week.",
+    "crossTraining": "Cross-training (cycling, swimming) can replace an easy run whenever you need a lower-impact day.",
+    "recovery50": "After each long run you get at least two easy or rest days before the next hard session.",
+    "minor": "Growing bodies need recovery: sleep well, eat enough, and tell an adult or coach about any pain.",
+    "effortOnly": "Effort descriptions replace paces. The talk test is your best guide."
   }
 }

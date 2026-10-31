@@ -81,14 +81,14 @@ export function makeWorkout(
   return w;
 }
 
-/** Append easy running to a session (fills weekly volume when there are no easy days). */
+/** Add easy running before a session (fills weekly volume when there are no easy days). */
 export function withExtraEasy(ctx: PaceContext, w: Workout, extraM: number): Workout {
   const extra = floorTo(extraM, 500);
   if (extra <= 0) return w;
   return makeWorkout(
     ctx,
     w.type,
-    [...w.steps, step("run", byDistance(extra), zoneTarget(ctx, "E"))],
+    [step("run", byDistance(extra), zoneTarget(ctx, "E")), ...w.steps],
     {
       tags: w.tags,
       intensity: w.intensity,

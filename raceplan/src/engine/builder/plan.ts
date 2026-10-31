@@ -187,8 +187,8 @@ function profileWarnings(c: PlanContext): void {
     w.push({
       code: "low_max_volume",
       params: {
-        maxKm: Math.round(profile.maxWeeklyVolumeM / KM),
-        suggestedKm: Math.round(beginnerTarget / KM),
+        maxM: profile.maxWeeklyVolumeM,
+        suggestedM: Math.round(beginnerTarget / KM) * KM,
       },
     });
   }

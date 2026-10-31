@@ -15,6 +15,7 @@ M2 — Input form (next)
   - workout library (structured steps) + session selection with substitutions (preferences + injury constraints)
   - safety checker `checkPlan()` = test oracle
   - tests: unit tests per module, fast-check property test of all §7 invariants (400 runs, verified on 10 seeds × 600), 13 runner fixtures with reviewed text snapshots in `tests/fixtures/plans/`.
+- **M3 Calendar view:** `/[locale]/plan` reads the stored plan (follows changes across tabs): header with stats and countdown, warnings + coaching notes, phase timeline (tap to jump), pace-zones card with effort descriptions (effort-only variant), week cards (7-column grid on desktop, day list on mobile, phase colours, cutback/race badges, weekly totals, today highlight, "This week" jump), workout dialog with structured steps, paces in the chosen unit, notes. `features/plan-calendar/format.ts` turns engine keys/params into text (shared with the PDF). Tests: formatter, every engine key translated + formatted in EN/FR × km/mi (fixtures + random plans).
 
 ## Next
 
