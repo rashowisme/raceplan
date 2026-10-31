@@ -274,7 +274,8 @@
       "peak": "Semaine la plus chargée",
       "prediction": "Temps estimé",
       "style": "Style de plan"
-    }
+    },
+    "weekClimb": "D+ {gainM}"
   },
   "phase": {
     "maintenance": "Entretien foncier",
@@ -349,7 +350,8 @@
       "title": "Sprints en côte : {reps} × 10 s"
     },
     "hillRepeats": {
-      "title": "Côtes : {reps} × {seconds}"
+      "title": "Côtes : {reps} × {seconds}",
+      "titleTrail": "Montées : {reps} × {seconds}"
     },
     "fartlek": {
       "title": "Fartlek : {reps} × {onS} vite / {offS} lent"
@@ -359,7 +361,7 @@
       "titleTime": "Allure course : {reps} × {minutes} min"
     },
     "downhillPractice": {
-      "title": "Travail de descente"
+      "title": "Travail de descente : {reps} × {seconds}"
     },
     "note": {
       "raceDay": "Échauffez-vous avec 10 à 15 minutes de footing et quelques accélérations. Partez prudemment et profitez !",
@@ -367,7 +369,14 @@
       "hillSprints": "Efforts très courts et puissants sur une pente raide. Redescendez en marchant ou en trottinant, récupérez complètement.",
       "hillRepeats": "Montez à un effort fort mais contrôlé. Redescendez en trottinant.",
       "fartlek": "Jouez avec la vitesse : les parties rapides se font aux sensations, pas besoin de regarder la montre.",
-      "shakeout": "Juste 15 à 20 minutes très tranquilles pour se délier les jambes — ou du repos si vous préférez."
+      "shakeout": "Juste 15 à 20 minutes très tranquilles pour se délier les jambes — ou du repos si vous préférez.",
+      "trailLong": "Le temps passé compte plus que la distance : visez environ {gainM} de D+ sur des chemins vallonnés. La distance affichée est une estimation sur route plate.",
+      "powerHike": "Marchez vite dans les montées raides — la plupart des traileurs le font aussi en course.",
+      "downhill": "Petits pas rapides, regard loin devant, bras relâchés. Arrêtez si vos genoux se plaignent."
+    },
+    "trailLong": {
+      "title": "Sortie longue trail : {seconds} de course",
+      "titleProgressive": "Sortie longue trail : {seconds}, fin soutenue"
     }
   },
   "step": {

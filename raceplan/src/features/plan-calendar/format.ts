@@ -38,6 +38,7 @@ export interface Formatter {
 const REP_DISTANCE_PARAMS = new Set(["repM"]);
 const DISTANCE_PARAMS = new Set(["distanceM", "fastM", "rpM", "maxM", "suggestedM"]);
 const DURATION_PARAMS = new Set(["onS", "offS", "seconds"]);
+const ELEVATION_PARAMS = new Set(["gainM"]);
 
 export function formatParams(
   f: Formatter,
@@ -50,6 +51,8 @@ export function formatParams(
     else if (typeof v === "number" && DISTANCE_PARAMS.has(k))
       out[k] = formatDistance(v, f.unit, f.locale);
     else if (typeof v === "number" && DURATION_PARAMS.has(k)) out[k] = formatDuration(v);
+    else if (typeof v === "number" && ELEVATION_PARAMS.has(k))
+      out[k] = formatElevation(v, f.unit, f.locale);
     else if (k === "tag" && typeof v === "string") out[k] = f.t(`form.preferences.${v}`);
     else if (k === "flags" && typeof v === "string") {
       out[k] = v

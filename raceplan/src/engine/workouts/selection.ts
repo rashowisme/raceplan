@@ -16,6 +16,7 @@ export const SESSION_TAGS: Record<QualityType, PreferenceTag[]> = {
   hillRepeats: ["hills"],
   fartlek: [],
   racePace: [],
+  downhillPractice: ["hills"],
 };
 
 /** Ordered substitutes giving a similar stimulus. */
@@ -28,6 +29,7 @@ export const SUBSTITUTES: Record<QualityType, QualityType[]> = {
   cruiseIntervals: ["fartlek", "longIntervals"],
   fartlek: ["tempo", "longIntervals"],
   racePace: ["longIntervals", "cruiseIntervals", "tempo"],
+  downhillPractice: ["fartlek", "tempo"],
 };
 
 export interface SelectionRules {

@@ -274,7 +274,8 @@
       "peak": "Peak week",
       "prediction": "Predicted time",
       "style": "Plan style"
-    }
+    },
+    "weekClimb": "Climb {gainM}"
   },
   "phase": {
     "maintenance": "Base maintenance",
@@ -349,7 +350,8 @@
       "title": "Hill sprints: {reps} × 10 s"
     },
     "hillRepeats": {
-      "title": "Hill repeats: {reps} × {seconds}"
+      "title": "Hill repeats: {reps} × {seconds}",
+      "titleTrail": "Uphill repeats: {reps} × {seconds}"
     },
     "fartlek": {
       "title": "Fartlek: {reps} × {onS} hard / {offS} easy"
@@ -359,7 +361,7 @@
       "titleTime": "Race pace: {reps} × {minutes} min"
     },
     "downhillPractice": {
-      "title": "Downhill practice"
+      "title": "Downhill practice: {reps} × {seconds}"
     },
     "note": {
       "raceDay": "Warm up with 10–15 minutes of easy jogging and a few strides. Start conservatively and enjoy it!",
@@ -367,7 +369,14 @@
       "hillSprints": "Very short, powerful uphill efforts on a steep slope. Walk or jog back down slowly and recover fully.",
       "hillRepeats": "Run uphill at a strong, controlled effort. Jog back down easily.",
       "fartlek": "Play with speed: the hard parts are by feel, no need to look at your watch.",
-      "shakeout": "Just 15–20 minutes very easy to loosen up — or rest if you prefer."
+      "shakeout": "Just 15–20 minutes very easy to loosen up — or rest if you prefer.",
+      "trailLong": "Time on feet matters more than distance: aim for about {gainM} of climbing on hilly trails. The distance shown is a flat-road estimate.",
+      "powerHike": "Power-hike the steep climbs — most trail runners do on race day too.",
+      "downhill": "Quick, short steps, eyes ahead, relaxed arms. Stop if your knees complain."
+    },
+    "trailLong": {
+      "title": "Trail long run: {seconds} on your feet",
+      "titleProgressive": "Trail long run: {seconds}, steady finish"
     }
   },
   "step": {

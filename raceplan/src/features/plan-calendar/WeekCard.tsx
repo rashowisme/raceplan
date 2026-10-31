@@ -3,7 +3,7 @@
 import { ChevronRight, Flag } from "lucide-react";
 import { addDays } from "@/engine/dates";
 import { WEEKDAYS, type PlanDay, type PlanWeek } from "@/engine/types";
-import { formatDistance, formatDuration } from "@/lib/units";
+import { formatDistance, formatDuration, formatElevation } from "@/lib/units";
 import { cn } from "@/lib/utils";
 import { formatDayShort, formatMessage, type Formatter } from "./format";
 import { DAY_DOT, dayKind, PHASE_CLASSES } from "./styles";
@@ -63,7 +63,12 @@ export function WeekCard({ f, week, today, isCurrent, onSelect }: WeekCardProps)
           <p className="text-sm font-semibold">
             {formatDistance(week.plannedVolumeM, f.unit, f.locale, 0)}
           </p>
-          <p className="text-muted-foreground text-xs">{formatDuration(week.plannedDurationS)}</p>
+          <p className="text-muted-foreground text-xs">
+            {formatDuration(week.plannedDurationS)}
+            {week.elevationGainM
+              ? ` · ${f.t("plan.weekClimb", { gainM: formatElevation(week.elevationGainM, f.unit, f.locale) })}`
+              : ""}
+          </p>
         </div>
       </header>
       <ol className="divide-y md:grid md:grid-cols-7 md:divide-x md:divide-y-0">

@@ -40,6 +40,10 @@ export interface QualityOptions {
   /** Avoid R-pace (e.g. Achilles/calf early, risk-flagged runners). */
   avoidRPace: boolean;
   race: StandardRaceType;
+  /** Trail race: uphill repeats are longer climbs. */
+  trail?: boolean;
+  /** Steep trail (> 50 m D+/km): climbs include power hiking. */
+  steepTrail?: boolean;
 }
 
 interface WorkoutMeta {
@@ -194,13 +198,21 @@ export function easyRun(
 
 export type LongRunVariant = "plain" | "progressive" | "racePace";
 
+/** Trail long runs are prescribed by time on feet, with a climbing target. */
+export interface TrailLongOptions {
+  gainM: number;
+  steep: boolean;
+}
+
 export function longRun(
   ctx: PaceContext,
   distanceM: number,
   variant: LongRunVariant,
   race: StandardRaceType,
-  notes: Message[] = [],
+  trail?: TrailLongOptions,
 ): Workout {
+  if (trail) return trailLongRun(ctx, distanceM, variant, trail);
+  const notes: Message[] = [];
   const total = floorTo(distanceM, 500);
   if (variant === "progressive") {
     const fastM = Math.max(1000, roundTo(total * 0.2, 500));
@@ -245,6 +257,43 @@ export function longRun(
     title: { key: "workout.long.title" },
     notes,
   });
+}
+
+function trailLongRun(
+  ctx: PaceContext,
+  distanceM: number,
+  variant: LongRunVariant,
+  trail: TrailLongOptions,
+): Workout {
+  const e = zoneTarget(ctx, "E");
+  const notes: Message[] = [{ key: "workout.note.trailLong", params: { gainM: trail.gainM } }];
+  if (trail.steep) notes.push({ key: "workout.note.powerHike" });
+  const progressive = variant !== "plain";
+  const build = (totalS: number) => {
+    const fastS = progressive ? Math.max(10 * MIN, floorTo(totalS * 0.2, 5 * MIN)) : 0;
+    const steps: WorkoutStep[] = [step("run", byTime(totalS - fastS), e, "rolling")];
+    if (progressive)
+      steps.push(step("work", byTime(fastS), zoneTarget(ctx, "M", "steady"), "rolling"));
+    return makeWorkout(ctx, progressive ? "longProgressive" : "long", steps, {
+      intensity: progressive ? "moderate" : "easy",
+      isHard: progressive,
+      isLongRun: true,
+      title: {
+        key: progressive ? "workout.trailLong.titleProgressive" : "workout.trailLong.title",
+        params: { seconds: totalS },
+      },
+      notes,
+      elevationGainM: trail.gainM,
+    });
+  };
+  // Whole 5-minute blocks whose estimated distance stays within the target.
+  let totalS = Math.max(5 * MIN, floorTo(timeForDistance(ctx, e, distanceM), 5 * MIN));
+  let w = build(totalS);
+  while (w.estDistanceM > distanceM && totalS > 5 * MIN) {
+    totalS -= 5 * MIN;
+    w = build(totalS);
+  }
+  return w;
 }
 
 export function raceDay(ctx: PaceContext, distanceM: number, elevationGainM?: number): Workout {
@@ -402,7 +451,12 @@ export function hillSprints(ctx: PaceContext, sizing: SessionSizing): Workout | 
   });
 }
 
-export function hillRepeats(ctx: PaceContext, sizing: SessionSizing): Workout | null {
+export function hillRepeats(
+  ctx: PaceContext,
+  sizing: SessionSizing,
+  opts?: QualityOptions,
+): Workout | null {
+  if (opts?.trail) return uphillRepeats(ctx, sizing, !!opts.steepTrail);
   const [wu, cd] = wuCd(sizing.maxDistanceM);
   const repS = sizing.progress < 0.5 ? 60 : 90;
   const fit = fitReps(ctx, sizing, 5, 10, (reps) => [
@@ -420,6 +474,58 @@ export function hillRepeats(ctx: PaceContext, sizing: SessionSizing): Workout | 
     isHard: true,
     title: { key: "workout.hillRepeats.title", params: { reps: fit.reps, seconds: repS } },
     notes: [{ key: "workout.note.hillRepeats" }],
+  });
+}
+
+/** Trail: longer climbs (2–4 min), with power hiking on steep courses. */
+function uphillRepeats(ctx: PaceContext, sizing: SessionSizing, steep: boolean): Workout | null {
+  const [wu, cd] = wuCd(sizing.maxDistanceM);
+  const repS = sizing.progress < 0.5 ? 2 * MIN : 4 * MIN;
+  const climb = steep
+    ? [
+        step("work", byTime(repS / 2), effortTarget("I", "interval"), "uphill"),
+        step("work", byTime(repS / 2), effortTarget("E", "powerHike"), "uphill"),
+      ]
+    : [step("work", byTime(repS), effortTarget("I", "interval"), "uphill")];
+  const fit = fitReps(ctx, sizing, 3, 8, (reps) => [
+    warmup(ctx, wu),
+    repeat(reps, [
+      ...climb,
+      step("recovery", byTime(repS), effortTarget("E", "recovery"), "downhill"),
+    ]),
+    cooldown(ctx, cd),
+  ]);
+  if (!fit) return null;
+  return makeWorkout(ctx, "hillRepeats", fit.steps, {
+    tags: ["hills"],
+    intensity: "hard",
+    isHard: true,
+    title: { key: "workout.hillRepeats.titleTrail", params: { reps: fit.reps, seconds: repS } },
+    notes: steep
+      ? [{ key: "workout.note.hillRepeats" }, { key: "workout.note.powerHike" }]
+      : [{ key: "workout.note.hillRepeats" }],
+  });
+}
+
+/** Trail specific phase: controlled downhill running (eccentric strength, technique). */
+export function downhillPractice(ctx: PaceContext, sizing: SessionSizing): Workout | null {
+  const [wu, cd] = wuCd(sizing.maxDistanceM);
+  const repS = sizing.progress < 0.7 ? 2 * MIN : 3 * MIN;
+  const fit = fitReps(ctx, sizing, 4, 8, (reps) => [
+    warmup(ctx, wu),
+    repeat(reps, [
+      step("work", byTime(repS), effortTarget("M", "steady"), "downhill"),
+      step("recovery", byTime(repS + MIN), effortTarget("E", "recovery"), "uphill"),
+    ]),
+    cooldown(ctx, cd),
+  ]);
+  if (!fit) return null;
+  return makeWorkout(ctx, "downhillPractice", fit.steps, {
+    tags: ["hills"],
+    intensity: "moderate",
+    isHard: true,
+    title: { key: "workout.downhillPractice.title", params: { reps: fit.reps, seconds: repS } },
+    notes: [{ key: "workout.note.downhill" }],
   });
 }
 
@@ -519,7 +625,8 @@ export type QualityType =
   | "hillSprints"
   | "hillRepeats"
   | "fartlek"
-  | "racePace";
+  | "racePace"
+  | "downhillPractice";
 
 export function buildQuality(
   type: QualityType,
@@ -539,7 +646,9 @@ export function buildQuality(
     case "hillSprints":
       return hillSprints(ctx, sizing);
     case "hillRepeats":
-      return hillRepeats(ctx, sizing);
+      return hillRepeats(ctx, sizing, opts);
+    case "downhillPractice":
+      return downhillPractice(ctx, sizing);
     case "fartlek":
       return fartlek(ctx, sizing);
     case "racePace":

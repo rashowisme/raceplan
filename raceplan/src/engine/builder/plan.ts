@@ -43,6 +43,7 @@ import {
   type QualityType,
   type SessionSizing,
   type StridesSpec,
+  type TrailLongOptions,
   withExtraEasy,
 } from "../workouts/library";
 import { selectSession, SESSION_TAGS, type SelectionRules } from "../workouts/selection";
@@ -64,6 +65,16 @@ const WORK_SHARE: Record<QualityType, number> = {
   hillRepeats: 0.06,
   fartlek: 0.08,
   racePace: 0.12,
+  downhillPractice: 0.06,
+};
+
+/** Share of the race's D+/km ratio targeted by long runs, per phase. */
+const TRAIL_GAIN_FACTOR: Record<PlanWeek["phase"], number> = {
+  maintenance: 0.3,
+  base: 0.45,
+  build: 0.7,
+  specific: 1,
+  taper: 0.5,
 };
 
 /** Everything derived once from the profile. */
@@ -90,6 +101,8 @@ export interface PlanContext {
   warnings: PlanWarning[];
   rules: Omit<SelectionRules, "forbidden">;
   qualityOptions: QualityOptions;
+  /** Trail race: D+ per km of race and steepness. */
+  trail: { gainPerKm: number; raceGainM: number; steep: boolean } | null;
 }
 
 export function makeContext(
@@ -112,11 +125,19 @@ export function makeContext(
   const estZones = zones ?? estimationZones(level);
   const race = isStandardRace(profile.race.type) ? profile.race.type : nearestStandardRace(effortM);
   const estRace = fit.racePaceSPerKm ?? (estZones.T.fastSPerKm + estZones.I.slowSPerKm) / 2;
+  // Trail: no flat race pace — race day is run by effort; its duration is
+  // estimated from the predicted time over the actual distance.
+  const isTrail = profile.race.type === "trail";
+  const trailRacePace = fit.fitness ? fit.fitness.predictedRaceTimeS / (distM / 1000) : null;
   const pace: PaceContext = {
     zones,
     estZones,
-    racePaceSPerKm: fit.racePaceSPerKm,
-    estRacePaceSPerKm: race === "marathon" ? estZones.M.slowSPerKm : estRace,
+    racePaceSPerKm: isTrail ? null : fit.racePaceSPerKm,
+    estRacePaceSPerKm: isTrail
+      ? (trailRacePace ?? estZones.E.slowSPerKm * 1.4)
+      : race === "marathon"
+        ? estZones.M.slowSPerKm
+        : estRace,
   };
 
   const minRestDays = level === "beginner" || riskFlagged ? 2 : 1;
@@ -132,6 +153,14 @@ export function makeContext(
   const peakVolumeM = Math.floor(Math.min(profile.maxWeeklyVolumeM, peakTarget) / 100) * 100;
 
   const conservative = level === "beginner" || riskFlagged;
+  const trail =
+    profile.race.type === "trail"
+      ? (() => {
+          const raceGainM = profile.race.elevationGainM ?? 0;
+          const gainPerKm = raceGainM / (distM / 1000);
+          return { gainPerKm, raceGainM, steep: gainPerKm > CONFIG.steepTrailMPerKm };
+        })()
+      : null;
   const cutbackEvery =
     riskFlagged || profile.age >= CONFIG.riskAge
       ? CONFIG.cutbackEvery.conservative
@@ -162,7 +191,10 @@ export function makeContext(
       onTrack: !profile.preferences.dislikes.includes("track"),
       avoidRPace: riskFlagged,
       race,
+      trail: trail !== null,
+      steepTrail: trail?.steep ?? false,
     },
+    trail,
   };
 }
 
@@ -247,6 +279,9 @@ function forbiddenTypes(c: PlanContext, w: number): QualityType[] {
   const firstThird = w < Math.ceil(c.frame.totalWeeks / 3);
   if (hasInjury(c.profile, "achillesCalf") && firstThird) out.push("hillSprints");
   if (c.riskFlagged) out.push("shortIntervals");
+  // Knee / IT band history: limit downhill work.
+  if (hasInjury(c.profile, "runnersKnee") || hasInjury(c.profile, "itBand"))
+    out.push("downhillPractice");
   return out;
 }
 
@@ -278,7 +313,7 @@ function chooseSessions(
   const phase = c.frame.phases[w]!;
   const phaseWeek = phaseWeekIndex(c, w);
   const plan = c.method.planWeek({ phase, phaseWeek, level: c.level, race: c.race });
-  const slots = c.frame.mini ? [["racePace"] as QualityType[]] : plan.slots;
+  const slots = trailSlots(c, phase, c.frame.mini ? [["racePace"] as QualityType[]] : plan.slots);
   const forbidden = forbiddenTypes(c, w);
   // Race pace already in the long run → different stimulus midweek.
   if (longRunVariantOfWeek === "racePace") forbidden.push("racePace");
@@ -314,6 +349,27 @@ function chooseSessions(
   return chosen;
 }
 
+/** Trail races: climbs and descents replace flat race-pace work (spec §10). */
+function trailSlots(
+  c: PlanContext,
+  phase: PlanWeek["phase"],
+  slots: QualityType[][],
+): QualityType[][] {
+  if (!c.trail) return slots;
+  const noFlatRacePace = (slot: QualityType[]) => {
+    const s = slot.map((t) => (t === "racePace" ? "tempo" : t));
+    return [...new Set(s)];
+  };
+  if (phase === "taper" || c.frame.mini) return [["fartlek"]];
+  const out = slots.map(noFlatRacePace);
+  if (phase === "build") {
+    if (out.length >= 2) out[1] = ["hillRepeats", ...out[1]!.filter((t) => t !== "hillRepeats")];
+    else if (out[0]) out[0] = [...out[0], "hillRepeats"];
+  }
+  if (phase === "specific" && out[0]) out[0] = ["hillRepeats", "downhillPractice"];
+  return out;
+}
+
 function longRunVariant(c: PlanContext, w: number, target: WeekTarget): LongRunVariant {
   const phase = c.frame.phases[w]!;
   if (target.isCutback || phase === "taper" || phase === "maintenance") return "plain";
@@ -325,8 +381,20 @@ function longRunVariant(c: PlanContext, w: number, target: WeekTarget): LongRunV
     race: c.race,
   }).longRun;
   if (variant === "progressive" && target.longRunM < CONFIG.minProgressiveLongRunM) return "plain";
+  if (variant === "racePace" && c.trail) return "progressive";
   if (variant === "racePace" && target.longRunM < CONFIG.minRacePaceLongRunM) return "plain";
   return variant;
+}
+
+/** Climbing target of a trail long run, progressing toward the race's D+/km. */
+function trailLong(
+  c: PlanContext,
+  phase: PlanWeek["phase"],
+  distanceM: number,
+): TrailLongOptions | undefined {
+  if (!c.trail) return undefined;
+  const gain = (distanceM / 1000) * c.trail.gainPerKm * TRAIL_GAIN_FACTOR[phase];
+  return { gainM: Math.min(c.trail.raceGainM, Math.round(gain / 10) * 10), steep: c.trail.steep };
 }
 
 function stridesSpec(c: PlanContext): StridesSpec {
@@ -359,9 +427,11 @@ function summarizeWeek(
   let vol = 0;
   let dur = 0;
   let long = 0;
+  let gain = 0;
   for (const d of days) {
     const wk = d.workout;
     if (!wk || wk.type === "race") continue;
+    gain += wk.elevationGainM ?? 0;
     vol += wk.estDistanceM;
     dur += wk.estDurationS;
     if (wk.isLongRun) long = Math.max(long, wk.estDistanceM);
@@ -376,6 +446,7 @@ function summarizeWeek(
     plannedVolumeM: vol,
     plannedDurationS: dur,
     longRunM: long,
+    ...(gain > 0 ? { elevationGainM: gain } : {}),
     days,
   };
 }
@@ -464,7 +535,7 @@ function buildTrainingWeek(
   // 1. Long run.
   let longW: Workout | null = null;
   if (longDate) {
-    longW = longRun(c.pace, target.longRunM, variant, c.race);
+    longW = longRun(c.pace, target.longRunM, variant, c.race, trailLong(c, phase, target.longRunM));
     workouts.set(longDate, longW);
   }
   const longM = longW?.estDistanceM ?? 0;
@@ -614,7 +685,7 @@ function buildTrainingWeek(
         workouts.delete(longDate);
         break;
       }
-      const shorter = longRun(c.pace, maxLong, variant, c.race);
+      const shorter = longRun(c.pace, maxLong, variant, c.race, trailLong(c, phase, maxLong));
       workouts.set(longDate, shorter);
       if (fewRuns) continue;
       for (const [date, wk] of workouts) {
@@ -653,7 +724,7 @@ function buildTrainingWeek(
     workouts.set(
       date,
       wk.isLongRun
-        ? longRun(c.pace, wk.estDistanceM, "plain", c.race)
+        ? longRun(c.pace, wk.estDistanceM, "plain", c.race, trailLong(c, phase, wk.estDistanceM))
         : easyRun(c.pace, wk.estDistanceM),
     );
   }

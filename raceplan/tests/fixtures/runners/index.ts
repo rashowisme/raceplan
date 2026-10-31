@@ -1,7 +1,7 @@
 import type { RunnerProfile } from "@/engine/types";
 import { beginner5k } from "./beginner-5k";
 import * as road from "./road";
-import { trail30k } from "./trail";
+import { steepTrail25k, trail30k } from "./trail";
 
 export { FIXTURE_TODAY } from "./today";
 
@@ -10,4 +10,5 @@ export const RUNNER_FIXTURES: Record<string, RunnerProfile> = {
   beginner5k,
   ...road,
   trail30k,
+  steepTrail25k,
 };

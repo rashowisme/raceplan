@@ -28,6 +28,7 @@ const QUALITY_TYPES: WorkoutType[] = [
   "fartlek",
   "racePace",
   "timeTrial",
+  "downhillPractice",
 ];
 
 const isQuality = (w: Workout | null): w is Workout => !!w && QUALITY_TYPES.includes(w.type);

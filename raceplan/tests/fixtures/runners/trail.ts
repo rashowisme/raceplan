@@ -16,3 +16,19 @@ export const trail30k: RunnerProfile = {
   planStyle: "balanced",
   preferences: { likes: ["hills"], dislikes: [] },
 };
+
+/** Experienced runner, steep trail 25 km / 1500 m D+ (60 m/km) in 14 weeks, no PR. */
+export const steepTrail25k: RunnerProfile = {
+  race: { type: "trail", distanceM: 25_000, elevationGainM: 1500, date: "2027-02-07" },
+  currentWeeklyVolumeM: 45_000,
+  longestRecentRunM: 18_000,
+  maxWeeklyVolumeM: 70_000,
+  availableDays: ["mon", "tue", "wed", "thu", "sat", "sun"],
+  longRunDay: "sat",
+  yearsRunning: "3plus",
+  injuries: [],
+  currentlyInjured: false,
+  age: 44,
+  planStyle: "balanced",
+  preferences: { likes: [], dislikes: [] },
+};

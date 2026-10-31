@@ -17,7 +17,7 @@ import {
   zoneLabel,
   type Formatter,
 } from "@/features/plan-calendar/format";
-import { formatClock, formatDistance, formatDuration } from "@/lib/units";
+import { formatClock, formatDistance, formatDuration, formatElevation } from "@/lib/units";
 
 /** Hex versions of the phase colours in globals.css. */
 export const PHASE_HEX: Record<Phase, string> = {
@@ -237,6 +237,13 @@ function WeeksPage({ f, plan }: { f: Formatter; plan: TrainingPlan }) {
                 {formatDistance(w.plannedVolumeM, f.unit, f.locale, 0)}
               </Text>
               <Text style={s.dayMeta}>{formatDuration(w.plannedDurationS)}</Text>
+              {w.elevationGainM ? (
+                <Text style={s.dayMeta}>
+                  {f.t("plan.weekClimb", {
+                    gainM: formatElevation(w.elevationGainM, f.unit, f.locale),
+                  })}
+                </Text>
+              ) : null}
             </View>
             {WEEKDAYS.map((wd, i) => {
               const day = byDay.get(wd);
