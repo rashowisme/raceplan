@@ -139,3 +139,61 @@ Warnings (non-blocking, translated in UI): `plan_too_short`, `goal_ambitious`, `
 Refusals (no plan): `currently_injured`, `race_in_past`, `distance_not_supported`, `invalid_input`.
 
 Every plan shows a disclaimer: general guidance, not medical advice; see a doctor before starting if they have health concerns; stop and rest if pain persists.
+
+## 13. Adaptation (DRAFT — pending owner approval)
+
+The runner can log what actually happened; the plan then adapts the coming days. Same principle as everywhere else: **when in doubt, do less**. Adaptation never adds volume or intensity to make up for missed training.
+
+### 13.1 What the runner logs
+
+- **Per workout** (only for today or past days): `done`, `missed`, or `done, felt hard`.
+- **Check-in** (any time): `tired or sore`, `pain / niggle`, `sick`, `injured — can't run`, and later `I'm back`.
+- **Unmarked past workouts count as done as planned.** Adaptation only reacts to what the runner tells us (otherwise runners who never tick would see their plan shrink forever). The UI says so.
+- Distances are the planned ones (no editing actual km in this version).
+
+### 13.2 Principles
+
+1. **Only the future changes.** Logged days are never altered. Week-level changes start on the **next Monday**; check-ins about pain, sickness or injury also change the **rest of the current week**.
+2. **The ramp is measured against what was actually run.** For §7.2, the reference week's volume is min(planned, done). The adapted plan never goes above the original plan for any week.
+3. **No catching up.** Missed sessions are never rescheduled or added to later weeks; missed quality sessions are simply dropped.
+4. **All §7 invariants still hold** on the adapted plan (checked by `checkPlan`, property-tested), using done volume for past weeks.
+5. **The taper is never removed or increased.** Missed runs in the taper aren't replaced.
+6. **Paces only change with new results** (time trial, race), except after long breaks (13.4).
+7. **Every adaptation shows a note with the reason** (structured message, translated in the UI).
+8. **Deterministic:** the adapted plan depends only on the original plan, the log and `today`.
+
+### 13.3 Missed training (week by week)
+
+Missed share = missed planned distance ÷ planned distance of the week.
+
+| Missed share of the week | Next week |
+|---|---|
+| < 20% | No change. |
+| 20–50% | Hold: same volume as the last fully done level (no increase), quality sessions as planned. |
+| > 50% | Treat as a break of 7 days (13.4). |
+
+Two weeks in a row with ≥ 20% missed → the next week is a cutback week (the following cutback is rescheduled from there).
+
+### 13.4 Breaks (whole days not run, incl. sickness and injury)
+
+Counted from the last done run to the first run back.
+
+| Break | Restart |
+|---|---|
+| ≤ 7 days | First 2 runs easy, then continue at the last done weekly level (no increase in the first week back). |
+| 8–14 days | First week back at 75% of the last done level, easy running + strides only, then normal ramp (§7.2). |
+| 15–28 days | First week at 50%, two weeks without quality sessions, then normal ramp. Paces slowed by 3%. |
+| > 28 days | No automatic adaptation: the runner is asked to update their answers and get a new plan (current volume has changed). |
+
+If the remaining weeks can't reach the original peak with the normal ramp, the peak is lower (never compressed ramps) and, when there is a target time, warning `goal_reassess`.
+
+### 13.5 Fatigue and pain
+
+- **Felt hard ≥ 2 times in a week, or a `tired or sore` check-in** → next week: no volume increase and one quality session becomes an easy run. If it happens two weeks in a row → bring the cutback week forward to the next week.
+- **`pain / niggle`** → for the next 7 days: easy running only, volume −20% vs the plan, note: stop if the pain changes how you run, see a health professional if it persists > 1 week.
+- **`sick`** → no running is scheduled until `I'm back`; note: don't run with a fever or chest symptoms. Then 13.4.
+- **`injured — can't run`** → plan paused (like refusal `currently_injured`: advice to see a health professional). `I'm back` → 13.4.
+
+### 13.6 Out of scope for this version
+
+Editing actual distances, importing runs from a watch, adapting to heart rate or sleep, moving workouts to other days (planned separately).
