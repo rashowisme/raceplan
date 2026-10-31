@@ -16,12 +16,12 @@ M2 — Input form (next)
   - safety checker `checkPlan()` = test oracle
   - tests: unit tests per module, fast-check property test of all §7 invariants (400 runs, verified on 10 seeds × 600), 13 runner fixtures with reviewed text snapshots in `tests/fixtures/plans/`.
 - **M3 Calendar view:** `/[locale]/plan` reads the stored plan (follows changes across tabs): header with stats and countdown, warnings + coaching notes, phase timeline (tap to jump), pace-zones card with effort descriptions (effort-only variant), week cards (7-column grid on desktop, day list on mobile, phase colours, cutback/race badges, weekly totals, today highlight, "This week" jump), workout dialog with structured steps, paces in the chosen unit, notes. `features/plan-calendar/format.ts` turns engine keys/params into text (shared with the PDF). Tests: formatter, every engine key translated + formatted in EN/FR × km/mi (fixtures + random plans).
+- **M4 Methods and preferences:** `methods/vdot.ts` (Daniels-style phase order) and `methods/polarized.ts` (80/20, Z1–Z3 labels) next to Balanced; preferences (likes favoured, dislikes substituted with a similar stimulus, track → road intervals) already applied by the engine and collected by the form. Tests: every style safe on every fixture, styles differ, 80/20 easy share, likes favoured, property test that disliked sessions only appear with a `preference_unmet` warning.
 
 ## Next
 
 - M2: multi-step form (react-hook-form + Zod), EN/FR.
 - M3: calendar view + localStorage.
-- M4: VDOT-style and 80/20 methods (currently aliases of Balanced in `src/engine/methods/index.ts`), preference UI.
 - M6: trail-specific workouts (time-based long runs, D+ progression, power hiking, downhill practice). Trail/custom already work through effort-km interpolation.
 
 ## Dev tools

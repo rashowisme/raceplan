@@ -117,6 +117,7 @@ function PlanHeader({ f, plan, today }: { f: Formatter; plan: TrainingPlan; toda
           <p className="text-muted-foreground mt-1 text-sm">
             {formatDateLong(f.locale, plan.raceDate)}
             {daysLeft > 0 && ` · ${f.t("plan.daysToGo", { count: daysLeft })}`}
+            {` · ${f.t(`form.planStyle.${plan.profile.planStyle}`)}`}
           </p>
         </div>
         <div className="flex flex-wrap gap-2 print:hidden" data-slot="plan-actions">

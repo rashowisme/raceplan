@@ -24,3 +24,5 @@ Short log of decisions made autonomously (date — decision — reason).
 - **2026-10-31 — Form keeps values in the user's units** (strings as typed). Switching km/mi mid-form converts the typed numbers (2-decimal precision so round-trips are stable); `toProfile` converts to metric — still only via `lib/units.ts`.
 - **2026-10-31 — v1 keeps one "current" plan** (`id = "current"`) in the localStorage repository; the repository already supports several plans for the future account feature.
 - **2026-10-31 — Unit preference defaults to km** for both locales and is remembered in localStorage.
+- **2026-10-31 — Plan styles share one engine and all safety rules; they only change session menus.** VDOT-style follows Daniels' phase order (R → I → T/race pace). 80/20 uses Z3 sessions (intervals, hills), keeps long runs easy, and enforces ≥ 80% easy time (builder budget 81%, checker 80%). Z1–Z3 labels are mapped onto the same Daniels paces.
+- **2026-10-31 — Injury substitutions respect preferences too** (e.g. the plantar-fasciitis hill swap never picks a disliked session). A disliked tag can only appear together with a `preference_unmet` warning (property-tested).

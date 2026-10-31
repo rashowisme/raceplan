@@ -45,7 +45,7 @@ import {
   type StridesSpec,
   withExtraEasy,
 } from "../workouts/library";
-import { selectSession, type SelectionRules } from "../workouts/selection";
+import { selectSession, SESSION_TAGS, type SelectionRules } from "../workouts/selection";
 import { estimateSteps, type PaceContext } from "../workouts/steps";
 import { chooseLayout } from "./days";
 import { buildFrame, weekDates, type PlanFrame } from "./frame";
@@ -303,7 +303,10 @@ function chooseSessions(
     const hasSpeed = chosen.some((t) => SPEED_TYPES.includes(t));
     const hillIdx = chosen.findIndex((t) => HILL_TYPES.includes(t));
     if (hasSpeed && hillIdx >= 0) {
-      const replacement = (["tempo", "fartlek"] as const).find((t) => !chosen.includes(t));
+      const replacement = (["tempo", "fartlek"] as const).find(
+        (t) =>
+          !chosen.includes(t) && !SESSION_TAGS[t].some((tag) => c.rules.dislikes.includes(tag)),
+      );
       if (replacement) chosen[hillIdx] = replacement;
       else chosen.splice(hillIdx, 1);
     }
