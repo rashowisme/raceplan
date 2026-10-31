@@ -71,7 +71,17 @@ export function generatePlan(input: unknown, options: GenerateOptions): Generate
   return { ok: true, plan: assemblePlan(v.profile, options.today, start) };
 }
 
-export { adaptPlan, setWorkoutStatus, type LogError, type LogResult } from "./adapt/adapt";
+export {
+  adaptPlan,
+  addCheckIn,
+  openPause,
+  setWorkoutStatus,
+  undoCheckIn,
+  type LogError,
+  type LogResult,
+  type Pause,
+} from "./adapt/adapt";
+export { pauseOn, checkInEffects } from "./adapt/log";
 export { checkPlan, type Violation } from "./safety/checks";
 export { runnerProfileSchema } from "./schema";
 export * from "./types";

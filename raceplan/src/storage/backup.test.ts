@@ -7,7 +7,16 @@ const plan = (() => {
   const r = generatePlan(RUNNER_FIXTURES.experiencedMarathon, { today: FIXTURE_TODAY });
   if (!r.ok) throw new Error();
   const day = r.plan.weeks[1]!.days.find((d) => d.workout)!;
-  return { ...r.plan, log: { workouts: { [day.date]: "missed" as const } } };
+  return {
+    ...r.plan,
+    log: {
+      workouts: { [day.date]: "missed" as const },
+      checkIns: [
+        { date: day.date, kind: "sick" as const },
+        { date: r.plan.weeks[2]!.startDate, kind: "back" as const },
+      ],
+    },
+  };
 })();
 
 describe("backup file", () => {
@@ -40,6 +49,10 @@ describe("backup file", () => {
     const badLog = structuredClone(file);
     badLog.plan.log.workouts["2026-11-03"] = "skipped";
     expect(code(JSON.stringify(badLog))).toBe("invalid_file");
+
+    const badCheckIn = structuredClone(file);
+    badCheckIn.plan.log.checkIns.push({ date: "2026-11-04", kind: "bored" });
+    expect(code(JSON.stringify(badCheckIn))).toBe("invalid_file");
 
     const future = structuredClone(file);
     future.plan.schemaVersion = 2;

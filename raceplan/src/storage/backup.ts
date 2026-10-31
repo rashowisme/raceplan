@@ -5,7 +5,12 @@
 import { z } from "zod";
 import { adaptPlan, checkPlan, validateProfile } from "@/engine";
 import { isoDateSchema } from "@/engine/schema";
-import { SCHEMA_VERSION, WORKOUT_STATUSES, type TrainingPlan } from "@/engine/types";
+import {
+  CHECK_IN_KINDS,
+  SCHEMA_VERSION,
+  WORKOUT_STATUSES,
+  type TrainingPlan,
+} from "@/engine/types";
 
 const BACKUP_APP = "raceplan";
 const BACKUP_VERSION = 1;
@@ -36,7 +41,14 @@ const envelopeSchema = z.object({
       startDate: isoDateSchema,
       raceDate: isoDateSchema,
       weeks: z.array(z.object({ days: z.array(z.object({ date: isoDateSchema })) })).min(1),
-      log: z.object({ workouts: z.record(isoDateSchema, z.enum(WORKOUT_STATUSES)) }).optional(),
+      log: z
+        .object({
+          workouts: z.record(isoDateSchema, z.enum(WORKOUT_STATUSES)),
+          checkIns: z
+            .array(z.object({ date: isoDateSchema, kind: z.enum(CHECK_IN_KINDS) }))
+            .optional(),
+        })
+        .optional(),
       frozenWeeks: z.number().int().min(0).optional(),
     })
     .loose(),
@@ -70,7 +82,8 @@ export function parseBackup(
   const plan = (json as { plan: TrainingPlan }).plan;
   try {
     const profile = validateProfile(plan.profile, { today: plan.generatedOn });
-    if (!profile.ok || checkPlan(adaptPlan(plan)).length > 0)
+    // Both the stored weeks (also the caps for adapted weeks) and the plan shown.
+    if (!profile.ok || checkPlan(plan).length > 0 || checkPlan(adaptPlan(plan)).length > 0)
       return { ok: false, code: "invalid_file" };
   } catch {
     // Structurally broken plans (hand-edited files) fail here.

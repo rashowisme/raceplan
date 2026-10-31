@@ -147,6 +147,11 @@ export const CONFIG = {
     ],
     /** Longer breaks: the runner should get a new plan (13.4). */
     newPlanAfterDays: 28,
+    /** 13.5: "felt hard" this many times in a week = a tiring week. */
+    hardPerWeek: 2,
+    /** 13.5 pain / niggle: the next N days are easy, at this share of the plan. */
+    painDays: 7,
+    painVolumeFactor: 0.8,
   },
 } as const;
 

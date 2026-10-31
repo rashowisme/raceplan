@@ -296,7 +296,8 @@
       }
     },
     "zonesFromTimeTrial": "Allures issues de votre test chronométré : {distance} en {time} ({date}).",
-    "enterResult": "Saisir mon résultat"
+    "enterResult": "Saisir mon résultat",
+    "paused": "En pause"
   },
   "phase": {
     "maintenance": "Entretien foncier",
@@ -532,8 +533,15 @@
       "short": "Bon retour après {days} jours sans courir : vos 2 premières sorties sont faciles et le volume n'augmente pas cette semaine.",
       "medium": "Après {days} jours sans courir, cette semaine reprend à environ 75 % de votre dernier niveau, en footing facile et accélérations uniquement.",
       "long": "Après {days} jours sans courir, cette semaine reprend à environ la moitié de votre dernier niveau, en endurance facile uniquement pendant 2 semaines, avec des allures 3 % plus lentes.",
-      "veryLong": "Après {days} jours sans courir, cette semaine reprend à environ la moitié de votre dernier niveau, en endurance facile uniquement pendant 2 semaines, avec des allures 3 % plus lentes. Votre plan n'est peut-être plus adapté : mettez vos réponses à jour."
-    }
+      "veryLong": "Après {days} jours sans courir, cette semaine reprend à environ la moitié de votre dernier niveau, en endurance facile uniquement pendant 2 semaines, avec des allures 3 % plus lentes. Votre plan n'est peut-être plus adapté : mettez vos réponses à jour.",
+      "shortBack": "Après vos {days} jours sans courir, le volume n'augmente pas cette semaine."
+    },
+    "fatigue": "Vous vous êtes senti fatigué la semaine dernière : le volume n'augmente pas cette semaine et une séance difficile devient une sortie facile.",
+    "fatigueCutback": "Deux semaines fatigantes de suite : cette semaine devient une semaine de récupération plus légère.",
+    "pain": "À cause de votre douleur, les 7 jours qui suivent sont uniquement en endurance facile, environ 20 % plus courts. Arrêtez si la douleur modifie votre foulée, et consultez un professionnel de santé si elle dure plus d'une semaine.",
+    "sick": "Vous êtes malade : aucune sortie n'est prévue jusqu'à ce que vous indiquiez votre retour. Ne courez pas avec de la fièvre ou des symptômes thoraciques.",
+    "injured": "Plan en pause à cause de votre blessure. Consultez un professionnel de santé, et indiquez-nous quand vous pouvez recourir.",
+    "back": "Bon retour après {days} jours sans courir : vos sorties de cette semaine sont faciles."
   },
   "backup": {
     "title": "Vos données",
@@ -546,5 +554,29 @@
       "invalid_file": "Ce fichier n'est pas une sauvegarde RacePlan valide.",
       "unsupported_version": "Cette sauvegarde vient d'une autre version de RacePlan et ne peut pas être chargée."
     }
+  },
+  "checkIn": {
+    "title": "Comment vous sentez-vous ?",
+    "hint": "Votre plan change à partir de demain. Pour la séance du jour, cochez-la vous-même si vous ne courez pas.",
+    "tired": "Fatigué ou courbaturé",
+    "pain": "Douleur ou gêne",
+    "sick": "Malade",
+    "injured": "Blessé, je ne peux pas courir",
+    "noted": {
+      "tired": "C'est noté : vous êtes fatigué ou courbaturé. La semaine prochaine n'augmente pas et compte une séance difficile en moins.",
+      "pain": "C'est noté : douleur ou gêne. Les 7 prochains jours sont faciles et plus courts.",
+      "sick": "C'est noté : vous êtes malade.",
+      "injured": "C'est noté : vous êtes blessé.",
+      "back": "Bon retour ! Votre plan reprend en douceur."
+    },
+    "undo": "Annuler",
+    "pausedTitle": "Plan en pause",
+    "paused": {
+      "sick": "Depuis le {date}, car vous êtes malade. Ne courez pas avec de la fièvre ou des symptômes thoraciques. Reposez-vous et revenez quand vous vous sentez bien.",
+      "injured": "Depuis le {date}, à cause d'une blessure. Consultez un professionnel de santé avant de recourir."
+    },
+    "back": "Je reprends",
+    "backHint": "Votre plan reprend en douceur à partir d'aujourd'hui, selon la durée de votre arrêt.",
+    "error": "Désolé, l'enregistrement a échoué. Veuillez réessayer."
   }
 }

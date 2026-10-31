@@ -296,7 +296,8 @@
       }
     },
     "zonesFromTimeTrial": "Paces from your time trial: {distance} in {time} ({date}).",
-    "enterResult": "Enter my result"
+    "enterResult": "Enter my result",
+    "paused": "Paused"
   },
   "phase": {
     "maintenance": "Base maintenance",
@@ -532,8 +533,15 @@
       "short": "Welcome back after {days} days off: your first 2 runs are easy and the volume doesn't increase this week.",
       "medium": "After {days} days off, this week restarts at about 75% of your last level, with easy running and strides only.",
       "long": "After {days} days off, this week restarts at about half your last level, with easy running only for 2 weeks and paces 3% slower.",
-      "veryLong": "After {days} days off, this week restarts at about half your last level, with easy running only for 2 weeks and paces 3% slower. Your plan may no longer fit: update your answers."
-    }
+      "veryLong": "After {days} days off, this week restarts at about half your last level, with easy running only for 2 weeks and paces 3% slower. Your plan may no longer fit: update your answers.",
+      "shortBack": "After your {days} days off, the volume doesn't increase this week."
+    },
+    "fatigue": "You felt tired last week, so the volume doesn't increase this week and one hard session is now an easy run.",
+    "fatigueCutback": "Two tiring weeks in a row: this is now a lighter recovery week.",
+    "pain": "Because of your pain, the 7 days after your check-in are easy running only, about 20% shorter. Stop if the pain changes the way you run, and see a health professional if it lasts more than a week.",
+    "sick": "You're ill: no running is planned until you tell us you're back. Don't run with a fever or chest symptoms.",
+    "injured": "Plan paused because of your injury. See a health professional, and tell us when you can run again.",
+    "back": "Welcome back after {days} days off: your runs this week are easy."
   },
   "backup": {
     "title": "Your data",
@@ -546,5 +554,29 @@
       "invalid_file": "This file isn't a valid RacePlan backup.",
       "unsupported_version": "This backup comes from a different version of RacePlan and can't be loaded."
     }
+  },
+  "checkIn": {
+    "title": "How do you feel?",
+    "hint": "Your plan changes from tomorrow. For today's workout, mark it yourself if you don't run.",
+    "tired": "Tired or sore",
+    "pain": "Pain or niggle",
+    "sick": "Sick",
+    "injured": "Injured, can't run",
+    "noted": {
+      "tired": "Noted: you feel tired or sore. Next week won't increase and has one hard session less.",
+      "pain": "Noted: pain or niggle. The next 7 days are easy and shorter.",
+      "sick": "Noted: you're ill.",
+      "injured": "Noted: you're injured.",
+      "back": "Welcome back! Your plan starts again gently."
+    },
+    "undo": "Undo",
+    "pausedTitle": "Plan paused",
+    "paused": {
+      "sick": "Since {date}, because you're ill. Don't run with a fever or chest symptoms. Rest, and come back when you feel well.",
+      "injured": "Since {date}, because of an injury. See a health professional before running again."
+    },
+    "back": "I'm back",
+    "backHint": "Your plan restarts gently from today, depending on how long you were away.",
+    "error": "Sorry, this couldn't be saved. Please try again."
   }
 }

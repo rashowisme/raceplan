@@ -6,7 +6,7 @@
 import { CONFIG } from "../config";
 import { addDays } from "../dates";
 import { experienceLevel, interpolateByDistance, riskFlags } from "../profile";
-import { isHeldWeek } from "../adapt/log";
+import { checkInEffects, isAdjustedWeek, isHeldWeek, type CheckInEffects } from "../adapt/log";
 import { allowedIncrease, startVolume } from "../builder/volume";
 import type { PlanWeek, TrainingLog, TrainingPlan, Workout, WorkoutType } from "../types";
 
@@ -46,16 +46,40 @@ const isPartial = (w: PlanWeek) => w.days.length < 7;
 const refVolume = (w: PlanWeek) => (isPartial(w) ? w.targetVolumeM : w.plannedVolumeM);
 
 /**
+ * §13: weeks with ≥ 20% missed, or changed by check-ins (pain, sickness,
+ * injury), aren't a step up: like cutbacks, they are never the reference.
+ */
+const notReference = (w: PlanWeek, log: TrainingLog | undefined, e: CheckInEffects) =>
+  isHeldWeek(w, log) || isChangedWeek(w, e);
+
+/** Days of the week changed by check-ins (marked by the builder, and matching the log). */
+const isChangedWeek = (w: PlanWeek, e: CheckInEffects) =>
+  w.adjustedFrom !== undefined && isAdjustedWeek(w, e);
+
+/**
+ * True if a check-in on or after `date` (for "I'm back", the day before it)
+ * changed `week`: a long run on `date` was already set when it came.
+ */
+function checkedInSince(log: TrainingLog | undefined, week: PlanWeek, date: string): boolean {
+  const sunday = addDays(week.startDate, 6);
+  return (log?.checkIns ?? []).some((c) => {
+    const since = c.kind === "back" ? addDays(c.date, -1) : c.date;
+    return since >= date && since <= sunday;
+  });
+}
+
+/**
  * Reference week for increases: the previous week, or the last full week
- * before a cutback. §13: weeks with ≥ 20% missed are skipped the same way
- * (what was really run is the reference; no increase right after them).
+ * before a cutback. §13: weeks that aren't a step up are skipped the same
+ * way (what was really run is the reference; no increase right after them).
  */
 function referenceIndex(
   weeks: PlanWeek[],
   i: number,
-  log?: TrainingLog,
+  log: TrainingLog | undefined,
+  e: CheckInEffects,
 ): { ref: number; afterCutback: boolean } {
-  const skip = (w: PlanWeek) => w.isCutback || isHeldWeek(w, log);
+  const skip = (w: PlanWeek) => w.isCutback || notReference(w, log, e);
   if (!skip(weeks[i - 1]!)) return { ref: i - 1, afterCutback: false };
   let r = i - 1;
   while (r > 0 && skip(weeks[r]!)) r--;
@@ -75,6 +99,17 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
   const minRest = level === "beginner" || risk ? 2 : 1;
   const effortM = plan.summary.effortDistanceM;
   const weeks = plan.weeks;
+  const effects = checkInEffects(plan.log);
+  const adjusted = (w: PlanWeek) => isChangedWeek(w, effects);
+  // §13: if even week 0 isn't a step up, the last fully done level is what
+  // the runner ran before the plan.
+  const preplanVolume = startVolume(
+    p.currentWeeklyVolumeM,
+    p.maxWeeklyVolumeM,
+    CONFIG.smallVolumeAllowanceM,
+  );
+  const isPreplan = (ref: number) => ref === 0 && notReference(weeks[0]!, plan.log, effects);
+  const refLevel = (ref: number) => (isPreplan(ref) ? preplanVolume : refVolume(weeks[ref]!));
   const v = (rule: string, detail: string, week?: number, date?: string) =>
     out.push({ rule, detail, week, date });
 
@@ -102,14 +137,10 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
   // R2 + R6 increase rules.
   for (let i = 1; i < weeks.length; i++) {
     const w = weeks[i]!;
-    const { ref, afterCutback } = referenceIndex(weeks, i, plan.log);
+    const { ref, afterCutback } = referenceIndex(weeks, i, plan.log, effects);
     const r = weeks[ref]!;
-    // §13: if even week 0 was held, the last fully done level is what the
-    // runner ran before the plan.
-    const preplan = ref === 0 && isHeldWeek(r, plan.log);
-    const rv = preplan
-      ? startVolume(p.currentWeeklyVolumeM, p.maxWeeklyVolumeM, CONFIG.smallVolumeAllowanceM)
-      : refVolume(r);
+    const preplan = isPreplan(ref);
+    const rv = refLevel(ref);
     const limit = afterCutback ? rv : rv + allowedIncrease(rv, ramp, CONFIG.smallVolumeAllowanceM);
     if (w.plannedVolumeM > limit + EPS) {
       v("ramp", `week ${i}: ${w.plannedVolumeM} > ${Math.round(limit)} (ref week ${ref})`, i);
@@ -130,8 +161,8 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
     if (w.phase !== "taper") {
       if (w.isCutback) {
         run = 0;
-        const { ref } = referenceIndex(weeks, w.index, plan.log);
-        const rv = refVolume(weeks[ref]!);
+        const { ref } = referenceIndex(weeks, w.index, plan.log, effects);
+        const rv = refLevel(ref);
         if (w.plannedVolumeM > rv * (1 - CONFIG.cutbackReductionRange[0]) + EPS) {
           v("cutback_depth", `${w.plannedVolumeM} vs ref ${rv}`, w.index);
         }
@@ -140,7 +171,7 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
         // deeper (they also never plan more than the original week).
         const adapted = weeks
           .slice(0, w.index + 1)
-          .some((x) => x.adaptations?.length || isHeldWeek(x, plan.log));
+          .some((x) => x.adaptations?.length || notReference(x, plan.log, effects));
         if (!adapted && w.targetVolumeM < rv * (1 - CONFIG.cutbackReductionRange[1]) - 100) {
           v("cutback_too_deep", `${w.targetVolumeM} vs ref ${rv}`, w.index);
         }
@@ -188,7 +219,13 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
       const wk = d.workout;
       if (!wk?.isLongRun) continue;
       const runs = w.days.filter((x) => x.workout && x.workout.type !== "race").length;
-      if (wk.estDistanceM > specLongRunShareCap(w.plannedVolumeM, runs) + EPS) {
+      // §13.5: a long run already run when a check-in cut the rest of its
+      // week was sized for the week as planned (and is never changed after).
+      const weekM =
+        adjusted(w) && checkedInSince(plan.log, w, d.date)
+          ? w.adjustedFrom!.volumeM
+          : w.plannedVolumeM;
+      if (wk.estDistanceM > specLongRunShareCap(weekM, runs) + EPS) {
         v("long_run_share", `${wk.estDistanceM} of ${w.plannedVolumeM}`, w.index, d.date);
       }
       if (wk.estDistanceM > longCap + EPS)
@@ -209,8 +246,11 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
     const w = weeks[i]!;
     if (w.phase !== "taper") continue;
     const prev = weeks[i - 1]!;
-    const ref = prev.phase === "taper" ? prev : weeks[referenceIndex(weeks, i, plan.log).ref]!;
-    const rv = w.isRaceWeek ? prev.plannedVolumeM : refVolume(ref);
+    const ref =
+      prev.phase === "taper" ? prev : weeks[referenceIndex(weeks, i, plan.log, effects).ref]!;
+    // §13.5: a taper week cut short by check-ins keeps its planned level as the reference.
+    const planned = (x: PlanWeek) => (adjusted(x) ? x.adjustedFrom!.volumeM : x.plannedVolumeM);
+    const rv = w.isRaceWeek ? planned(prev) : adjusted(ref) ? planned(ref) : refVolume(ref);
     if (w.plannedVolumeM > rv * (1 - CONFIG.taperReductionRange[0]) + EPS) {
       v("taper_reduction", `${w.plannedVolumeM} vs ${rv}`, i);
     }
@@ -239,7 +279,12 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
       total += d.workout.estDurationS;
       easy += d.workout.easyDurationS;
     }
-    if (total > 0 && easy / total < minEasy - 0.005) {
+    if (adjusted(w)) {
+      // §13.5: check-ins cut a week short after some of it was run: the
+      // easy share can drop, but hard work is only ever taken out.
+      if (total - easy > w.adjustedFrom!.hardS + 1)
+        v("adjusted_hard", `${total - easy}s > planned ${w.adjustedFrom!.hardS}s`, w.index);
+    } else if (total > 0 && easy / total < minEasy - 0.005) {
       v("easy_share", `${(easy / total).toFixed(3)} < ${minEasy}`, w.index);
     }
   }

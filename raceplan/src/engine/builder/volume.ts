@@ -181,6 +181,11 @@ export class Progression {
     this.hold = true;
   }
 
+  /** §13.5: no increase in the next week (it stays at the last full level). */
+  holdLevel(): void {
+    this.hold = true;
+  }
+
   /** §13.3: the next pre-taper week is a cutback; later ones follow the cadence from it. */
   forceCutback(): void {
     this.cutbackForced = true;

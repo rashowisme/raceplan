@@ -276,6 +276,11 @@ export interface PlanWeek {
   days: PlanDay[];
   /** §13: why this week was adapted to the training log (translation keys). */
   adaptations?: Message[];
+  /**
+   * §13.5: the week as planned before check-ins (pain, sickness, injury)
+   * changed some of its days. Set only on weeks changed that way.
+   */
+  adjustedFrom?: { volumeM: number; hardS: number };
 }
 
 export const WARNING_CODES = [
@@ -361,9 +366,23 @@ export interface TrainingPlan {
 export const WORKOUT_STATUSES = ["done", "missed", "hard"] as const;
 export type WorkoutStatus = (typeof WORKOUT_STATUSES)[number];
 
+/**
+ * §13.1 check-ins, any day: `tired` (tired or sore), `pain` (pain / niggle),
+ * `sick`, `injured` (can't run), and `back` to end a sick or injured pause.
+ */
+export const CHECK_IN_KINDS = ["tired", "pain", "sick", "injured", "back"] as const;
+export type CheckInKind = (typeof CHECK_IN_KINDS)[number];
+
+export interface CheckIn {
+  date: IsoDate;
+  kind: CheckInKind;
+}
+
 export interface TrainingLog {
   /** One entry per workout date. */
   workouts: Partial<Record<IsoDate, WorkoutStatus>>;
+  /** In date order. */
+  checkIns?: CheckIn[];
 }
 
 export type GeneratePlanResult = { ok: true; plan: TrainingPlan } | { ok: false; refusal: Refusal };

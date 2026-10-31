@@ -66,3 +66,49 @@ test("an invalid backup file is refused", async ({ page }, testInfo) => {
   await page.locator('input[type="file"]').setInputFiles(file);
   await expect(page.getByText("This file isn't a valid RacePlan backup.")).toBeVisible();
 });
+
+test("check-ins: sick pauses the plan until 'I'm back', and can be undone", async ({
+  page,
+}, testInfo) => {
+  const today = localToday();
+  const base = RUNNER_FIXTURES.experiencedMarathon!;
+  const r = generatePlan(
+    { ...base, race: { ...base.race, date: addDays(today, 100) } },
+    { today: addDays(today, -21) },
+  );
+  if (!r.ok) throw new Error(r.refusal.code);
+  const nextWeek = r.plan.weeks.findIndex((w) => w.startDate > today) + 1;
+  const file = testInfo.outputPath("backup.json");
+  writeFileSync(file, serializeBackup(r.plan, new Date().toISOString()));
+
+  await page.goto("/en/plan");
+  await page.locator('input[type="file"]').setInputFiles(file);
+  const card = page.locator("#check-in");
+  const week = page.locator(`#week-${nextWeek}`);
+  await expect(card.getByRole("heading", { name: "How do you feel?" })).toBeVisible();
+  const runs = await week.getByRole("button").count();
+  expect(runs).toBeGreaterThan(2);
+
+  await card.getByRole("button", { name: "Sick" }).click();
+  await expect(card.getByRole("heading", { name: "Plan paused" })).toBeVisible();
+  await expect(week.getByRole("button")).toHaveCount(0);
+  await expect(week).toContainText("Paused");
+  await expect(week).toContainText("Adapted to your log");
+
+  // Undo (same day), then sick again and back: the plan comes back.
+  await card.getByRole("button", { name: "Undo" }).click();
+  await expect(week.getByRole("button")).toHaveCount(runs);
+  await card.getByRole("button", { name: "Sick" }).click();
+  await card.getByRole("button", { name: "I'm back" }).click();
+  await expect(card.getByRole("heading", { name: "How do you feel?" })).toBeVisible();
+  await expect(card).toContainText("Welcome back!");
+  await expect(week.getByRole("button")).toHaveCount(runs);
+
+  // Tired: noted, kept after a reload.
+  await card.getByRole("button", { name: "Undo" }).click();
+  await card.getByRole("button", { name: "Undo" }).click();
+  await card.getByRole("button", { name: "Tired or sore" }).click();
+  await expect(card.getByRole("status")).toContainText("tired or sore");
+  await page.reload();
+  await expect(card.getByRole("status")).toContainText("tired or sore");
+});

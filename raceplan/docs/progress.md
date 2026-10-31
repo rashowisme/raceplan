@@ -27,10 +27,11 @@ M2 — Input form (next)
 - **Watch export (FIT):** "Download for my watch (.FIT)" in each workout dialog and "Watch files" (ZIP of upcoming workouts) in the plan header. Structured steps → FIT workout steps (repeats, distance/time durations, pace → speed targets, effort names in the plan language). Tests: `tests/unit/fit-export.test.ts` (independent decoder in `tests/unit/fit-decode.ts`), e2e downloads.
 - **Adaptive plans, step 1 (spec §13):** "How did it go?" (done / missed / felt hard) on today's and past workouts; missed share and breaks adapt the following weeks (hold, extra cutback, restart at 100/75/50%, easy-only weeks, slower paces, `long_break` / `goal_reassess` warnings), with a note on each adapted week. Engine: `src/engine/adapt/` + `assemblePlan` hooks; checker log-aware. Backup file save/load ("Your data" card, empty plan page). Tests: `tests/unit/adapt.test.ts` (scenarios + week-by-week property test, verified on 18 seeds × 600), `src/storage/backup.test.ts`, e2e `tests/e2e/adapt.spec.ts`.
 
+- **Adaptive plans, step 2 (spec §13.5):** "How do you feel?" card (tired or sore, pain or niggle, sick, injured, undo today's check-in); sick / injured pause the plan ("Plan paused" card, paused days in the calendar) until "I'm back"; "felt hard" twice in a week or a tired check-in → next week holds and one quality session becomes easy, twice in a row → cutback; pain → 7 days easy at 80%. Engine: `addCheckIn`, `undoCheckIn`, `openPause`; builder per-day adjustments. Tests: `tests/unit/checkins.test.ts` (scenarios + day-by-day property test, verified on 12 seeds × 500; step-1 property test re-run on 6 seeds × 500), backup with check-ins, e2e check-in flow.
+
 ## Next (not v1)
 
 - Owner review of the items below, then deploy to Vercel. After choosing a domain, set `NEXT_PUBLIC_SITE_URL` (otherwise the Vercel production domain is used) and submit `/sitemap.xml` in Google Search Console.
-- Adaptive plans step 2: fatigue ("felt hard" ≥ 2×/week) and check-ins (tired, pain, sick, injured, I'm back) — spec §13.5.
 - Future: accounts + EU DB (`ApiPlanRepository`), more languages.
 
 ## Dev tools

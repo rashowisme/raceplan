@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { WatchPlanButton, WatchWorkoutButton } from "@/features/export/fit/WatchExportButtons";
 import { BackupCard, LoadBackupButton } from "@/features/backup/BackupControls";
 import { ExportPdfButton } from "@/features/export/pdf/ExportPdfButton";
+import { CheckInCard } from "./CheckIn";
 import { formatDateLong, type Formatter } from "./format";
 import { PaceZonesCard, PhaseTimeline, PlanAlerts } from "./PlanSections";
 import { TIME_TRIAL_CARD_ID, TimeTrialCard } from "./TimeTrialCard";
@@ -66,6 +67,7 @@ function PlanContent({ stored }: { stored: TrainingPlan }) {
     <div className="mx-auto w-full max-w-5xl space-y-6 px-4 py-6 sm:py-8">
       <PlanHeader f={f} plan={plan} today={today} />
       <PlanAlerts f={f} plan={plan} />
+      <CheckInCard f={f} stored={stored} today={today} />
       <PhaseTimeline f={f} plan={plan} onJump={jumpTo} />
       <PaceZonesCard f={f} plan={plan} />
       <TimeTrialCard f={f} plan={plan} today={today} />

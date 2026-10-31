@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight, Flag, Info } from "lucide-react";
+import { checkInEffects, pauseOn } from "@/engine";
 import { addDays } from "@/engine/dates";
 import {
   WEEKDAYS,
@@ -28,6 +29,7 @@ export function WeekCard({ f, week, today, isCurrent, onSelect, log }: WeekCardP
   const phase = PHASE_CLASSES[week.phase];
   const byWeekday = new Map(week.days.map((d) => [d.weekday, d]));
   const end = addDays(week.startDate, 6);
+  const effects = checkInEffects(log);
   return (
     <section
       id={`week-${week.index + 1}`}
@@ -105,6 +107,7 @@ export function WeekCard({ f, week, today, isCurrent, onSelect, log }: WeekCardP
                 isToday={date === today}
                 onSelect={onSelect}
                 status={log?.workouts[date]}
+                paused={pauseOn(effects, date) !== undefined}
               />
             </li>
           );
@@ -121,6 +124,7 @@ function DayCell({
   isToday,
   onSelect,
   status,
+  paused,
 }: {
   f: Formatter;
   day: PlanDay | undefined;
@@ -128,6 +132,8 @@ function DayCell({
   isToday: boolean;
   onSelect: (day: PlanDay) => void;
   status?: WorkoutStatus;
+  /** §13.5: sick or injured, nothing planned. */
+  paused: boolean;
 }) {
   const wd = WEEKDAYS[(new Date(`${date}T00:00:00Z`).getUTCDay() + 6) % 7]!;
   const dateLabel = (
@@ -159,7 +165,9 @@ function DayCell({
         )}
       >
         <div className="w-16 shrink-0 md:w-auto">{dateLabel}</div>
-        <span className="text-muted-foreground text-sm">{f.t("plan.rest")}</span>
+        <span className="text-muted-foreground text-sm">
+          {f.t(paused ? "plan.paused" : "plan.rest")}
+        </span>
       </div>
     );
   }

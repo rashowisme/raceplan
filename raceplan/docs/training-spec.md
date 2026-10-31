@@ -194,6 +194,13 @@ If the remaining weeks can't reach the original peak with the normal ramp, the p
 - **`sick`** → no running is scheduled until `I'm back`; note: don't run with a fever or chest symptoms. Then 13.4.
 - **`injured — can't run`** → plan paused (like refusal `currently_injured`: advice to see a health professional). `I'm back` → 13.4.
 
+Implementation notes (how the rules above are read; none relaxes them):
+
+- Check-ins change days from the **day after** the check-in; the check-in day itself is left for the runner to mark. "The next 7 days" = the 7 days after the check-in. `I'm back` is the first day running again.
+- Planned runs during a sick / injured pause count as missed for 13.3 and 13.4. Back mid-week: the rest of that week already follows the 13.4 row (≤ 7 days: first 2 runs easy; 8–14 days: easy at 75%; 15+ days: easy at 50%), and the restart applies from the next Monday. While the runner is still paused, nothing else is decided (no holds or cutbacks). The race itself is never removed.
+- "No volume increase" after a tiring week = the next week stays at the last full level. Missed-run weeks (13.3) and tiring weeks count together for "two weeks in a row".
+- A week changed by check-ins is never a reference for §7.2 (like a ≥ 20% missed week). Its hard work can only go down. A long run still to come when the runner checks in is resized to keep its §7.6 share of what is left; a long run already run never changes, so its share is measured against the week as planned. In those weeks the §6 easy share is replaced by "hard time ≤ planned".
+
 ### 13.6 Out of scope for this version
 
 Editing actual distances, importing runs from a watch, adapting to heart rate or sleep, moving workouts to other days (planned separately).
