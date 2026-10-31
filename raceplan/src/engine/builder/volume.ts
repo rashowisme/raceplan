@@ -89,7 +89,9 @@ export class Progression {
   private lastFull: number;
   private lastFullLong: number;
   private sinceReduction = 0;
-  private prevCutback = false;
+  /** Next week returns to the last full level (after a cutback, or §13 hold/restart). */
+  private hold = false;
+  private cutbackForced = false;
   private week = 0;
 
   constructor(private readonly p: ProgressionParams) {
@@ -122,7 +124,8 @@ export class Progression {
         ? Math.max(Math.min(this.start, p.peakVolumeM), p.maintenanceCapM)
         : p.peakVolumeM,
     );
-    const isCutback = this.week > 0 && this.sinceReduction >= p.cutbackEvery - 1;
+    const isCutback =
+      this.week > 0 && (this.cutbackForced || this.sinceReduction >= p.cutbackEvery - 1);
     let vol: number;
     let long: number;
     if (this.week === 0) {
@@ -131,7 +134,7 @@ export class Progression {
     } else if (isCutback) {
       vol = Math.round((this.lastFull * (1 - CONFIG.cutbackReduction)) / 100) * 100;
       long = this.capLong(this.lastFullLong * (1 - CONFIG.cutbackReduction), vol);
-    } else if (this.prevCutback) {
+    } else if (this.hold) {
       vol = Math.min(this.lastFull, cap);
       long = this.capLong(this.lastFullLong, vol);
     } else {
@@ -155,8 +158,32 @@ export class Progression {
       this.lastFullLong = plannedLongM;
       this.sinceReduction++;
     }
-    this.prevCutback = target.isCutback;
+    this.hold = target.isCutback;
+    this.cutbackForced = false;
     this.week++;
+  }
+
+  /**
+   * §13.3: a week with too many missed runs doesn't count as a step up. The
+   * reference stays the last fully done week and the next week holds there.
+   */
+  recordPartial(): void {
+    this.sinceReduction++;
+    this.hold = true;
+    this.cutbackForced = false;
+    this.week++;
+  }
+
+  /** §13.4: restart after a break at a given level (absolute, not compounding). */
+  restart(volumeM: number, longRunM: number): void {
+    this.lastFull = roundDown(volumeM);
+    this.lastFullLong = roundDown(longRunM);
+    this.hold = true;
+  }
+
+  /** §13.3: the next pre-taper week is a cutback; later ones follow the cadence from it. */
+  forceCutback(): void {
+    this.cutbackForced = true;
   }
 
   /**

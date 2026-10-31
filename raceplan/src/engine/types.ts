@@ -274,6 +274,8 @@ export interface PlanWeek {
   elevationGainM?: number;
   /** Days of the week, Monday → Sunday. Days outside the plan are omitted. */
   days: PlanDay[];
+  /** §13: why this week was adapted to the training log (translation keys). */
+  adaptations?: Message[];
 }
 
 export const WARNING_CODES = [
@@ -289,6 +291,8 @@ export const WARNING_CODES = [
   "race_ready_mini_plan",
   "max_below_current",
   "long_base_block",
+  "long_break",
+  "goal_reassess",
 ] as const;
 export type WarningCode = (typeof WARNING_CODES)[number];
 
@@ -340,6 +344,26 @@ export interface TrainingPlan {
   adviceNotes: Message[];
   /** Always shown — key of the disclaimer text. */
   disclaimer: Message;
+  /** §13: what the runner logged (stored with the plan; see `adaptPlan`). */
+  log?: TrainingLog;
+  /**
+   * Weeks kept from an earlier version of the plan (time trial result): they
+   * already contain any adaptation and are never rebuilt.
+   */
+  frozenWeeks?: number;
+}
+
+// ---------------------------------------------------------------------------
+// Training log (§13)
+// ---------------------------------------------------------------------------
+
+/** `hard` = done, but it felt hard. Unmarked past workouts count as done. */
+export const WORKOUT_STATUSES = ["done", "missed", "hard"] as const;
+export type WorkoutStatus = (typeof WORKOUT_STATUSES)[number];
+
+export interface TrainingLog {
+  /** One entry per workout date. */
+  workouts: Partial<Record<IsoDate, WorkoutStatus>>;
 }
 
 export type GeneratePlanResult = { ok: true; plan: TrainingPlan } | { ok: false; refusal: Refusal };

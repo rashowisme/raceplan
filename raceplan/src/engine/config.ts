@@ -132,6 +132,22 @@ export const CONFIG = {
   raceWeekEasyRuns: { min: 2, max: 3 },
 
   fewDaysThreshold: 3,
+
+  // §13 adaptation to the training log
+  adaptation: {
+    /** Missed share of a week at or above which the next week holds. */
+    holdMissedShare: 0.2,
+    /** Above this missed share, the week counts as a break of ≥ 7 days. */
+    breakMissedShare: 0.5,
+    /** Breaks (days without running) → restart level and easy-only weeks. */
+    breaks: [
+      { maxDays: 7, restartFactor: 1, easyOnlyWeeks: 0, easyFirstRuns: 2, paceFactor: 1 },
+      { maxDays: 14, restartFactor: 0.75, easyOnlyWeeks: 1, easyFirstRuns: 0, paceFactor: 1 },
+      { maxDays: 28, restartFactor: 0.5, easyOnlyWeeks: 2, easyFirstRuns: 0, paceFactor: 1.03 },
+    ],
+    /** Longer breaks: the runner should get a new plan (13.4). */
+    newPlanAfterDays: 28,
+  },
 } as const;
 
 export type StandardRaceType = StandardRace;

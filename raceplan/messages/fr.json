@@ -475,7 +475,9 @@
     "risk_flagged": "Pour votre sécurité, le plan est plus prudent ({flags}).",
     "race_ready_mini_plan": "Votre course est très proche : voici un court plan de préparation finale — entretenir, aiguiser, récupérer.",
     "max_below_current": "Votre maximum est inférieur à votre volume actuel : le plan démarre à votre maximum.",
-    "long_base_block": "Votre course est loin : les {weeks} premières semaines sont un bloc d'entretien foncier facile avant le plan de 24 semaines."
+    "long_base_block": "Votre course est loin : les {weeks} premières semaines sont un bloc d'entretien foncier facile avant le plan de 24 semaines.",
+    "long_break": "Vous avez arrêté plus de 4 semaines ({days} jours). Votre forme a changé : mettez vos réponses à jour pour obtenir un plan adapté à votre pratique actuelle.",
+    "goal_reassess": "À cause de l'entraînement manqué, votre plus grosse semaine est plus basse que prévu : votre objectif de temps n'est peut-être plus réaliste. Courez à l'effort et réévaluez-le après une course ou un test chronométré."
   },
   "riskFlag": {
     "injuryOften": "blessures fréquentes",
@@ -507,5 +509,42 @@
     "exportWorkout": "Télécharger pour ma montre (.FIT)",
     "help": "Copiez le fichier sur votre montre (dossier des nouveaux fichiers) ou importez-le dans l'appli de votre montre. Les allures deviennent des plages cibles ; les étapes sans allure se font à l'effort.",
     "error": "Désolé, le fichier montre n'a pas pu être créé. Veuillez réessayer."
+  },
+  "log": {
+    "title": "Comment ça s'est passé ?",
+    "done": "Faite",
+    "missed": "Manquée",
+    "hard": "Difficile",
+    "hint": "Non cochée = faite comme prévu. Votre plan s'adapte à partir du lundi suivant.",
+    "error": "Désolé, l'enregistrement a échoué. Veuillez réessayer.",
+    "status": {
+      "done": "faite",
+      "missed": "manquée",
+      "hard": "faite, ressentie difficile"
+    }
+  },
+  "adapt": {
+    "title": "Adapté à votre suivi",
+    "hold": "Vous avez manqué une partie de la semaine dernière : cette semaine reste à {distanceM} au lieu d'augmenter.",
+    "cutback": "Deux semaines de suite avec des séances manquées : cette semaine devient une semaine de récupération plus légère.",
+    "easyOnly": "Encore uniquement de l'endurance facile cette semaine, pour reprendre en douceur après votre pause.",
+    "break": {
+      "short": "Bon retour après {days} jours sans courir : vos 2 premières sorties sont faciles et le volume n'augmente pas cette semaine.",
+      "medium": "Après {days} jours sans courir, cette semaine reprend à environ 75 % de votre dernier niveau, en footing facile et accélérations uniquement.",
+      "long": "Après {days} jours sans courir, cette semaine reprend à environ la moitié de votre dernier niveau, en endurance facile uniquement pendant 2 semaines, avec des allures 3 % plus lentes.",
+      "veryLong": "Après {days} jours sans courir, cette semaine reprend à environ la moitié de votre dernier niveau, en endurance facile uniquement pendant 2 semaines, avec des allures 3 % plus lentes. Votre plan n'est peut-être plus adapté : mettez vos réponses à jour."
+    }
+  },
+  "backup": {
+    "title": "Vos données",
+    "body": "Votre plan et votre suivi sont conservés uniquement dans ce navigateur. Enregistrez une sauvegarde pour les garder en lieu sûr ou les transférer sur un autre appareil.",
+    "save": "Enregistrer une sauvegarde",
+    "load": "Charger une sauvegarde",
+    "loaded": "Plan chargé depuis votre sauvegarde.",
+    "confirmReplace": "Remplacer votre plan actuel par celui de ce fichier ?",
+    "errors": {
+      "invalid_file": "Ce fichier n'est pas une sauvegarde RacePlan valide.",
+      "unsupported_version": "Cette sauvegarde vient d'une autre version de RacePlan et ne peut pas être chargée."
+    }
   }
 }

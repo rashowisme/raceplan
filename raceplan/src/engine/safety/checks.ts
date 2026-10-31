@@ -6,8 +6,9 @@
 import { CONFIG } from "../config";
 import { addDays } from "../dates";
 import { experienceLevel, interpolateByDistance, riskFlags } from "../profile";
-import { allowedIncrease } from "../builder/volume";
-import type { PlanWeek, TrainingPlan, Workout, WorkoutType } from "../types";
+import { isHeldWeek } from "../adapt/log";
+import { allowedIncrease, startVolume } from "../builder/volume";
+import type { PlanWeek, TrainingLog, TrainingPlan, Workout, WorkoutType } from "../types";
 
 export interface Violation {
   rule: string;
@@ -44,11 +45,20 @@ const isQuality = (w: Workout | null): w is Workout => !!w && QUALITY_TYPES.incl
 const isPartial = (w: PlanWeek) => w.days.length < 7;
 const refVolume = (w: PlanWeek) => (isPartial(w) ? w.targetVolumeM : w.plannedVolumeM);
 
-/** Reference week for increases: previous week, or the last full week before a cutback. */
-function referenceIndex(weeks: PlanWeek[], i: number): { ref: number; afterCutback: boolean } {
-  if (!weeks[i - 1]!.isCutback) return { ref: i - 1, afterCutback: false };
+/**
+ * Reference week for increases: the previous week, or the last full week
+ * before a cutback. §13: weeks with ≥ 20% missed are skipped the same way
+ * (what was really run is the reference; no increase right after them).
+ */
+function referenceIndex(
+  weeks: PlanWeek[],
+  i: number,
+  log?: TrainingLog,
+): { ref: number; afterCutback: boolean } {
+  const skip = (w: PlanWeek) => w.isCutback || isHeldWeek(w, log);
+  if (!skip(weeks[i - 1]!)) return { ref: i - 1, afterCutback: false };
   let r = i - 1;
-  while (r > 0 && weeks[r]!.isCutback) r--;
+  while (r > 0 && skip(weeks[r]!)) r--;
   return { ref: r, afterCutback: true };
 }
 
@@ -92,14 +102,19 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
   // R2 + R6 increase rules.
   for (let i = 1; i < weeks.length; i++) {
     const w = weeks[i]!;
-    const { ref, afterCutback } = referenceIndex(weeks, i);
+    const { ref, afterCutback } = referenceIndex(weeks, i, plan.log);
     const r = weeks[ref]!;
-    const rv = refVolume(r);
+    // §13: if even week 0 was held, the last fully done level is what the
+    // runner ran before the plan.
+    const preplan = ref === 0 && isHeldWeek(r, plan.log);
+    const rv = preplan
+      ? startVolume(p.currentWeeklyVolumeM, p.maxWeeklyVolumeM, CONFIG.smallVolumeAllowanceM)
+      : refVolume(r);
     const limit = afterCutback ? rv : rv + allowedIncrease(rv, ramp, CONFIG.smallVolumeAllowanceM);
     if (w.plannedVolumeM > limit + EPS) {
       v("ramp", `week ${i}: ${w.plannedVolumeM} > ${Math.round(limit)} (ref week ${ref})`, i);
     }
-    const refLong = isPartial(r) ? 0 : r.longRunM;
+    const refLong = isPartial(r) || preplan ? 0 : r.longRunM;
     if (refLong > 0) {
       const longLimit = afterCutback ? refLong : refLong + CONFIG.longRunMaxIncreaseM;
       if (w.longRunM > longLimit + EPS) v("long_run_increase", `${w.longRunM} > ${longLimit}`, i);
@@ -115,12 +130,18 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
     if (w.phase !== "taper") {
       if (w.isCutback) {
         run = 0;
-        const { ref } = referenceIndex(weeks, w.index);
+        const { ref } = referenceIndex(weeks, w.index, plan.log);
         const rv = refVolume(weeks[ref]!);
         if (w.plannedVolumeM > rv * (1 - CONFIG.cutbackReductionRange[0]) + EPS) {
           v("cutback_depth", `${w.plannedVolumeM} vs ref ${rv}`, w.index);
         }
-        if (w.targetVolumeM < rv * (1 - CONFIG.cutbackReductionRange[1]) - 100) {
+        // "Not too deep" is a training-quality rule, not a safety limit: once
+        // the plan has adapted to missed training (§13), rebuilt weeks may cut
+        // deeper (they also never plan more than the original week).
+        const adapted = weeks
+          .slice(0, w.index + 1)
+          .some((x) => x.adaptations?.length || isHeldWeek(x, plan.log));
+        if (!adapted && w.targetVolumeM < rv * (1 - CONFIG.cutbackReductionRange[1]) - 100) {
           v("cutback_too_deep", `${w.targetVolumeM} vs ref ${rv}`, w.index);
         }
         if (quality.length > 1)
@@ -188,7 +209,7 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
     const w = weeks[i]!;
     if (w.phase !== "taper") continue;
     const prev = weeks[i - 1]!;
-    const ref = prev.phase === "taper" ? prev : weeks[referenceIndex(weeks, i).ref]!;
+    const ref = prev.phase === "taper" ? prev : weeks[referenceIndex(weeks, i, plan.log).ref]!;
     const rv = w.isRaceWeek ? prev.plannedVolumeM : refVolume(ref);
     if (w.plannedVolumeM > rv * (1 - CONFIG.taperReductionRange[0]) + EPS) {
       v("taper_reduction", `${w.plannedVolumeM} vs ${rv}`, i);

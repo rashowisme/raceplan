@@ -21,6 +21,8 @@ import {
   type FitnessEstimate,
   type IsoDate,
   type Message,
+  type PaceRange,
+  type PaceZones,
   type PlanDay,
   type PlanWarning,
   type PlanWeek,
@@ -448,11 +450,20 @@ function summarizeWeek(
   };
 }
 
+/** §13 adjustments for a rebuilt week. */
+interface WeekOptions {
+  /** No quality sessions or time trial: easy running + strides. */
+  easyOnly?: boolean;
+  /** The first N runs of the week are easy. */
+  easyFirstRuns?: number;
+}
+
 function buildTrainingWeek(
   c: PlanContext,
   w: number,
   target: WeekTarget,
   state: WeekState,
+  opts: WeekOptions = {},
 ): BuiltWeek {
   const f = c.frame;
   const dates = weekDates(f, w);
@@ -460,8 +471,15 @@ function buildTrainingWeek(
   const phase = f.phases[w]!;
   const p = c.profile;
 
-  let variant = longRunVariant(c, w, target);
-  let sessions = chooseSessions(c, w, qualityCount(c, w, target), target, state, variant);
+  let variant: LongRunVariant = opts.easyOnly ? "plain" : longRunVariant(c, w, target);
+  let sessions = chooseSessions(
+    c,
+    w,
+    opts.easyOnly ? 0 : qualityCount(c, w, target),
+    target,
+    state,
+    variant,
+  );
 
   // Optional time trial when there is no performance data (week 2; week 3 for beginners).
   let withTimeTrial = false;
@@ -470,6 +488,7 @@ function buildTrainingWeek(
   if (
     c.pace.zones === null &&
     !state.timeTrialDone &&
+    !opts.easyOnly &&
     w >= ttWeek &&
     !target.isCutback &&
     phase !== "taper" &&
@@ -729,6 +748,21 @@ function buildTrainingWeek(
     );
   }
 
+  // 7. §13.4: the first runs back after a short break are easy.
+  if (opts.easyFirstRuns) {
+    for (const date of [...workouts.keys()].sort().slice(0, opts.easyFirstRuns)) {
+      const wk = workouts.get(date)!;
+      if (!wk.isHard) continue;
+      if (wk.type === "timeTrial") state.timeTrialDone = false; // retry next week
+      workouts.set(
+        date,
+        wk.isLongRun
+          ? longRun(c.pace, wk.estDistanceM, "plain", c.race, trailLong(c, phase, wk.estDistanceM))
+          : easyRun(c.pace, wk.estDistanceM),
+      );
+    }
+  }
+
   const days = dates.map((date) => {
     const day = planDay(date, workouts.get(date) ?? null);
     if (date === crossTrainingDate) day.crossTrainingSuggested = true;
@@ -747,6 +781,12 @@ function buildTrainingWeek(
     longDate,
   };
 }
+
+const cloneState = (s: WeekState): WeekState => ({
+  usedTypes: new Set(s.usedTypes),
+  blockedDates: new Set(s.blockedDates),
+  timeTrialDone: s.timeTrialDone,
+});
 
 /** Reuse an already-planned week, updating the builder state like buildTrainingWeek. */
 function adoptWeek(week: PlanWeek, state: WeekState): BuiltWeek {
@@ -835,15 +875,65 @@ function buildRaceWeek(c: PlanContext, w: number, prevPlannedM: number): BuiltWe
 // Entry
 // ---------------------------------------------------------------------------
 
+/** §13: what to change from a given week on (see `adaptPlan`). */
+export interface WeekDirective extends WeekOptions {
+  /** Restart the progression at this level (after a break). */
+  restart?: { volumeM: number; longRunM: number };
+  forceCutback?: boolean;
+  /** Multiply every pace (s/km) from this week on. */
+  paceFactor?: number;
+  /** Why (shown on the week). */
+  notes: Message[];
+}
+
+export interface AssembleHooks {
+  /**
+   * Called before week `w` with the weeks built so far and the progression's
+   * reference (last full week). `undefined` = nothing changes.
+   */
+  directive(
+    w: number,
+    weeks: readonly PlanWeek[],
+    reference: { volumeM: number; longRunM: number },
+  ): WeekDirective | undefined;
+  /** False = the week doesn't count as a step up (§13.3 hold). */
+  isFullWeek(week: PlanWeek): boolean;
+  /** Upper bounds for rebuilt weeks (the original plan's target, planned volume and long run). */
+  capOf(w: number): { targetM: number; plannedM: number; longRunM: number } | undefined;
+  /** Weeks before this index are never rebuilt. */
+  frozenWeeks: number;
+}
+
+const scaleRange = (r: PaceRange, f: number): PaceRange => ({
+  fastSPerKm: r.fastSPerKm * f,
+  slowSPerKm: r.slowSPerKm * f,
+});
+const scaleZones = (z: PaceZones, f: number): PaceZones =>
+  Object.fromEntries(Object.entries(z).map(([k, r]) => [k, scaleRange(r, f)])) as PaceZones;
+
+/** All paces `f` times slower (s/km × f). */
+export function slowPaces(p: PaceContext, f: number): PaceContext {
+  return {
+    zones: p.zones && scaleZones(p.zones, f),
+    estZones: scaleZones(p.estZones, f),
+    racePaceSPerKm: p.racePaceSPerKm && p.racePaceSPerKm * f,
+    estRacePaceSPerKm: p.estRacePaceSPerKm * f,
+  };
+}
+
 /**
- * @param keptWeeks weeks already started, adopted as-is (see applyTimeTrialResult):
- *   the progression and cross-week rules continue from what they actually contain.
+ * @param keptWeeks weeks already planned, adopted as-is (see applyTimeTrialResult,
+ *   adaptPlan): the progression and cross-week rules continue from what they
+ *   actually contain.
+ * @param hooks §13 adaptation: from the first week with a directive on, weeks
+ *   are rebuilt instead of adopted.
  */
 export function assemblePlan(
   profile: RunnerProfile,
   today: IsoDate,
   startDate: IsoDate,
   keptWeeks: readonly PlanWeek[] = [],
+  hooks?: AssembleHooks,
 ): TrainingPlan {
   const c = makeContext(profile, today, startDate);
   profileWarnings(c);
@@ -880,33 +970,69 @@ export function assemblePlan(
   };
   const weeks: PlanWeek[] = [];
   const preTaper = f.totalWeeks - f.taperWeeks;
+  let rebuilding = false;
 
   for (let w = 0; w < f.totalWeeks; w++) {
     const isRaceWeek = w === f.totalWeeks - 1;
+    const found = hooks?.directive(w, weeks, progression.reference);
+    const directive = found && w >= hooks!.frozenWeeks ? found : undefined;
+    if (directive) {
+      rebuilding = true;
+      if (directive.restart)
+        progression.restart(directive.restart.volumeM, directive.restart.longRunM);
+      if (directive.forceCutback) progression.forceCutback();
+      if (directive.paceFactor && directive.paceFactor !== 1)
+        c.pace = slowPaces(c.pace, directive.paceFactor);
+    }
+    const adopt = w < keptWeeks.length && !rebuilding;
     let built: BuiltWeek;
-    if (isRaceWeek && w < keptWeeks.length) {
+    if (isRaceWeek && adopt) {
       built = adoptWeek(keptWeeks[w]!, state);
     } else if (isRaceWeek) {
       const prev = weeks.at(-1);
-      built = buildRaceWeek(c, w, prev ? prev.plannedVolumeM : progression.startVolumeM);
+      let prevM = prev ? prev.plannedVolumeM : progression.startVolumeM;
+      // §13: after a week with many missed runs, size from what was really run.
+      if (prev && hooks && !hooks.isFullWeek(prev))
+        prevM = Math.min(prevM, progression.reference.volumeM);
+      built = buildRaceWeek(c, w, prevM);
     } else {
       const target =
         w < preTaper
           ? progression.next(f.phases[w] === "maintenance")
           : progression.taper(w - preTaper, weeks.at(-1)?.plannedVolumeM ?? 0);
-      built =
-        w < keptWeeks.length
-          ? adoptWeek(keptWeeks[w]!, state)
-          : buildTrainingWeek(c, w, target, state);
+      const cap = rebuilding ? hooks?.capOf(w) : undefined;
+      if (cap) {
+        target.targetVolumeM = Math.min(target.targetVolumeM, cap.targetM);
+        target.longRunM = Math.min(target.longRunM, cap.longRunM);
+      }
+      if (adopt) built = adoptWeek(keptWeeks[w]!, state);
+      else {
+        // Rebuilt weeks never plan more than the original week (rounding can
+        // differ): retry with a lower target, from the same state.
+        const before = cloneState(state);
+        built = buildTrainingWeek(c, w, target, state, directive);
+        for (let i = 0; cap && i < 8 && built.week.plannedVolumeM > cap.plannedM; i++) {
+          target.targetVolumeM =
+            Math.min(target.targetVolumeM, built.week.plannedVolumeM) -
+            Math.max(100, built.week.plannedVolumeM - cap.plannedM);
+          Object.assign(state, cloneState(before));
+          built = buildTrainingWeek(c, w, target, state, directive);
+        }
+      }
       if (w < preTaper) {
         const partial = built.week.days.length < 7;
-        progression.record(
-          target,
-          partial ? target.targetVolumeM : built.week.plannedVolumeM,
-          partial ? target.longRunM : built.week.longRunM,
-        );
+        // A cutback with missed runs still counts as the cutback (keeps the cadence).
+        if (hooks && !target.isCutback && !hooks.isFullWeek(built.week))
+          progression.recordPartial();
+        else
+          progression.record(
+            target,
+            partial ? target.targetVolumeM : built.week.plannedVolumeM,
+            partial ? target.longRunM : built.week.longRunM,
+          );
       }
     }
+    if (directive?.notes.length) built.week = { ...built.week, adaptations: directive.notes };
     // Block hard sessions right after hard days (cross-week) and after long runs (age ≥ 50).
     for (const d of built.hardDates) state.blockedDates.add(addDays(d, 1));
     if (built.longDate) {

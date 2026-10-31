@@ -140,7 +140,7 @@ Refusals (no plan): `currently_injured`, `race_in_past`, `distance_not_supported
 
 Every plan shows a disclaimer: general guidance, not medical advice; see a doctor before starting if they have health concerns; stop and rest if pain persists.
 
-## 13. Adaptation (DRAFT — pending owner approval)
+## 13. Adaptation (approved by the owner on 2026-10-31)
 
 The runner can log what actually happened; the plan then adapts the coming days. Same principle as everywhere else: **when in doubt, do less**. Adaptation never adds volume or intensity to make up for missed training.
 
@@ -154,7 +154,7 @@ The runner can log what actually happened; the plan then adapts the coming days.
 ### 13.2 Principles
 
 1. **Only the future changes.** Logged days are never altered. Week-level changes start on the **next Monday**; check-ins about pain, sickness or injury also change the **rest of the current week**.
-2. **The ramp is measured against what was actually run.** For §7.2, the reference week's volume is min(planned, done). The adapted plan never goes above the original plan for any week.
+2. **The ramp is measured against what was actually run.** A week with ≥ 20% missed is not a step up: like a cutback week, it is never the reference for §7.2, so the next week can't go above the last fully done week (weeks with < 20% missed count as done as planned, see 13.3). The adapted plan never goes above the original plan for any week (volume and long run).
 3. **No catching up.** Missed sessions are never rescheduled or added to later weeks; missed quality sessions are simply dropped.
 4. **All §7 invariants still hold** on the adapted plan (checked by `checkPlan`, property-tested), using done volume for past weeks.
 5. **The taper is never removed or increased.** Missed runs in the taper aren't replaced.
@@ -176,14 +176,14 @@ Two weeks in a row with ≥ 20% missed → the next week is a cutback week (the 
 
 ### 13.4 Breaks (whole days not run, incl. sickness and injury)
 
-Counted from the last done run to the first run back.
+Counted from the last run done before the missed sessions to the last missed session (the first run back isn't known in advance).
 
 | Break | Restart |
 |---|---|
 | ≤ 7 days | First 2 runs easy, then continue at the last done weekly level (no increase in the first week back). |
 | 8–14 days | First week back at 75% of the last done level, easy running + strides only, then normal ramp (§7.2). |
 | 15–28 days | First week at 50%, two weeks without quality sessions, then normal ramp. Paces slowed by 3%. |
-| > 28 days | No automatic adaptation: the runner is asked to update their answers and get a new plan (current volume has changed). |
+| > 28 days | The runner is asked to update their answers and get a new plan (warning `long_break`; current volume has changed). Until they do, the 15–28 days restart applies. |
 
 If the remaining weeks can't reach the original peak with the normal ramp, the peak is lower (never compressed ramps) and, when there is a target time, warning `goal_reassess`.
 

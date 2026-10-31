@@ -133,6 +133,7 @@ export function WorkoutDialog({
   onOpenChange,
   onEnterResult,
   actions,
+  log,
 }: {
   f: Formatter;
   day: PlanDay | null;
@@ -141,6 +142,8 @@ export function WorkoutDialog({
   onEnterResult?: () => void;
   /** Rendered below the workout (e.g. the watch download). */
   actions?: React.ReactNode;
+  /** Rendered right under the title (the training log for past days). */
+  log?: React.ReactNode;
 }) {
   const workout = day?.workout ?? null;
   // Set when closing via "Enter my result": focus goes to the card, not back to the day.
@@ -174,6 +177,7 @@ export function WorkoutDialog({
                 {workout.optional && <Badge variant="outline">{f.t("plan.optional")}</Badge>}
               </div>
             </DialogHeader>
+            {log}
             <WorkoutBody f={f} workout={workout} crossTraining={day.crossTrainingSuggested} />
             {workout.type === "timeTrial" && onEnterResult && (
               <Button

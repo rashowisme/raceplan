@@ -2,7 +2,8 @@
  * Spec §3.4: once the runner enters their time trial result, paces can be
  * computed. Weeks already started stay exactly as planned (the runner may
  * have run them); every later week is rebuilt with real paces from the same
- * profile, start date and generation day.
+ * profile, start date and generation day. Pass the plan as shown (adapted to
+ * its log): kept weeks are frozen and never rebuilt by later adaptation.
  */
 import { assemblePlan } from "./builder/plan";
 import { diffDays } from "./dates";
@@ -72,7 +73,10 @@ export function applyTimeTrialResult(
     fresh.weeks.length === plan.weeks.length &&
     fresh.weeks.every((w, i) => w.startDate === plan.weeks[i]!.startDate);
   if (!sameFrame) return invalid("plan", "frame_changed");
-  return { ok: true, plan: fresh };
+  // Kept weeks already contain any §13 adaptation; the log stays with the plan.
+  const out: TrainingPlan = { ...fresh, frozenWeeks: kept.length };
+  if (plan.log) out.log = plan.log;
+  return { ok: true, plan: out };
 }
 
 function invalid(field: string, code: string): GeneratePlanResult {

@@ -71,6 +71,7 @@ export function generatePlan(input: unknown, options: GenerateOptions): Generate
   return { ok: true, plan: assemblePlan(v.profile, options.today, start) };
 }
 
+export { adaptPlan, setWorkoutStatus, type LogError, type LogResult } from "./adapt/adapt";
 export { checkPlan, type Violation } from "./safety/checks";
 export { runnerProfileSchema } from "./schema";
 export * from "./types";

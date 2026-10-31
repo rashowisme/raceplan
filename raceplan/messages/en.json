@@ -475,7 +475,9 @@
     "risk_flagged": "For your safety, the plan is more conservative ({flags}).",
     "race_ready_mini_plan": "Your race is very close: this is a short race-ready plan — maintain, sharpen, rest.",
     "max_below_current": "Your maximum is below your current volume, so the plan starts at your maximum.",
-    "long_base_block": "Your race is far away: the first {weeks} weeks are an easy base-maintenance block before the 24-week plan."
+    "long_base_block": "Your race is far away: the first {weeks} weeks are an easy base-maintenance block before the 24-week plan.",
+    "long_break": "You've been away for more than 4 weeks ({days} days). Your fitness has changed: update your answers to get a plan that matches your running now.",
+    "goal_reassess": "Because of the missed training, your biggest week is now lower than planned, so your target time may be out of reach. Run by effort and check it again after a race or time trial."
   },
   "riskFlag": {
     "injuryOften": "frequent injuries",
@@ -507,5 +509,42 @@
     "exportWorkout": "Download for my watch (.FIT)",
     "help": "Copy the file to your watch (folder for new files) or import it in your watch's app. Paces become target ranges; steps without a pace use effort.",
     "error": "Sorry, the watch file could not be created. Please try again."
+  },
+  "log": {
+    "title": "How did it go?",
+    "done": "Done",
+    "missed": "Missed",
+    "hard": "Felt hard",
+    "hint": "Not marked = done as planned. Your plan adapts from next Monday.",
+    "error": "Sorry, this couldn't be saved. Please try again.",
+    "status": {
+      "done": "done",
+      "missed": "missed",
+      "hard": "done, felt hard"
+    }
+  },
+  "adapt": {
+    "title": "Adapted to your log",
+    "hold": "You missed part of last week, so this week stays at {distanceM} instead of increasing.",
+    "cutback": "Two weeks in a row with missed runs: this is now a lighter recovery week.",
+    "easyOnly": "Easy running only again this week, to rebuild after your break.",
+    "break": {
+      "short": "Welcome back after {days} days off: your first 2 runs are easy and the volume doesn't increase this week.",
+      "medium": "After {days} days off, this week restarts at about 75% of your last level, with easy running and strides only.",
+      "long": "After {days} days off, this week restarts at about half your last level, with easy running only for 2 weeks and paces 3% slower.",
+      "veryLong": "After {days} days off, this week restarts at about half your last level, with easy running only for 2 weeks and paces 3% slower. Your plan may no longer fit: update your answers."
+    }
+  },
+  "backup": {
+    "title": "Your data",
+    "body": "Your plan and what you've logged are kept only in this browser. Save a backup file to keep them safe or to move them to another device.",
+    "save": "Save a backup",
+    "load": "Load a backup",
+    "loaded": "Plan loaded from your backup.",
+    "confirmReplace": "Replace your current plan with the one in this file?",
+    "errors": {
+      "invalid_file": "This file isn't a valid RacePlan backup.",
+      "unsupported_version": "This backup comes from a different version of RacePlan and can't be loaded."
+    }
   }
 }

@@ -29,12 +29,12 @@ pnpm exec playwright install chromium    # once, for e2e tests
 
 ## How it fits together
 
-- `src/engine` — pure plan engine. `generatePlan(profile, { today })` → plan or structured refusal; `applyTimeTrialResult(plan, result, { today })` adds paces to an effort-only plan; `checkPlan(plan)` checks every safety invariant (also the test oracle). Tunables live in `src/engine/config.ts`.
+- `src/engine` — pure plan engine. `generatePlan(profile, { today })` → plan or structured refusal; `applyTimeTrialResult(plan, result, { today })` adds paces to an effort-only plan; `adaptPlan(stored)` adapts the coming weeks to the training log (spec §13), `setWorkoutStatus()` updates the log; `checkPlan(plan)` checks every safety invariant (also the test oracle). Tunables live in `src/engine/config.ts`.
 - `src/features/plan-form` — 5-step form (react-hook-form + Zod, shared engine schema).
 - `src/features/plan-calendar` — plan page, calendar, workout details; `format.ts` turns engine translation keys into text.
 - `src/features/export/pdf` — client-side PDF (react-pdf, built-in fonts).
 - `src/features/export/fit` — watch files: minimal FIT workout encoder + ZIP writer (no dependency).
-- `src/storage` — `PlanRepository` interface; v1 = `LocalStorageRepository`.
+- `src/storage` — `PlanRepository` interface; v1 = `LocalStorageRepository`. `backup.ts` = backup file (save/load, validated).
 - `src/lib/units.ts` — the only place km/mi conversion and formatting happen.
 - `messages/{en,fr}.json` — translations. Add a language: add its code in `src/i18n/routing.ts` and a messages file (tests check keys/placeholders match).
 
