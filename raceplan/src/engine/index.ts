@@ -74,3 +74,4 @@ export function generatePlan(input: unknown, options: GenerateOptions): Generate
 export { checkPlan, type Violation } from "./safety/checks";
 export { runnerProfileSchema } from "./schema";
 export * from "./types";
+export { applyTimeTrialResult, findTimeTrial } from "./timeTrial";

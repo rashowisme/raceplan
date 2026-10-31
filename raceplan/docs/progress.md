@@ -22,11 +22,12 @@ M2 — Input form (next)
 - **M7 QA pass:** coach review of all fixture plans (fixed: long run dropping at the 30 km threshold, taper sharpening, recovery runs without strides, trail race-day pace); Playwright e2e on desktop + mobile (form → plan → dialog → PDF download, reload persistence, km/mi, FR, injured block, empty state, no overflow at 360px); EN/FR completeness tests; unused deps removed; mobile "My plan" link; security headers; `vercel.json` (cdg1).
 - **Dark mode (post-v1):** header toggle cycling system → light → dark (localStorage `raceplan.theme`), applied before first paint by an inline script, live OS-preference following in system mode; dark values for brand, phase, success and warning colours. PDF stays light (print). Tests: `tests/unit/theme.test.ts`, e2e theme test; messages test now parses ICU `select`.
 - **Owner review (2026-10-31):** two-run 50/50 split and post-cutback rule confirmed; long-run share raised 30% → 33% (spec §7.6 updated); even-split rule generalised to any run count (fixes 3-day runners losing volume).
+- **Time trial result entry:** effort-only plans show a "Ran your time trial?" card (also reachable from the time trial workout). The result becomes a fitness source (`profile.timeTrialResult`, Riegel to race distance, aged like a PR); `applyTimeTrialResult()` keeps started weeks and rebuilds later ones with paces, the builder continuing from the kept weeks (`assemblePlan(..., keptWeeks)`). The result is kept when answers are edited. Tests: `tests/unit/time-trial.test.ts` (incl. property test), e2e flow.
 
 ## Next (not v1)
 
 - Owner review of the items below, then deploy to Vercel.
-- Future: accounts + EU DB (`ApiPlanRepository`), adaptive plans, time-trial result entry → paces, FIT export, more languages.
+- Future: accounts + EU DB (`ApiPlanRepository`), adaptive plans, FIT export, more languages.
 
 ## Dev tools
 
@@ -36,4 +37,3 @@ M2 — Input form (next)
 ## Known issues / to confirm with owner
 
 - Trail long-run distances are flat-road estimates of a time-on-feet prescription.
-- The optional time trial result can't be entered yet (v1 shows efforts only for runners without performance data).

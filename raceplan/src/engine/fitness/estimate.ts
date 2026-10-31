@@ -5,7 +5,7 @@
 import { CONFIG } from "../config";
 import { monthsBetween } from "../dates";
 import type { FitnessEstimate, IsoDate, PlanWarning, RunnerProfile } from "../types";
-import { clampVdot, predictTimeS, vdotFromPerformance } from "./vdot";
+import { clampVdot, predictTimeS, riegel, vdotFromPerformance } from "./vdot";
 
 export interface FitnessResult {
   fitness: FitnessEstimate | null;
@@ -34,21 +34,32 @@ export function estimateFitness(
   const warnings: PlanWarning[] = [];
   const candidates: Candidate[] = [];
 
+  /** §3.1 ageing: slow down old performances (and flag them as low confidence). */
+  const age = (on: IsoDate | undefined, warn: boolean) => {
+    if (!on) return { factor: 1, lowConfidence: false };
+    const months = monthsBetween(on, today);
+    if (warn && months >= cfg.prFullWeightMonths)
+      warnings.push({ code: "old_pr", params: { months } });
+    if (months > cfg.prOldMonths) return { factor: 1 + cfg.prSlowdownOld, lowConfidence: true };
+    if (months >= cfg.prFullWeightMonths)
+      return { factor: 1 + cfg.prSlowdownMid, lowConfidence: false };
+    return { factor: 1, lowConfidence: false };
+  };
+
   const pr = profile.personalRecord;
   if (pr) {
-    let factor = 1;
-    let lowConfidence = false;
-    if (pr.achievedOn) {
-      const months = monthsBetween(pr.achievedOn, today);
-      if (months > cfg.prOldMonths) {
-        factor = 1 + cfg.prSlowdownOld;
-        lowConfidence = true;
-      } else if (months >= cfg.prFullWeightMonths) {
-        factor = 1 + cfg.prSlowdownMid;
-      }
-      if (months >= cfg.prFullWeightMonths) warnings.push({ code: "old_pr", params: { months } });
-    }
+    const { factor, lowConfidence } = age(pr.achievedOn, true);
     candidates.push({ timeS: pr.timeS * factor, source: "personalRecord", lowConfidence });
+  }
+  const tt = profile.timeTrialResult;
+  if (tt) {
+    // §3.5: convert the time trial to the race distance with Riegel.
+    const { factor, lowConfidence } = age(tt.date, false);
+    candidates.push({
+      timeS: riegel(tt.timeS, tt.distanceM, distanceM) * factor,
+      source: "timeTrial",
+      lowConfidence,
+    });
   }
   if (profile.watchPrediction) {
     candidates.push({

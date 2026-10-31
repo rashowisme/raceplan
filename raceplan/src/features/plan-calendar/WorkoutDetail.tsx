@@ -1,7 +1,9 @@
 "use client";
 
 import { Info, Mountain, Repeat2, Timer, Route } from "lucide-react";
+import { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -129,15 +131,28 @@ export function WorkoutDialog({
   f,
   day,
   onOpenChange,
+  onEnterResult,
 }: {
   f: Formatter;
   day: PlanDay | null;
   onOpenChange: (open: boolean) => void;
+  /** Effort-only plans: jump to the time trial result card. */
+  onEnterResult?: () => void;
 }) {
   const workout = day?.workout ?? null;
+  // Set when closing via "Enter my result": focus goes to the card, not back to the day.
+  const toResult = useRef(false);
   return (
     <Dialog open={!!workout} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
+      <DialogContent
+        className="max-h-[90dvh] overflow-y-auto sm:max-w-lg"
+        onCloseAutoFocus={(e) => {
+          if (!toResult.current) return;
+          toResult.current = false;
+          e.preventDefault();
+          onEnterResult?.();
+        }}
+      >
         {day && workout && (
           <>
             <DialogHeader>
@@ -157,6 +172,18 @@ export function WorkoutDialog({
               </div>
             </DialogHeader>
             <WorkoutBody f={f} workout={workout} crossTraining={day.crossTrainingSuggested} />
+            {workout.type === "timeTrial" && onEnterResult && (
+              <Button
+                onClick={() => {
+                  toResult.current = true;
+                  onOpenChange(false);
+                }}
+                className="h-11 w-full"
+              >
+                <Timer aria-hidden />
+                {f.t("plan.enterResult")}
+              </Button>
+            )}
           </>
         )}
       </DialogContent>

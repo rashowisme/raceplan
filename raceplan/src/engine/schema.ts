@@ -55,6 +55,21 @@ export const injuryEntrySchema = z.object({
   frequency: z.enum(INJURY_FREQUENCIES),
 });
 
+/** Time trial result; pace bounded like any performance. */
+export const timeTrialResultSchema = z
+  .object({
+    distanceM: z.number().min(1000).max(10_000),
+    timeS: timeSchema,
+    date: isoDateSchema,
+  })
+  .refine(
+    (r) => {
+      const pace = r.timeS / (r.distanceM / 1000);
+      return pace >= L.fastestPaceSPerKm && pace <= L.slowestPaceSPerKm;
+    },
+    { path: ["timeS"], message: "implausible_time" },
+  );
+
 export const runnerProfileSchema = z
   .object({
     race: raceInfoSchema,
@@ -63,6 +78,7 @@ export const runnerProfileSchema = z
       .object({ timeS: timeSchema, achievedOn: isoDateSchema.optional() })
       .optional(),
     watchPrediction: z.object({ timeS: timeSchema }).optional(),
+    timeTrialResult: timeTrialResultSchema.optional(),
     targetTimeS: timeSchema.optional(),
     currentWeeklyVolumeM: z.number().min(0).max(L.maxWeeklyVolumeM),
     longestRecentRunM: z.number().min(0).max(L.maxTrailDistanceM).optional(),

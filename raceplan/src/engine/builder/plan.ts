@@ -748,6 +748,21 @@ function buildTrainingWeek(
   };
 }
 
+/** Reuse an already-planned week, updating the builder state like buildTrainingWeek. */
+function adoptWeek(week: PlanWeek, state: WeekState): BuiltWeek {
+  for (const d of week.days) {
+    const wk = d.workout;
+    if (wk?.type === "timeTrial") state.timeTrialDone = true;
+    else if (wk?.isHard && !wk.isLongRun && wk.type !== "race")
+      state.usedTypes.add(wk.type as QualityType);
+  }
+  return {
+    week,
+    hardDates: week.days.filter((d) => d.workout?.isHard).map((d) => d.date),
+    longDate: week.days.find((d) => d.workout?.isLongRun)?.date ?? null,
+  };
+}
+
 function neighbours(date: IsoDate, runDates: IsoDate[]): number {
   return [addDays(date, -1), addDays(date, 1)].filter((d) => runDates.includes(d)).length;
 }
@@ -820,10 +835,15 @@ function buildRaceWeek(c: PlanContext, w: number, prevPlannedM: number): BuiltWe
 // Entry
 // ---------------------------------------------------------------------------
 
+/**
+ * @param keptWeeks weeks already started, adopted as-is (see applyTimeTrialResult):
+ *   the progression and cross-week rules continue from what they actually contain.
+ */
 export function assemblePlan(
   profile: RunnerProfile,
   today: IsoDate,
   startDate: IsoDate,
+  keptWeeks: readonly PlanWeek[] = [],
 ): TrainingPlan {
   const c = makeContext(profile, today, startDate);
   profileWarnings(c);
@@ -864,7 +884,9 @@ export function assemblePlan(
   for (let w = 0; w < f.totalWeeks; w++) {
     const isRaceWeek = w === f.totalWeeks - 1;
     let built: BuiltWeek;
-    if (isRaceWeek) {
+    if (isRaceWeek && w < keptWeeks.length) {
+      built = adoptWeek(keptWeeks[w]!, state);
+    } else if (isRaceWeek) {
       const prev = weeks.at(-1);
       built = buildRaceWeek(c, w, prev ? prev.plannedVolumeM : progression.startVolumeM);
     } else {
@@ -872,7 +894,10 @@ export function assemblePlan(
         w < preTaper
           ? progression.next(f.phases[w] === "maintenance")
           : progression.taper(w - preTaper, weeks.at(-1)?.plannedVolumeM ?? 0);
-      built = buildTrainingWeek(c, w, target, state);
+      built =
+        w < keptWeeks.length
+          ? adoptWeek(keptWeeks[w]!, state)
+          : buildTrainingWeek(c, w, target, state);
       if (w < preTaper) {
         const partial = built.week.days.length < 7;
         progression.record(

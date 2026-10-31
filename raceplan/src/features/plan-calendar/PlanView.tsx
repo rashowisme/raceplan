@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { ExportPdfButton } from "@/features/export/pdf/ExportPdfButton";
 import { formatDateLong, type Formatter } from "./format";
 import { PaceZonesCard, PhaseTimeline, PlanAlerts } from "./PlanSections";
+import { TIME_TRIAL_CARD_ID, TimeTrialCard } from "./TimeTrialCard";
 import { useCurrentPlan } from "./useCurrentPlan";
 import { usePlanFormatter } from "./usePlanFormatter";
 import { WeekCard } from "./WeekCard";
@@ -57,6 +58,7 @@ function PlanContent({ plan }: { plan: TrainingPlan }) {
       <PlanAlerts f={f} plan={plan} />
       <PhaseTimeline f={f} plan={plan} onJump={jumpTo} />
       <PaceZonesCard f={f} plan={plan} />
+      <TimeTrialCard f={f} plan={plan} today={today} />
 
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-bold">{f.t("plan.calendarTitle")}</h2>
@@ -81,7 +83,20 @@ function PlanContent({ plan }: { plan: TrainingPlan }) {
       </div>
 
       <p className="text-muted-foreground border-t pt-4 text-xs">{f.t(plan.disclaimer.key)}</p>
-      <WorkoutDialog f={f} day={selected} onOpenChange={(open) => !open && setSelected(null)} />
+      <WorkoutDialog
+        f={f}
+        day={selected}
+        onOpenChange={(open) => !open && setSelected(null)}
+        onEnterResult={
+          plan.summary.paceZones
+            ? undefined
+            : () => {
+                const card = document.getElementById(TIME_TRIAL_CARD_ID);
+                card?.scrollIntoView({ behavior: "smooth", block: "start" });
+                card?.querySelector("input")?.focus({ preventScroll: true });
+              }
+        }
+      />
     </div>
   );
 }

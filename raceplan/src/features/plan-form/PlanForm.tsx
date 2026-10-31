@@ -11,6 +11,7 @@ import { useRouter } from "@/i18n/navigation";
 import { localToday } from "@/lib/today";
 import { useHydrated } from "@/lib/use-hydrated";
 import { cn } from "@/lib/utils";
+import { CURRENT_PLAN_ID } from "@/features/plan-calendar/useCurrentPlan";
 import { getPlanRepository, PLAN_CHANGED_EVENT } from "@/storage";
 import { clearDraft, loadDraft, saveDraft, type FormDraft } from "./draft";
 import {
@@ -164,12 +165,18 @@ function PlanFormInner({ initialDraft }: { initialDraft: FormDraft | null }) {
       return;
     }
     setSubmitting(true);
-    const result = generatePlan(checked.profile, { today });
+    // Keep a time trial result entered on the previous plan (it's fitness data).
+    const previous = await getPlanRepository().load(CURRENT_PLAN_ID);
+    const timeTrialResult = previous?.plan.profile.timeTrialResult;
+    const result = generatePlan(
+      timeTrialResult ? { ...checked.profile, timeTrialResult } : checked.profile,
+      { today },
+    );
     if (!result.ok) {
       setSubmitting(false);
       return setRefusal(result.refusal.code);
     }
-    await getPlanRepository().save(result.plan, "current");
+    await getPlanRepository().save(result.plan, CURRENT_PLAN_ID);
     window.dispatchEvent(new Event(PLAN_CHANGED_EVENT));
     router.push("/plan");
   };

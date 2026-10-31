@@ -41,7 +41,7 @@ Goal: a single fitness number (VDOT, Jack Daniels' formula) used to derive pace 
 1. **PR** for the distance: if achieved < 12 months ago (or no date given) → full weight. 12–24 months → slow by 3%. > 24 months → slow by 6% and treat as low confidence.
 2. **Watch prediction:** treat as optimistic → add 3% to the predicted time.
 3. If both are present, use the **slower** (more conservative) of the two.
-4. If neither: no pace targets. Use **effort-based** workouts (RPE + talk-test descriptions) and schedule an optional time trial (e.g. 3 km or 5 km) in week 2. Once the user enters the result (future feature), paces can be computed. In v1, show effort only.
+4. If neither: no pace targets. Use **effort-based** workouts (RPE + talk-test descriptions) and schedule an optional time trial (e.g. 3 km or 5 km) in week 2. Until the user enters the result, show effort only. Once they do, paces are computed from it (converted with Riegel, aged like a PR); weeks already started stay unchanged and later weeks are rebuilt with paces.
 5. Convert between distances with Riegel (`T2 = T1 × (D2/D1)^1.06`) when needed.
 6. **Target time:** if the target implies a fitness gain > 5% (plans ≥ 12 weeks) or > 2% (shorter plans) over the current estimate → warning `goal_ambitious`; paces stay based on current fitness. Race-pace workouts use the target pace only if it's within those bounds, otherwise predicted race pace.
 

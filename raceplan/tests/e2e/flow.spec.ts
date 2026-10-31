@@ -7,7 +7,7 @@ function futureDate(days: number): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-async function fillForm(page: Page) {
+async function fillForm(page: Page, { withRecord = true } = {}) {
   await page.goto("/en/plan/new");
   const next = page.getByRole("button", { name: "Continue" });
 
@@ -18,7 +18,7 @@ async function fillForm(page: Page) {
 
   // 2. Fitness
   await expect(page.getByRole("heading", { name: "Your fitness" })).toBeVisible();
-  await page.getByLabel(/Personal record/).fill("52:30");
+  if (withRecord) await page.getByLabel(/Personal record/).fill("52:30");
   await next.click();
 
   // 3. Training
@@ -152,4 +152,33 @@ test("theme toggle switches to dark, persists, and follows the OS by default", a
   await expect(html).toHaveClass(/\bdark\b/);
   await page.emulateMedia({ colorScheme: "light" });
   await expect(html).not.toHaveClass(/\bdark\b/);
+});
+
+test("time trial result turns an effort-only plan into a paced plan", async ({ page }) => {
+  await fillForm(page, { withRecord: false });
+  await expect(page.getByRole("heading", { name: "Ran your time trial?" })).toBeVisible();
+  await expect(page.getByText(/\/km/)).toHaveCount(0);
+
+  // From the time trial workout dialog.
+  await page
+    .getByRole("button", { name: /Time trial/ })
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Enter my result" }).click();
+  const time = page.getByLabel("Time (3 km)");
+  await expect(time).toBeFocused();
+
+  await time.fill("9:99");
+  await page.getByRole("button", { name: "Update my paces" }).click();
+  await expect(page.getByText("Enter a time like 15:30.")).toBeVisible();
+
+  await time.fill("15:00");
+  await page.getByRole("button", { name: "Update my paces" }).click();
+  await expect(page.getByText(/Paces from your time trial: 3 km in 15:00/)).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ran your time trial?" })).toHaveCount(0);
+  await expect(page.getByText(/\/km/).first()).toBeVisible();
+
+  // Persisted.
+  await page.reload();
+  await expect(page.getByText(/Paces from your time trial/)).toBeVisible();
 });

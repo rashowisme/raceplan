@@ -64,6 +64,13 @@ export interface InjuryEntry {
   frequency: InjuryFrequency;
 }
 
+/** Result of the plan's optional time trial, entered after running it. */
+export interface TimeTrialResult {
+  distanceM: number;
+  timeS: number;
+  date: IsoDate;
+}
+
 export interface RaceInfo {
   type: RaceType;
   /** Required for `custom` and `trail`; derived from type otherwise. */
@@ -81,6 +88,8 @@ export interface RunnerProfile {
   personalRecord?: { timeS: number; achievedOn?: IsoDate };
   /** Smartwatch race prediction for the race distance. */
   watchPrediction?: { timeS: number };
+  /** Time trial result (any distance), see `applyTimeTrialResult`. */
+  timeTrialResult?: TimeTrialResult;
   targetTimeS?: number;
   /** Average over the last 4 weeks. 0 allowed. */
   currentWeeklyVolumeM: number;
@@ -112,7 +121,7 @@ export type ExperienceLevel = "beginner" | "intermediate" | "experienced";
 
 export type RiskFlag = "injuryOften" | "multipleInjuries" | "stressFractureHistory" | "age50plus";
 
-export type FitnessSource = "personalRecord" | "watchPrediction";
+export type FitnessSource = "personalRecord" | "watchPrediction" | "timeTrial";
 
 export interface FitnessEstimate {
   vdot: number;

@@ -2,10 +2,12 @@
 
 import { AlertTriangle, Gauge, Lightbulb } from "lucide-react";
 import { PACE_ZONES, type Effort, type Phase, type TrainingPlan } from "@/engine/types";
+import { formatClock, formatDistance } from "@/lib/units";
 import { cn } from "@/lib/utils";
 import {
   effortDescription,
   effortLabel,
+  formatDateLong,
   formatMessage,
   formatPace,
   formatWarning,
@@ -61,6 +63,7 @@ export function PlanAlerts({ f, plan }: { f: Formatter; plan: TrainingPlan }) {
 
 export function PaceZonesCard({ f, plan }: { f: Formatter; plan: TrainingPlan }) {
   const zones = plan.summary.paceZones;
+  const tt = plan.profile.timeTrialResult;
   return (
     <section className="bg-card rounded-xl border p-4" aria-labelledby="zones-title">
       <h2 id="zones-title" className="flex items-center gap-2 font-semibold">
@@ -69,6 +72,15 @@ export function PaceZonesCard({ f, plan }: { f: Formatter; plan: TrainingPlan })
       </h2>
       {!zones && (
         <p className="text-muted-foreground mt-1 text-sm">{f.t("plan.effortOnlyIntro")}</p>
+      )}
+      {tt && plan.summary.fitness?.source === "timeTrial" && (
+        <p className="text-muted-foreground mt-1 text-sm">
+          {f.t("plan.zonesFromTimeTrial", {
+            distance: formatDistance(tt.distanceM, f.unit, f.locale),
+            time: formatClock(tt.timeS),
+            date: formatDateLong(f.locale, tt.date),
+          })}
+        </p>
       )}
       <ul className="mt-3 divide-y">
         {PACE_ZONES.map((z) => {

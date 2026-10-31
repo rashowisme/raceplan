@@ -277,7 +277,24 @@
       "prediction": "Predicted time",
       "style": "Plan style"
     },
-    "weekClimb": "Climb {gainM}"
+    "weekClimb": "Climb {gainM}",
+    "timeTrial": {
+      "title": "Ran your time trial?",
+      "intro": "Enter your {distance} time to get personal paces for the rest of your plan.",
+      "time": "Time ({distance})",
+      "date": "Date",
+      "submit": "Update my paces",
+      "keepsPast": "Weeks that have already started stay as they are.",
+      "errors": {
+        "time_format": "Enter a time like 15:30.",
+        "implausible_time": "That time doesn't look right for this distance.",
+        "in_future": "The date can't be in the future.",
+        "before_plan": "The date must be after you created the plan.",
+        "generic": "We couldn't update your plan. Check your entry and try again."
+      }
+    },
+    "zonesFromTimeTrial": "Paces from your time trial: {distance} in {time} ({date}).",
+    "enterResult": "Enter my result"
   },
   "phase": {
     "maintenance": "Base maintenance",

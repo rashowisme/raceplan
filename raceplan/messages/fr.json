@@ -277,7 +277,24 @@
       "prediction": "Temps estimé",
       "style": "Style de plan"
     },
-    "weekClimb": "D+ {gainM}"
+    "weekClimb": "D+ {gainM}",
+    "timeTrial": {
+      "title": "Vous avez fait votre test chronométré ?",
+      "intro": "Saisissez votre temps sur {distance} pour obtenir des allures personnalisées pour la suite de votre plan.",
+      "time": "Temps ({distance})",
+      "date": "Date",
+      "submit": "Mettre à jour mes allures",
+      "keepsPast": "Les semaines déjà commencées restent inchangées.",
+      "errors": {
+        "time_format": "Saisissez un temps comme 15:30.",
+        "implausible_time": "Ce temps ne semble pas correct pour cette distance.",
+        "in_future": "La date ne peut pas être dans le futur.",
+        "before_plan": "La date doit être postérieure à la création du plan.",
+        "generic": "Impossible de mettre à jour votre plan. Vérifiez votre saisie et réessayez."
+      }
+    },
+    "zonesFromTimeTrial": "Allures issues de votre test chronométré : {distance} en {time} ({date}).",
+    "enterResult": "Saisir mon résultat"
   },
   "phase": {
     "maintenance": "Entretien foncier",

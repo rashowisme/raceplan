@@ -29,7 +29,7 @@ pnpm exec playwright install chromium    # once, for e2e tests
 
 ## How it fits together
 
-- `src/engine` — pure plan engine. `generatePlan(profile, { today })` → plan or structured refusal; `checkPlan(plan)` checks every safety invariant (also the test oracle). Tunables live in `src/engine/config.ts`.
+- `src/engine` — pure plan engine. `generatePlan(profile, { today })` → plan or structured refusal; `applyTimeTrialResult(plan, result, { today })` adds paces to an effort-only plan; `checkPlan(plan)` checks every safety invariant (also the test oracle). Tunables live in `src/engine/config.ts`.
 - `src/features/plan-form` — 5-step form (react-hook-form + Zod, shared engine schema).
 - `src/features/plan-calendar` — plan page, calendar, workout details; `format.ts` turns engine translation keys into text.
 - `src/features/export/pdf` — client-side PDF (react-pdf, built-in fonts).
