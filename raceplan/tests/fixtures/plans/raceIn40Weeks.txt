@@ -2,11 +2,11 @@ level=intermediate risk=[] weeks=40 days/wk=4 peak=50.0km taper=14d
 fitness=vdot 37.2 (personalRecord) racePace=5:36
 zones=E:6:28-7:07 M:5:41-5:52 T:5:21-5:30 I:4:52-5:02 R:4:35-4:43
 warnings=[long_base_block] advice=[]
-W01 2026-11-02 maintenance 28.0/28.0km long 11.0
-   tue easy 5.5km 37min {r:4300m E/easy@6:28-7:07; 6×(w:20s R/repetition / r:60s E/recovery)}
-   thu easy 5.6km 38min {r:4400m E/easy@6:28-7:07; 6×(w:20s R/repetition / r:60s E/recovery)}
-   sat easy 5.9km 40min {r:5900m E/easy@6:28-7:07}
-   sun long 11.0km 75min {r:11000m E/easy@6:28-7:07}
+W01 2026-11-02 maintenance 28.0/28.0km long 9.0
+   tue easy 6.2km 42min {r:5000m E/easy@6:28-7:07; 6×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 6.3km 43min {r:5100m E/easy@6:28-7:07; 6×(w:20s R/repetition / r:60s E/recovery)}
+   sat easy 6.5km 44min {r:6500m E/easy@6:28-7:07}
+   sun long 9.0km 61min {r:9000m E/easy@6:28-7:07}
 W02 2026-11-09 maintenance 31.0/31.0km long 9.0
    tue easy 7.2km 49min {r:6000m E/easy@6:28-7:07; 6×(w:20s R/repetition / r:60s E/recovery)}
    thu easy 7.3km 49min {r:6100m E/easy@6:28-7:07; 6×(w:20s R/repetition / r:60s E/recovery)}

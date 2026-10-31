@@ -19,11 +19,12 @@ M2 — Input form (next)
 - **M4 Methods and preferences:** `methods/vdot.ts` (Daniels-style phase order) and `methods/polarized.ts` (80/20, Z1–Z3 labels) next to Balanced; preferences (likes favoured, dislikes substituted with a similar stimulus, track → road intervals) already applied by the engine and collected by the form. Tests: every style safe on every fixture, styles differ, 80/20 easy share, likes favoured, property test that disliked sessions only appear with a `preference_unmet` warning.
 - **M5 PDF export:** "Export PDF" on the plan page renders `features/export/pdf/PlanDocument.tsx` client-side (lazy import), same formatter as the screen (language + km/mi), summary page (stats, paces, warnings, advice, phases) + weekly calendar pages, disclaimer + page numbers in the footer. Tests render EN/km and FR/mi PDFs and check the character set.
 - **M6 Trail and custom distance:** time-based trail long runs with progressive D+ targets, uphill repeats (power hiking on steep courses), downhill practice in the specific phase (not with knee/ITB history), effort-based trail race day, week D+ in calendar + PDF. Custom road distances interpolate between standard distances. New fixture `steepTrail25k`; tests in `tests/unit/trail-custom.test.ts`.
+- **M7 QA pass:** coach review of all fixture plans (fixed: long run dropping at the 30 km threshold, taper sharpening, recovery runs without strides, trail race-day pace); Playwright e2e on desktop + mobile (form → plan → dialog → PDF download, reload persistence, km/mi, FR, injured block, empty state, no overflow at 360px); EN/FR completeness tests; unused deps removed; mobile "My plan" link; security headers; `vercel.json` (cdg1).
 
-## Next
+## Next (not v1)
 
-- M2: multi-step form (react-hook-form + Zod), EN/FR.
-- M3: calendar view + localStorage.
+- Owner review of the items below, then deploy to Vercel.
+- Future: accounts + EU DB (`ApiPlanRepository`), adaptive plans, time-trial result entry → paces, FIT export, more languages.
 
 ## Dev tools
 
@@ -34,3 +35,6 @@ M2 — Input form (next)
 
 - Two-run weeks use an even 50/50 split instead of the 30/40% long-run share (see decisions.md).
 - Long runs plateau at 30% of weekly volume (e.g. 15 km at 50 km/week for a half) — spec-compliant but on the short side for some runners.
+- Week-over-week increases after a cutback are measured against the last full week (no increase allowed over it) — see decisions.md.
+- Trail long-run distances are flat-road estimates of a time-on-feet prescription.
+- The optional time trial result can't be entered yet (v1 shows efforts only for runners without performance data).

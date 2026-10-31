@@ -2,17 +2,17 @@ level=intermediate risk=[] weeks=10 days/wk=4 peak=35.4km taper=10d
 fitness=vdot 35.8 (personalRecord) racePace=5:30
 zones=E:6:40-7:20 M:5:52-6:03 T:5:31-5:40 I:5:01-5:11 R:4:43-4:52
 warnings=[goal_ambitious] advice=[]
-W01 2026-11-02 base        24.4/25.0km long 9.5
+W01 2026-11-02 base        24.9/25.0km long 9.0
    tue fartlek 3.9km 26min [H] {w:600s E/easy@6:40-7:20; 4×(w:60s I/interval / r:60s E/easy); c:480s E/easy@6:40-7:20}
    thu hillSprints 4.9km 35min [H] {w:900s E/easy@6:40-7:20; 6×(w:10s R/repetition uphill / r:90s E/recovery downhill); c:600s E/easy@6:40-7:20}
-   sat easy 6.1km 43min {r:5000m E/easy@6:40-7:20; 6×(w:20s R/repetition / r:60s E/recovery)}
-   sun long 9.5km 67min {r:9500m E/easy@6:40-7:20}
-W02 2026-11-09 base        27.3/27.4km long 10.5
+   sat easy 7.1km 50min {r:6000m E/easy@6:40-7:20; 6×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 9.0km 63min {r:9000m E/easy@6:40-7:20}
+W02 2026-11-09 base        27.2/27.9km long 9.0
    tue fartlek 4.2km 28min [H] {w:600s E/easy@6:40-7:20; 5×(w:60s I/interval / r:60s E/easy); c:480s E/easy@6:40-7:20}
    thu hillSprints 5.1km 37min [H] {w:900s E/easy@6:40-7:20; 7×(w:10s R/repetition uphill / r:90s E/recovery downhill); c:600s E/easy@6:40-7:20}
-   sat easy 7.5km 53min {r:6400m E/easy@6:40-7:20; 6×(w:20s R/repetition / r:60s E/recovery)}
-   sun long 10.5km 74min {r:10500m E/easy@6:40-7:20}
-W03 2026-11-16 base        30.1/30.3km long 9.0
+   sat easy 8.9km 63min {r:7800m E/easy@6:40-7:20; 6×(w:20s R/repetition / r:60s E/recovery)}
+   sun long 9.0km 63min {r:9000m E/easy@6:40-7:20}
+W03 2026-11-16 base        30.1/30.2km long 9.0
    tue fartlek 7.1km 48min [H] {r:1500m E/easy@6:40-7:20; w:900s E/easy@6:40-7:20; 6×(w:60s I/interval / r:60s E/easy); c:600s E/easy@6:40-7:20}
    thu hillSprints 5.1km 37min [H] {w:900s E/easy@6:40-7:20; 7×(w:10s R/repetition uphill / r:90s E/recovery downhill); c:600s E/easy@6:40-7:20}
    sat easy 8.9km 63min {r:7800m E/easy@6:40-7:20; 6×(w:20s R/repetition / r:60s E/recovery)}

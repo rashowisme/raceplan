@@ -1,4 +1,4 @@
-import { Footprints } from "lucide-react";
+import { CalendarDays, Footprints } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -24,7 +24,7 @@ export function AppHeader() {
           </span>
           <span className="text-lg">RacePlan</span>
         </Link>
-        <nav aria-label="Main" className="mr-1 hidden items-center gap-1 text-sm sm:flex">
+        <nav aria-label={t("main")} className="mr-1 hidden items-center gap-1 text-sm sm:flex">
           <Link href="/plan" className="hover:bg-muted rounded-md px-3 py-2 font-medium">
             {t("myPlan")}
           </Link>
@@ -32,6 +32,13 @@ export function AppHeader() {
             {t("newPlan")}
           </Link>
         </nav>
+        <Link
+          href="/plan"
+          aria-label={t("myPlan")}
+          className="hover:bg-muted focus-visible:ring-ring grid size-9 place-items-center rounded-md focus-visible:ring-2 focus-visible:outline-none sm:hidden"
+        >
+          <CalendarDays className="size-5" aria-hidden />
+        </Link>
         <UnitToggle />
         <LocaleSwitcher />
       </div>

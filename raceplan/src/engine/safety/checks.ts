@@ -6,7 +6,7 @@
 import { CONFIG } from "../config";
 import { addDays } from "../dates";
 import { experienceLevel, interpolateByDistance, riskFlags } from "../profile";
-import { allowedIncrease, longRunShareCap } from "../builder/volume";
+import { allowedIncrease } from "../builder/volume";
 import type { PlanWeek, TrainingPlan, Workout, WorkoutType } from "../types";
 
 export interface Violation {
@@ -16,7 +16,16 @@ export interface Violation {
   detail: string;
 }
 
-const EPS = 1; // meters / ratios tolerance for float noise
+const EPS = 1;
+
+/** §7.6 exactly as specified (the builder applies a stricter, smoothed cap). */
+function specLongRunShareCap(volM: number, fewRuns: boolean): number {
+  const share =
+    volM < CONFIG.smallVolumeThresholdM
+      ? CONFIG.longRunShare.smallVolume
+      : CONFIG.longRunShare.normal;
+  return volM * (fewRuns ? Math.max(share, 0.5) : share);
+} // meters / ratios tolerance for float noise
 
 const QUALITY_TYPES: WorkoutType[] = [
   "tempo",
@@ -159,7 +168,7 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
       if (!wk?.isLongRun) continue;
       const runs = w.days.filter((x) => x.workout && x.workout.type !== "race").length;
       const fewRuns = p.availableDays.length <= 2 || runs <= 2;
-      if (wk.estDistanceM > longRunShareCap(w.plannedVolumeM, fewRuns) + EPS) {
+      if (wk.estDistanceM > specLongRunShareCap(w.plannedVolumeM, fewRuns) + EPS) {
         v("long_run_share", `${wk.estDistanceM} of ${w.plannedVolumeM}`, w.index, d.date);
       }
       if (wk.estDistanceM > longCap + EPS)

@@ -60,11 +60,19 @@ export function builderIncrease(volM: number, ramp: number, smallAllowanceM: num
  * possible (see docs/decisions.md).
  */
 export function longRunShareCap(volM: number, fewRuns = false): number {
-  const share =
-    volM < CONFIG.smallVolumeThresholdM
-      ? CONFIG.longRunShare.smallVolume
-      : CONFIG.longRunShare.normal;
-  return volM * (fewRuns ? Math.max(share, 0.5) : share);
+  const t = CONFIG.smallVolumeThresholdM;
+  if (fewRuns) {
+    const share = volM < t ? CONFIG.longRunShare.smallVolume : CONFIG.longRunShare.normal;
+    return volM * Math.max(share, 0.5);
+  }
+  if (volM >= t) return volM * CONFIG.longRunShare.normal;
+  // Builder smoothing (stricter than §7.6): just below 30 km the cap is also
+  // limited to 30% of 30 km, so the long run never shrinks when weekly volume
+  // crosses the threshold.
+  return Math.min(
+    volM * CONFIG.longRunShare.smallVolume,
+    Math.max(volM * CONFIG.longRunShare.normal, t * CONFIG.longRunShare.normal),
+  );
 }
 
 /** Starting volume: current volume (capped by max); allowance when starting from 0. */
