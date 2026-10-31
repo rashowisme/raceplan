@@ -9,6 +9,8 @@ import {
   startVolume,
 } from "./volume";
 import { WEEKDAYS, type Weekday } from "../types";
+import { CONFIG } from "../config";
+import { checkPlan, generatePlan } from "../index";
 
 describe("frame", () => {
   it("counts Monday-based weeks and phases", () => {
@@ -133,5 +135,47 @@ describe("chooseLayout", () => {
     expect(l.qualityDays).not.toContain("sun");
     expect(l.qualityDays).not.toContain("mon");
     expect(l.qualityDays).not.toContain("wed");
+  });
+});
+
+describe("easy runs in 4-day weeks", () => {
+  it("are never as long as the long run (and recovery runs stay shorter still)", () => {
+    // Found on the race guide samples: 4 days, two quality sessions → the one
+    // easy day used to get everything left (a 16 km "recovery" after a 16 km long run).
+    const r = generatePlan(
+      {
+        race: { type: "marathon", date: "2027-04-04" },
+        watchPrediction: { timeS: 4 * 3600 + 30 * 60 },
+        currentWeeklyVolumeM: 30_000,
+        longestRecentRunM: 14_000,
+        maxWeeklyVolumeM: 50_000,
+        availableDays: ["mon", "wed", "fri", "sun"],
+        longRunDay: "sun",
+        yearsRunning: "1to3",
+        injuries: [],
+        currentlyInjured: false,
+        age: 35,
+        planStyle: "balanced",
+        preferences: { likes: [], dislikes: [] },
+        planStartDate: "2026-11-16",
+      },
+      { today: "2026-11-15" },
+    );
+    if (!r.ok) throw new Error(r.refusal.code);
+    expect(checkPlan(r.plan)).toEqual([]);
+    let checked = 0;
+    for (const w of r.plan.weeks) {
+      if (w.longRunM < 12_000) continue;
+      for (const d of w.days) {
+        const wk = d.workout;
+        if (!wk || (wk.type !== "easy" && wk.type !== "recovery")) continue;
+        checked++;
+        expect(wk.estDistanceM).toBeLessThan(w.longRunM);
+        // Up to 60% of the long run, plus a leftover too small to go elsewhere (< 1 km).
+        if (wk.type === "recovery")
+          expect(wk.estDistanceM).toBeLessThan(w.longRunM * 0.6 + CONFIG.minRunM);
+      }
+    }
+    expect(checked).toBeGreaterThan(5);
   });
 });

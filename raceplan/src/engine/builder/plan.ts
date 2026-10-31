@@ -634,12 +634,40 @@ function buildTrainingWeek(
       // Day after last week's hard day / long run (blocked for quality).
       (state.blockedDates.has(date) && diffDays(date, f.raceDate) > 2));
   const weightOf = (date: IsoDate) => (isRecovery(date) ? CONFIG.recoveryRunWeight : 1);
-  let weightLeft = easyDates.reduce((s, d) => s + weightOf(d), 0);
+  // With 4+ runs and a real long run (10 km+), an easy run stays clearly
+  // shorter than the long run (a recovery run even more); 2–3 run weeks keep
+  // the even split (§7.6), and small weeks don't need it.
+  const capOf = (date: IsoDate) => {
+    if (longM < CONFIG.easyRunCapMinLongM || runDates.length < CONFIG.easyRunCapMinRuns)
+      return easyCap;
+    const share = isRecovery(date)
+      ? CONFIG.recoveryRunMaxShareOfLong
+      : CONFIG.easyRunMaxShareOfLong;
+    return Math.min(easyCap, Math.max(CONFIG.minRunM, Math.floor((longM * share) / 100) * 100));
+  };
+  // Runs that would go over their cap get exactly the cap; the others share
+  // the rest (so the extra goes to runs with room, not lost).
+  const capped = new Set<IsoDate>();
+  for (;;) {
+    const free = easyDates.filter((d) => !capped.has(d));
+    const budget = easyLeft - [...capped].reduce((s, d) => s + capOf(d), 0);
+    const weights = free.reduce((s, d) => s + weightOf(d), 0);
+    const over = free.filter((d) => (budget * weightOf(d)) / weights > capOf(d));
+    if (free.length === 0 || over.length === 0) break;
+    for (const d of over) capped.add(d);
+  }
+  let weightLeft = easyDates.filter((d) => !capped.has(d)).reduce((s, d) => s + weightOf(d), 0);
+  easyLeft -= [...capped].reduce((s, d) => s + capOf(d), 0);
+  /** Capped easy runs: their planned distance and options (see 3c). */
+  const cappedRuns = new Map<IsoDate, { dist: number; opts: Parameters<typeof easyRun>[2] }>();
   easyDates.forEach((date) => {
     const weight = weightOf(date);
-    const share = Math.floor((easyLeft * weight) / weightLeft / 100) * 100;
-    weightLeft -= weight;
-    const dist = Math.min(share, easyCap);
+    let dist: number;
+    if (capped.has(date)) dist = capOf(date);
+    else {
+      dist = Math.min(Math.floor((easyLeft * weight) / weightLeft / 100) * 100, capOf(date));
+      weightLeft -= weight;
+    }
     const afterHard =
       hardDatesSoFar.includes(addDays(date, -1)) ||
       (longDate !== null && date === addDays(longDate, 1));
@@ -651,13 +679,12 @@ function buildTrainingWeek(
       !afterHard &&
       !beforeHard &&
       dist >= CONFIG.minStridesRunM;
-    const run = easyRun(c.pace, dist, {
-      recovery: isRecovery(date),
-      strides: giveStrides ? strides : undefined,
-    });
+    const opts = { recovery: isRecovery(date), strides: giveStrides ? strides : undefined };
+    const run = easyRun(c.pace, dist, opts);
     if (giveStrides) stridesLeft--;
     workouts.set(date, run);
-    easyLeft -= run.estDistanceM;
+    if (capped.has(date)) cappedRuns.set(date, { dist, opts });
+    else easyLeft -= run.estDistanceM;
     if (c.riskFlagged && !crossTrainingDate && !afterHard) crossTrainingDate = date;
   });
 
@@ -672,6 +699,17 @@ function buildTrainingWeek(
     const extended = withExtraEasy(c.pace, wk, Math.min(room, leftover));
     workouts.set(date, extended);
     leftover -= extended.estDistanceM - wk.estDistanceM;
+  }
+
+  // 3c. The easy-run caps only move volume: what couldn't go elsewhere goes
+  // back to the capped runs (up to the long run, as before the caps).
+  for (const [date, { dist, opts }] of cappedRuns) {
+    const add = Math.floor(Math.min(leftover, easyCap - dist) / 100) * 100;
+    if (add <= 0) continue;
+    const before = workouts.get(date)!.estDistanceM;
+    const run = easyRun(c.pace, dist + add, opts);
+    workouts.set(date, run);
+    leftover -= run.estDistanceM - before;
   }
 
   const total = () => [...workouts.values()].reduce((s, wk) => s + wk.estDistanceM, 0);

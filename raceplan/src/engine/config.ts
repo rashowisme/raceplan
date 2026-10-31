@@ -104,6 +104,14 @@ export const CONFIG = {
   minStridesRunM: 2500,
   /** Recovery runs get this share of a normal easy run. */
   recoveryRunWeight: 0.7,
+  /**
+   * Builder-only: with this many runs or more and a long run of at least
+   * `easyRunCapMinLongM`, easy runs stay clearly shorter than the long run.
+   */
+  easyRunCapMinRuns: 4,
+  easyRunCapMinLongM: 10 * KM,
+  easyRunMaxShareOfLong: 0.75,
+  recoveryRunMaxShareOfLong: 0.6,
   /** Long runs with fast segments need a long enough run. */
   minProgressiveLongRunM: 10 * KM,
   minRacePaceLongRunM: 12 * KM,
