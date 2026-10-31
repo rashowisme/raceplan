@@ -26,7 +26,9 @@ export function guideData(g: RaceGuide, t: Translate, locale: string): GuideData
   const faq = [
     {
       q: t("raceGuide.faqStartQ", { name: g.name, year }),
-      a: t("raceGuide.faqStartA", {
+      a: t(g.nextEdition.date ? "raceGuide.faqStartA" : "raceGuide.faqStartEstimated", {
+        year,
+        date: formatDateLong(locale, sampleRaceDate(g)),
         list: byLength
           .map((s) =>
             t("raceGuide.faqStartItem", {

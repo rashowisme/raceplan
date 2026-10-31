@@ -63,8 +63,11 @@ describe("race guides", () => {
         expect(checkPlan(s.plan)).toEqual([]);
         expect(s.plan.weeks).toHaveLength(s.persona.weeks);
         expect(s.plan.raceDate).toBe(sampleRaceDate(g));
-        // No "ambitious goal" or "too short" warning on a showcase plan.
-        expect(s.plan.warnings.map((w) => w.code)).toEqual([]);
+        // No "ambitious goal" or "too short" warning on a showcase plan. Runners
+        // without a time (20 km, trail samples) get the effort-only notice.
+        const allowed =
+          g.race.type === "custom" || g.race.type === "trail" ? ["no_performance_data"] : [];
+        expect(s.plan.warnings.map((w) => w.code).filter((c) => !allowed.includes(c))).toEqual([]);
       }
     },
   );

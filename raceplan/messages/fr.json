@@ -636,6 +636,7 @@
     "chartWeek": "Semaine",
     "chartVolume": "Volume",
     "chartPhase": "Phase",
-    "chartLegend": "Phases du plan"
+    "chartLegend": "Phases du plan",
+    "faqStartEstimated": "La date {year} n'est pas encore annoncée. En prenant le {date} comme repère : {list}. Recalculez dès que la date officielle est connue."
   }
 }

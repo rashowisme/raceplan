@@ -29,11 +29,11 @@ M2 — Input form (next)
 
 - **Adaptive plans, step 2 (spec §13.5):** "How do you feel?" card (tired or sore, pain or niggle, sick, injured, undo today's check-in); sick / injured pause the plan ("Plan paused" card, paused days in the calendar) until "I'm back"; "felt hard" twice in a week or a tired check-in → next week holds and one quality session becomes easy, twice in a row → cutback; pain → 7 days easy at 80%. Engine: `addCheckIn`, `undoCheckIn`, `openPause`; builder per-day adjustments. Tests: `tests/unit/checkins.test.ts` (scenarios + day-by-day property test, verified on 12 seeds × 500; step-1 property test re-run on 6 seeds × 500), backup with check-ins, e2e check-in flow.
 
-- **Race guides (SEO):** `/fr/plan-entrainement` hub + one page per race (first: Marathon de Paris): facts with sources, course and calendar notes, 3 sample plans computed by the engine, FAQ (generated + race-specific), BreadcrumbList/FAQPage JSON-LD, sitemap, "Create my plan for <race>" pre-filling the form. Tests: `tests/unit/race-guides.test.ts`, form pre-fill component test, e2e `tests/e2e/race-guides.spec.ts`.
+- **Race guides (SEO):** `/fr/plan-entrainement` hub + one page per race (11 races: Paris marathon and half, EcoTrail 30 km, Nantes, Annecy, Lyon, 20 km de Paris, Marseille-Cassis, Toulouse, Nice-Cannes, La Rochelle): facts with sources, course and calendar notes, 3 sample plans computed by the engine, FAQ (generated + race-specific), BreadcrumbList/FAQPage JSON-LD, sitemap, "Create my plan for <race>" pre-filling the form. Tests: `tests/unit/race-guides.test.ts`, form pre-fill component test, e2e `tests/e2e/race-guides.spec.ts`.
 
 ## Next (not v1)
 
-- Race guides: owner review of the Paris page, then the next ~11 races (research notes in `docs/race-guides.md`); personas for half marathon, 20 km (custom) and trail.
+- Race guides: owner fact check of the 11 pages (`docs/race-guides.md` lists what to verify), set `checkedOn`; update dates as editions are announced.
 - Owner review of the items below, then deploy to Vercel. After choosing a domain, set `NEXT_PUBLIC_SITE_URL` (otherwise the Vercel production domain is used) and submit `/sitemap.xml` in Google Search Console.
 - Future: accounts + EU DB (`ApiPlanRepository`), more languages.
 

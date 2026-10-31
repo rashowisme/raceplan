@@ -7,7 +7,7 @@
  * Race names are used as plain text only: no logos, colours, sponsor names
  * or official wording, and every page says it is independent.
  */
-import type { IsoDate, RaceType } from "@/engine/types";
+import type { IsoDate, PreferenceTag, RaceType } from "@/engine/types";
 
 export interface RaceGuide {
   /** URL segment, e.g. `marathon-de-paris`. */
@@ -18,6 +18,8 @@ export interface RaceGuide {
   name: string;
   city: string;
   race: { type: RaceType; distanceM?: number; elevationGainM?: number };
+  /** Sessions the sample runners prefer for this course (e.g. hills for a hilly race). */
+  likes?: PreferenceTag[];
   /** Next edition. `date` is null until it is announced. */
   nextEdition: {
     date: IsoDate | null;

@@ -52,3 +52,19 @@ test("race guides: hub in French, nothing in English", async ({ page }) => {
   const sitemap = await (await page.request.get("/sitemap.xml")).text();
   expect(sitemap).toContain("/fr/plan-entrainement/marathon-de-paris");
 });
+
+test("every race guide renders with its title, samples and call to action", async ({ page }) => {
+  test.skip(test.info().project.name === "mobile", "Content smoke test: desktop is enough");
+  await page.goto("/fr/plan-entrainement");
+  const hrefs = await page
+    .locator('a[href^="/fr/plan-entrainement/"]')
+    .evaluateAll((as) => as.map((a) => a.getAttribute("href")!));
+  expect(hrefs.length).toBeGreaterThanOrEqual(10);
+  for (const href of hrefs) {
+    const res = await page.goto(href);
+    expect(res?.status(), href).toBe(200);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Plan d'entraînement");
+    await expect(page.locator("figure")).toHaveCount(3);
+    await expect(page.getByRole("link", { name: /^Créer mon plan pour/ }).first()).toBeVisible();
+  }
+});

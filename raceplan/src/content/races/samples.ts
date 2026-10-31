@@ -87,6 +87,172 @@ const PERSONAS: Partial<Record<RaceType, Persona[]>> = {
   ],
 };
 
+PERSONAS.half = [
+  {
+    id: "premier",
+    title: "Premier semi-marathon",
+    description:
+      "Court depuis environ un an, 20 km par semaine en 3 à 4 sorties, sortie la plus longue récente de 10 km.",
+    weeks: 14,
+    profile: {
+      ...common,
+      watchPrediction: { timeS: 2 * 3600 + 15 * 60 },
+      currentWeeklyVolumeM: 20_000,
+      longestRecentRunM: 10_000,
+      maxWeeklyVolumeM: 35_000,
+      availableDays: ["tue", "thu", "sat", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "1to3",
+      age: 32,
+    },
+  },
+  {
+    id: "1h55",
+    title: "Objectif 1 h 55",
+    description:
+      "Coureur régulier, 30 km par semaine en 4 sorties, sortie longue de 14 km, vise 1 h 55.",
+    weeks: 12,
+    profile: {
+      ...common,
+      watchPrediction: { timeS: 1 * 3600 + 53 * 60 },
+      targetTimeS: 1 * 3600 + 55 * 60,
+      currentWeeklyVolumeM: 30_000,
+      longestRecentRunM: 14_000,
+      maxWeeklyVolumeM: 45_000,
+      availableDays: ["mon", "wed", "fri", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "1to3",
+      age: 36,
+    },
+  },
+  {
+    id: "1h40",
+    title: "Objectif 1 h 40",
+    description:
+      "Semi-marathonien confirmé (record à 1 h 44), 40 km par semaine en 5 sorties, vise 1 h 40.",
+    weeks: 12,
+    profile: {
+      ...common,
+      personalRecord: { timeS: 1 * 3600 + 44 * 60 },
+      targetTimeS: 1 * 3600 + 40 * 60,
+      currentWeeklyVolumeM: 40_000,
+      longestRecentRunM: 16_000,
+      maxWeeklyVolumeM: 60_000,
+      availableDays: ["mon", "tue", "thu", "sat", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "3plus",
+      age: 40,
+    },
+  },
+];
+
+/** Other road distances (around 20 km): no time goals, the course matters more. */
+PERSONAS.custom = [
+  {
+    id: "premier",
+    title: "Première course de cette distance",
+    description:
+      "Court depuis environ un an, 20 km par semaine en 3 à 4 sorties, sortie la plus longue récente de 10 km.",
+    weeks: 14,
+    profile: {
+      ...common,
+      currentWeeklyVolumeM: 20_000,
+      longestRecentRunM: 10_000,
+      maxWeeklyVolumeM: 35_000,
+      availableDays: ["tue", "thu", "sat", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "1to3",
+      age: 32,
+    },
+  },
+  {
+    id: "regulier",
+    title: "Coureur régulier",
+    description: "30 km par semaine en 4 sorties, sortie longue de 14 km, a déjà couru un semi.",
+    weeks: 12,
+    profile: {
+      ...common,
+      currentWeeklyVolumeM: 30_000,
+      longestRecentRunM: 14_000,
+      maxWeeklyVolumeM: 45_000,
+      availableDays: ["mon", "wed", "fri", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "1to3",
+      age: 36,
+    },
+  },
+  {
+    id: "confirme",
+    title: "Coureur confirmé",
+    description:
+      "40 km par semaine en 5 sorties, sortie longue de 16 km, plusieurs semis au compteur.",
+    weeks: 12,
+    profile: {
+      ...common,
+      currentWeeklyVolumeM: 40_000,
+      longestRecentRunM: 16_000,
+      maxWeeklyVolumeM: 60_000,
+      availableDays: ["mon", "tue", "thu", "sat", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "3plus",
+      age: 40,
+    },
+  },
+];
+
+PERSONAS.trail = [
+  {
+    id: "premier",
+    title: "Premier trail de cette distance",
+    description:
+      "Court sur route et en forêt depuis un an ou deux, 25 km par semaine en 4 sorties, sortie la plus longue récente de 14 km.",
+    weeks: 16,
+    profile: {
+      ...common,
+      currentWeeklyVolumeM: 25_000,
+      longestRecentRunM: 14_000,
+      maxWeeklyVolumeM: 45_000,
+      availableDays: ["tue", "thu", "sat", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "1to3",
+      age: 34,
+    },
+  },
+  {
+    id: "regulier",
+    title: "Traileur régulier",
+    description: "35 km par semaine en 4 à 5 sorties, sortie longue de 18 km avec du dénivelé.",
+    weeks: 14,
+    profile: {
+      ...common,
+      currentWeeklyVolumeM: 35_000,
+      longestRecentRunM: 18_000,
+      maxWeeklyVolumeM: 55_000,
+      availableDays: ["mon", "wed", "fri", "sat", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "3plus",
+      age: 39,
+    },
+  },
+  {
+    id: "confirme",
+    title: "Traileur confirmé",
+    description:
+      "50 km par semaine en 5 sorties, sortie longue de 24 km, plusieurs trails courts terminés.",
+    weeks: 12,
+    profile: {
+      ...common,
+      currentWeeklyVolumeM: 50_000,
+      longestRecentRunM: 24_000,
+      maxWeeklyVolumeM: 70_000,
+      availableDays: ["mon", "tue", "thu", "sat", "sun"],
+      longRunDay: "sun",
+      yearsRunning: "3plus",
+      age: 43,
+    },
+  },
+];
+
 export const personasFor = (type: RaceType): Persona[] => PERSONAS[type] ?? [];
 
 export interface Sample {
@@ -113,6 +279,7 @@ export function buildSamples(g: RaceGuide): Sample[] {
       ...persona.profile,
       race: { ...g.race, date: raceDate },
       planStartDate: startDate,
+      preferences: { likes: g.likes ?? [], dislikes: [] },
     };
     const r = generatePlan(profile, { today: addDays(startDate, -1) });
     if (!r.ok) throw new Error(`${g.slug}/${persona.id}: ${r.refusal.code}`);

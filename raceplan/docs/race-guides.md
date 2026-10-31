@@ -29,22 +29,26 @@ like "plan d'entraînement marathon de Paris". Hub: `/fr/plan-entrainement`.
 Each year: update `nextEdition` once the new date is announced (the test fails once a race date
 is in the past relative to the test fixture date).
 
-## Research notes for the next guides (2026-10-31, to verify)
+## Published guides (facts to check before going live)
 
-| Race | Next edition | Facts found | Sources |
-|---|---|---|---|
-| Semi-marathon de Paris | 7 March 2027 | Half marathon, lottery | [Sortir à Paris](https://www.sortiraparis.com/en/what-to-do-in-paris/sport-wellness/articles/210126-paris-half-marathon-2027-when-it-takes-place-and-how-to-register) |
-| Marathon de Nantes | 25 April 2027 (sources say 24–26 for the weekend) | Start Machines de l'Île 9:15, finish Parc de la Beaujoire | [Nantes Métropole](https://metropole.nantes.fr/que-faire-a-nantes/agenda/inscriptions-imminentes-marathon-de-nantes-semi-marathon-foulees-de-lelephant-2027), [werun.world](https://werun.world/?p=14226) |
-| Marathon du lac d'Annecy | April 2027 (17 or 18, unconfirmed) | Around the lake | [marathons.com](https://www.marathons.com/fr/events/marathon-du-lac-d-annecy_m8ZVe) |
-| EcoTrail Paris (30 and 45 km) | 20 March 2027 | 30 km ≈ 500 m D+, 45 km ≈ 800 m D+ (third-party listing) | [werun.world](https://werun.world/?p=13541), [Reference Trail](https://reference-trail.fr/ecotrail-paris-2027-les-inscriptions-demarrent-doucement-pour-cette-20e-edition/) |
-| Marseille–Cassis (20 km) | late October 2027, not announced (2026: 25 Oct) | Col de la Gineste 327 m, ~5 km climb, ~340 m D+ (sources vary 340–400), long descent to Cassis | [Stadion Actu](https://stadion-actu.fr/?p=150105), [Finishers](https://www.finishers.com/course/marseille-cassis) |
-| Run in Lyon (marathon) | early October 2027, not announced (2026: 4 Oct) | 293 m D+, start Palais de Justice (Vieux-Lyon), finish place Bellecour, 5h30 limit | [marathons.com](https://www.marathons.com/en/run-in-lyon/run-in-lyon-2026-36-000-runners-expected-for-record-breaking-edition_o184) |
-| 20 km de Paris | October 2027, not announced (2026: 10 or 11 Oct) | Start pont d'Iéna, Bois de Boulogne, finish near the Eiffel Tower | [Campus Coach](https://www.campus.coach/blog/analyse-du-parcours-des-20-km-de-paris) |
-| Marathon de Toulouse | early November 2027, not announced (2026: 1 Nov) | ~130 m D+, 6 h limit | [marathons.com](https://www.marathons.com/en/toulouse-metropole-run-experience/harmonie-mutuelle-toulouse-metropole-run-experience-unveils-a-brand-new-course-for-2026_wv04) |
-| Nice–Cannes marathon | November 2027, not announced (2026: 8 Nov) | Point to point along the coast, Promenade des Anglais → Croisette | [Côte d'Azur tourism](https://cotedazurfrance.fr/offres/marathon-des-alpes-maritimes-nice-cannes-cannes-fr-3595911/) |
-| Marathon de Bordeaux | unknown (2026: 8 Nov, first since 2019) | Irregular history | [marathons.com](https://www.marathons.com/fr/10-km/marathon-de-bordeaux-le-grand-retour-en-2026-sept-ans-apres_qy5v) |
-| Marathon de La Rochelle | late November 2027, not announced (2026: 29 Nov) | Flat, two loops | [Reference Trail](https://reference-trail.fr/marathon-de-la-rochelle-2026-guide-dinscription-complet/) |
+| Guide | Next edition | Points to verify on the official site |
+|---|---|---|
+| Marathon de Paris | 4 April 2027 | New 2027 course |
+| Semi-marathon de Paris | 7 March 2027 | Course (start/finish), elevation (sources say 60 or 166 m) |
+| EcoTrail Paris 30 km | 20 March 2027 | Start, finish point, D+ (sources 437–1,200 m; page says ~500 m) |
+| Marathon de Nantes | 25 April 2027 | Elevation (sources 95 or 230 m; page avoids a figure) |
+| Marathon du lac d'Annecy | not announced (est. 18 April 2027) | Date; elevation (~80–100 m) |
+| Marathon du Run In Lyon | not announced (est. 3 October 2027) | Date; course; time limit |
+| 20 km de Paris | not announced (est. 10 October 2027) | Date; the climb near km 6 |
+| Marseille-Cassis | not announced (est. 31 October 2027) | Date; D+ (~340 m); time barriers |
+| Marathon de Toulouse | not announced (est. 31 October 2027) | Date; course; time limit |
+| Marathon Nice-Cannes | not announced (est. 7 November 2027) | Date; D+ (organiser: 100 m) |
+| Marathon de La Rochelle | not announced (est. 28 November 2027) | Date; start |
 
-Out of scope (engine limit ~60 km flat-equivalent effort): UTMB, SaintéLyon, long Templiers and
-EcoTrail formats, Grand Raid. Road races with a climb (Marseille–Cassis) need personas for the
-`custom` distance type; trails need `trail` personas.
+Sample runners: marathon, half marathon, other road distances (`custom`, ~20 km, no time goals) and
+trail (~30 km). Hilly courses (Marseille-Cassis, Lyon, EcoTrail) plan the samples with a preference
+for hill sessions (`likes`). The six flat marathon pages share the same three sample runners (only
+dates differ); their written content is what sets them apart.
+
+Not covered: Marathon de Bordeaux (irregular dates). Out of scope (engine limit ~60 km
+flat-equivalent effort): UTMB, SaintéLyon, long Templiers and EcoTrail formats, Grand Raid.
