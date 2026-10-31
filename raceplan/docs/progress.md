@@ -21,6 +21,7 @@ M2 — Input form (next)
 - **M6 Trail and custom distance:** time-based trail long runs with progressive D+ targets, uphill repeats (power hiking on steep courses), downhill practice in the specific phase (not with knee/ITB history), effort-based trail race day, week D+ in calendar + PDF. Custom road distances interpolate between standard distances. New fixture `steepTrail25k`; tests in `tests/unit/trail-custom.test.ts`.
 - **M7 QA pass:** coach review of all fixture plans (fixed: long run dropping at the 30 km threshold, taper sharpening, recovery runs without strides, trail race-day pace); Playwright e2e on desktop + mobile (form → plan → dialog → PDF download, reload persistence, km/mi, FR, injured block, empty state, no overflow at 360px); EN/FR completeness tests; unused deps removed; mobile "My plan" link; security headers; `vercel.json` (cdg1).
 - **Dark mode (post-v1):** header toggle cycling system → light → dark (localStorage `raceplan.theme`), applied before first paint by an inline script, live OS-preference following in system mode; dark values for brand, phase, success and warning colours. PDF stays light (print). Tests: `tests/unit/theme.test.ts`, e2e theme test; messages test now parses ICU `select`.
+- **Owner review (2026-10-31):** two-run 50/50 split and post-cutback rule confirmed; long-run share raised 30% → 33% (spec §7.6 updated); even-split rule generalised to any run count (fixes 3-day runners losing volume).
 
 ## Next (not v1)
 
@@ -34,8 +35,5 @@ M2 — Input form (next)
 
 ## Known issues / to confirm with owner
 
-- Two-run weeks use an even 50/50 split instead of the 30/40% long-run share (see decisions.md).
-- Long runs plateau at 30% of weekly volume (e.g. 15 km at 50 km/week for a half) — spec-compliant but on the short side for some runners.
-- Week-over-week increases after a cutback are measured against the last full week (no increase allowed over it) — see decisions.md.
 - Trail long-run distances are flat-road estimates of a time-on-feet prescription.
 - The optional time trial result can't be entered yet (v1 shows efforts only for runners without performance data).

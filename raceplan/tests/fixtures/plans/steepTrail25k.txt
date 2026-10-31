@@ -2,97 +2,97 @@ level=experienced risk=[] weeks=14 days/wk=6 peak=70.0km taper=20d
 fitness=none racePace=-
 zones=effort-only
 warnings=[no_performance_data] advice=[advice.effortOnly]
-W01 2026-11-02 base        45.0/45.0km long 12.8
+W01 2026-11-02 base        45.0/45.0km long 14.5
    mon tempo 6.4km 35min [H] {w:900s E/easy; w:600s T/threshold; c:600s E/easy}
-   tue recovery 5.8km 37min {r:5800m E/recovery}
-   wed easy 8.2km 48min {r:8200m E/easy}
+   tue recovery 5.3km 34min {r:5300m E/recovery}
+   wed easy 7.5km 44min {r:7500m E/easy}
    thu hillSprints 5.9km 35min [H] {w:900s E/easy; 6×(w:10s R/repetition uphill / r:90s E/recovery downhill); c:600s E/easy}
-   sat long 12.8km 75min {r:4500s E/easy rolling}
-   sun recovery 5.9km 38min {r:5900m E/recovery}
-W02 2026-11-09 base        49.5/49.5km long 14.5
-   mon fartlek 6.3km 35min [H] {w:900s E/easy; 5×(w:60s I/interval / r:60s E/easy); c:600s E/easy}
-   tue recovery 6.2km 40min {r:6200m E/recovery}
-   wed easy 9.0km 53min {r:9000m E/easy}
-   thu timeTrial 7.2km 38min [H,opt] {w:900s E/easy; w:3000m I/race; c:600s E/easy}
    sat long 14.5km 85min {r:5100s E/easy rolling}
-   sun recovery 6.3km 41min {r:6300m E/recovery}
-W03 2026-11-16 base        54.4/54.4km long 16.2
-   mon tempo 7.4km 40min [H] {w:900s E/easy; w:900s T/threshold; c:600s E/easy}
-   tue recovery 7.2km 46min {r:7200m E/recovery}
-   wed easy 10.2km 60min {r:10200m E/easy}
-   thu hillSprints 6.1km 37min [H] {w:900s E/easy; 7×(w:10s R/repetition uphill / r:90s E/recovery downhill); c:600s E/easy}
+   sun recovery 5.4km 35min {r:5400m E/recovery}
+W02 2026-11-09 base        49.5/49.5km long 16.2
+   mon fartlek 6.3km 35min [H] {w:900s E/easy; 5×(w:60s I/interval / r:60s E/easy); c:600s E/easy}
+   tue recovery 5.7km 37min {r:5700m E/recovery}
+   wed easy 8.2km 48min {r:8200m E/easy}
+   thu timeTrial 7.2km 38min [H,opt] {w:900s E/easy; w:3000m I/race; c:600s E/easy}
    sat long 16.2km 95min {r:5700s E/easy rolling}
-   sun recovery 7.3km 47min {r:7300m E/recovery}
-W04 2026-11-23 base        42.3/42.4km long 11.9 CUTBACK
+   sun recovery 5.9km 38min {r:5900m E/recovery}
+W03 2026-11-16 base        54.4/54.4km long 17.0
+   mon tempo 7.4km 40min [H] {w:900s E/easy; w:900s T/threshold; c:600s E/easy}
+   tue recovery 6.9km 44min {r:6900m E/recovery}
+   wed easy 10.0km 59min {r:10000m E/easy}
+   thu hillSprints 6.1km 37min [H] {w:900s E/easy; 7×(w:10s R/repetition uphill / r:90s E/recovery downhill); c:600s E/easy}
+   sat long 17.0km 100min {r:6000s E/easy rolling}
+   sun recovery 7.0km 45min {r:7000m E/recovery}
+W04 2026-11-23 base        42.3/42.4km long 12.8 CUTBACK
    mon fartlek 5.8km 33min [H] {w:900s E/easy; 4×(w:60s I/interval / r:60s E/easy); c:600s E/easy}
-   tue recovery 5.0km 32min {r:5000m E/recovery}
-   wed easy 7.1km 41min {r:5700m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
-   thu easy 7.3km 43min {r:5900m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
-   sat long 11.9km 70min {r:4200s E/easy rolling}
-   sun recovery 5.2km 33min {r:5200m E/recovery}
-W05 2026-11-30 build       54.4/54.4km long 15.3
+   tue recovery 4.8km 31min {r:4800m E/recovery}
+   wed easy 6.9km 40min {r:5500m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 7.0km 41min {r:5600m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
+   sat long 12.8km 75min {r:4500s E/easy rolling}
+   sun recovery 5.0km 32min {r:5000m E/recovery}
+W05 2026-11-30 build       54.4/54.4km long 16.2
    mon tempo 8.5km 45min [H] {w:900s E/easy; w:1200s T/threshold; c:600s E/easy}
-   tue recovery 6.7km 43min {r:6700m E/recovery}
-   wed easy 9.7km 57min {r:9700m E/easy}
+   tue recovery 6.5km 42min {r:6500m E/recovery}
+   wed easy 9.2km 54min {r:9200m E/easy}
    thu hillRepeats 7.4km 45min [H] {w:900s E/easy; 5×(w:60s I/interval uphill / w:60s E/powerHike uphill / r:120s E/recovery downhill); c:600s E/easy}
-   sat long 15.3km 90min {r:5400s E/easy rolling}
-   sun recovery 6.8km 44min {r:6800m E/recovery}
-W06 2026-12-07 build       59.8/59.8km long 16.7
+   sat long 16.2km 95min {r:5700s E/easy rolling}
+   sun recovery 6.6km 43min {r:6600m E/recovery}
+W06 2026-12-07 build       59.8/59.8km long 17.7
    mon cruiseIntervals 10.0km 53min [H] {w:900s E/easy; 4×(w:360s T/threshold / r:60s E/recovery); c:600s E/easy}
+   tue recovery 6.0km 39min {r:6000m E/recovery}
+   wed easy 8.7km 51min {r:8700m E/easy}
+   thu longIntervals 11.3km 60min [H] {w:900s E/easy; 5×(w:240s I/interval / r:180s E/recovery); c:600s E/easy}
+   sat longProgressive 17.7km 100min [H] {r:4800s E/easy rolling; w:1200s M/steady rolling}
+   sun recovery 6.1km 39min {r:6100m E/recovery}
+W07 2026-12-14 build       65.7/65.7km long 19.6
+   mon tempo 8.5km 45min [H] {w:900s E/easy; w:1200s T/threshold; c:600s E/easy}
+   tue recovery 7.4km 48min {r:7400m E/recovery}
+   wed easy 10.7km 63min {r:10700m E/easy}
+   thu hillRepeats 11.9km 73min [H] {w:900s E/easy; 6×(w:120s I/interval uphill / w:120s E/powerHike uphill / r:240s E/recovery downhill); c:600s E/easy}
+   sat long 19.6km 115min {r:6900s E/easy rolling}
+   sun recovery 7.6km 49min {r:7600m E/recovery}
+W08 2026-12-21 build       51.1/51.2km long 14.5 CUTBACK
+   mon cruiseIntervals 8.6km 46min [H] {w:900s E/easy; 3×(w:360s T/threshold / r:60s E/recovery); c:600s E/easy}
+   tue recovery 5.7km 37min {r:5700m E/recovery}
+   wed easy 8.1km 47min {r:6700m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 8.3km 48min {r:6900m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
+   sat long 14.5km 85min {r:5100s E/easy rolling}
+   sun recovery 5.9km 38min {r:5900m E/recovery}
+W09 2026-12-28 specific    65.7/65.7km long 19.4
+   mon hillRepeats 13.1km 81min [H] {w:900s E/easy; 7×(w:120s I/interval uphill / w:120s E/powerHike uphill / r:240s E/recovery downhill); c:600s E/easy}
+   tue recovery 6.8km 44min {r:6800m E/recovery}
+   wed easy 9.8km 57min {r:9800m E/easy}
+   thu tempo 9.6km 50min [H] {w:900s E/easy; w:1500s T/threshold; c:600s E/easy}
+   sat longProgressive 19.4km 110min [H] {r:5400s E/easy rolling; w:1200s M/steady rolling}
+   sun recovery 7.0km 45min {r:7000m E/recovery}
+W10 2027-01-04 specific    70.0/70.0km long 21.3
+   mon downhillPractice 11.6km 67min [H] {w:900s E/easy; 6×(w:180s M/steady downhill / r:240s E/recovery uphill); c:600s E/easy}
+   tue recovery 7.4km 48min {r:7400m E/recovery}
+   wed easy 10.7km 63min {r:10700m E/easy}
+   thu cruiseIntervals 11.5km 60min [H] {w:900s E/easy; 5×(w:360s T/threshold / r:60s E/recovery); c:600s E/easy}
+   sat long 21.3km 125min {r:7500s E/easy rolling}
+   sun recovery 7.5km 48min {r:7500m E/recovery}
+W11 2027-01-11 specific    70.0/70.0km long 23.0
+   mon hillRepeats 14.4km 89min [H] {w:900s E/easy; 8×(w:120s I/interval uphill / w:120s E/powerHike uphill / r:240s E/recovery downhill); c:600s E/easy}
    tue recovery 6.3km 41min {r:6300m E/recovery}
    wed easy 9.1km 53min {r:9100m E/easy}
-   thu longIntervals 11.3km 60min [H] {w:900s E/easy; 5×(w:240s I/interval / r:180s E/recovery); c:600s E/easy}
-   sat longProgressive 16.7km 95min [H] {r:4800s E/easy rolling; w:900s M/steady rolling}
-   sun recovery 6.4km 41min {r:6400m E/recovery}
-W07 2026-12-14 build       65.7/65.7km long 17.9
-   mon tempo 8.5km 45min [H] {w:900s E/easy; w:1200s T/threshold; c:600s E/easy}
-   tue recovery 7.9km 51min {r:7900m E/recovery}
-   wed easy 11.4km 67min {r:11400m E/easy}
-   thu hillRepeats 11.9km 73min [H] {w:900s E/easy; 6×(w:120s I/interval uphill / w:120s E/powerHike uphill / r:240s E/recovery downhill); c:600s E/easy}
-   sat long 17.9km 105min {r:6300s E/easy rolling}
-   sun recovery 8.1km 52min {r:8100m E/recovery}
-W08 2026-12-21 build       51.1/51.2km long 13.6 CUTBACK
-   mon cruiseIntervals 8.6km 46min [H] {w:900s E/easy; 3×(w:360s T/threshold / r:60s E/recovery); c:600s E/easy}
-   tue recovery 5.9km 38min {r:5900m E/recovery}
-   wed easy 8.4km 49min {r:7000m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
-   thu easy 8.5km 50min {r:7100m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
-   sat long 13.6km 80min {r:4800s E/easy rolling}
-   sun recovery 6.1km 39min {r:6100m E/recovery}
-W09 2026-12-28 specific    65.7/65.7km long 17.7
-   mon hillRepeats 13.1km 81min [H] {w:900s E/easy; 7×(w:120s I/interval uphill / w:120s E/powerHike uphill / r:240s E/recovery downhill); c:600s E/easy}
-   tue recovery 7.3km 47min {r:7300m E/recovery}
-   wed easy 10.5km 61min {r:10500m E/easy}
-   thu tempo 9.6km 50min [H] {w:900s E/easy; w:1500s T/threshold; c:600s E/easy}
-   sat longProgressive 17.7km 100min [H] {r:4800s E/easy rolling; w:1200s M/steady rolling}
-   sun recovery 7.5km 48min {r:7500m E/recovery}
-W10 2027-01-04 specific    70.0/70.0km long 19.6
-   mon downhillPractice 11.6km 67min [H] {w:900s E/easy; 6×(w:180s M/steady downhill / r:240s E/recovery uphill); c:600s E/easy}
-   tue recovery 7.9km 51min {r:7900m E/recovery}
-   wed easy 11.4km 67min {r:11400m E/easy}
-   thu cruiseIntervals 11.5km 60min [H] {w:900s E/easy; 5×(w:360s T/threshold / r:60s E/recovery); c:600s E/easy}
-   sat long 19.6km 115min {r:6900s E/easy rolling}
-   sun recovery 8.0km 52min {r:8000m E/recovery}
-W11 2027-01-11 specific    70.0/70.0km long 20.2
-   mon hillRepeats 14.4km 89min [H] {w:900s E/easy; 8×(w:120s I/interval uphill / w:120s E/powerHike uphill / r:240s E/recovery downhill); c:600s E/easy}
-   tue recovery 7.2km 46min {r:7200m E/recovery}
-   wed easy 10.2km 60min {r:10200m E/easy}
    thu tempo 10.7km 55min [H] {w:900s E/easy; w:1800s T/threshold; c:600s E/easy}
-   sat longProgressive 20.2km 115min [H] {r:5700s E/easy rolling; w:1200s M/steady rolling}
-   sun recovery 7.3km 47min {r:7300m E/recovery}
-W12 2027-01-18 taper       52.4/52.5km long 13.6
+   sat longProgressive 23.0km 130min [H] {r:6300s E/easy rolling; w:1500s M/steady rolling}
+   sun recovery 6.5km 42min {r:6500m E/recovery}
+W12 2027-01-18 taper       52.4/52.5km long 15.3
    mon fartlek 10.0km 52min [H] {w:900s E/easy; 6×(w:180s I/interval / r:90s E/easy); c:600s E/easy}
-   tue recovery 5.9km 38min {r:5900m E/recovery}
-   wed easy 8.4km 49min {r:7000m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
-   thu easy 8.5km 50min {r:8500m E/easy}
-   sat long 13.6km 80min {r:4800s E/easy rolling}
-   sun recovery 6.0km 39min {r:6000m E/recovery}
-W13 2027-01-25 taper       39.2/39.3km long 10.2
+   tue recovery 5.5km 35min {r:5500m E/recovery}
+   wed easy 7.9km 46min {r:6500m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 8.1km 47min {r:8100m E/easy}
+   sat long 15.3km 90min {r:5400s E/easy rolling}
+   sun recovery 5.6km 36min {r:5600m E/recovery}
+W13 2027-01-25 taper       39.2/39.3km long 11.9
    mon fartlek 8.1km 43min [H] {w:900s E/easy; 4×(w:180s I/interval / r:90s E/easy); c:600s E/easy}
-   tue recovery 4.3km 28min {r:4300m E/recovery}
-   wed easy 6.0km 35min {r:4600m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
-   thu easy 6.2km 36min {r:6200m E/easy}
-   sat long 10.2km 60min {r:3600s E/easy rolling}
-   sun recovery 4.4km 28min {r:4400m E/recovery}
+   tue recovery 3.9km 25min {r:3900m E/recovery}
+   wed easy 5.6km 33min {r:4200m E/easy; 6×(w:20s R/repetition / r:60s E/recovery)}
+   thu easy 5.7km 33min {r:5700m E/easy}
+   sat long 11.9km 70min {r:4200s E/easy rolling}
+   sun recovery 4.0km 26min {r:4000m E/recovery}
 W14 2027-02-01 taper       20.2/31.3km long 0.0 RACE
    mon easy 5.7km 33min {r:4800m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}
    tue easy 5.7km 33min {r:4800m E/easy; 4×(w:20s R/repetition / r:60s E/recovery)}

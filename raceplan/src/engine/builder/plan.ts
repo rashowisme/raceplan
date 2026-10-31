@@ -94,8 +94,6 @@ export interface PlanContext {
   effortDistanceM: number;
   runningDays: number;
   minRestDays: number;
-  /** Only 2 available days: long run capped at an even split (see volume.ts). */
-  twoDayRunner: boolean;
   peakVolumeM: number;
   cutbackEvery: number;
   warnings: PlanWarning[];
@@ -182,7 +180,6 @@ export function makeContext(
     effortDistanceM: effortM,
     runningDays,
     minRestDays,
-    twoDayRunner: profile.availableDays.length <= 2,
     peakVolumeM,
     cutbackEvery,
     warnings,
@@ -676,10 +673,10 @@ function buildTrainingWeek(
       const current = workouts.get(longDate);
       if (!current) break;
       const planned = total();
-      // Weeks with ≤ 2 runs get the even-split rule (see longRunShareCap).
-      const fewRuns = c.twoDayRunner || workouts.size <= 2;
-      if (current.estDistanceM <= longRunShareCap(planned, fewRuns)) break;
-      const s = longRunShareCap(planned, fewRuns) / planned;
+      // Few-run weeks get the even-split rule (see longRunShareCap).
+      const runs = workouts.size;
+      if (current.estDistanceM <= longRunShareCap(planned, runs)) break;
+      const s = longRunShareCap(planned, runs) / planned;
       const maxLong = (s / (1 - s)) * (planned - current.estDistanceM);
       if (maxLong < CONFIG.minRunM) {
         workouts.delete(longDate);
@@ -687,7 +684,10 @@ function buildTrainingWeek(
       }
       const shorter = longRun(c.pace, maxLong, variant, c.race, trailLong(c, phase, maxLong));
       workouts.set(longDate, shorter);
-      if (fewRuns) continue;
+      // Even split binding (2 runs, or 3 runs ≥ 30 km): one shortening is enough.
+      // Re-capping the other runs to the rounded long run would shrink the
+      // whole week pass after pass; they may stay up to one rounding step longer.
+      if (1 / runs >= s - 1e-9) continue;
       for (const [date, wk] of workouts) {
         if (
           (wk.type === "easy" || wk.type === "recovery") &&
@@ -848,9 +848,9 @@ export function assemblePlan(
     smallAllowanceM,
     cutbackEvery: c.cutbackEvery,
     // A longest run of 0 next to a non-zero volume is treated as "not provided".
-    startLongRunM: p.longestRecentRunM || longRunShareCap(startVol, c.twoDayRunner),
+    startLongRunM: p.longestRecentRunM || longRunShareCap(startVol, c.runningDays),
     longRunCapM: Math.min(longCapByRace, longCapByTime),
-    twoDayRunner: c.twoDayRunner,
+    runsPerWeek: c.runningDays,
   });
 
   const state: WeekState = {

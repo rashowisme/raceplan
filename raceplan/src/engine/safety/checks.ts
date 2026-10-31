@@ -19,12 +19,12 @@ export interface Violation {
 const EPS = 1;
 
 /** §7.6 exactly as specified (the builder applies a stricter, smoothed cap). */
-function specLongRunShareCap(volM: number, fewRuns: boolean): number {
+function specLongRunShareCap(volM: number, runs: number): number {
   const share =
     volM < CONFIG.smallVolumeThresholdM
       ? CONFIG.longRunShare.smallVolume
       : CONFIG.longRunShare.normal;
-  return volM * (fewRuns ? Math.max(share, 0.5) : share);
+  return volM * Math.max(share, 1 / runs);
 } // meters / ratios tolerance for float noise
 
 const QUALITY_TYPES: WorkoutType[] = [
@@ -167,8 +167,7 @@ export function checkPlan(plan: TrainingPlan): Violation[] {
       const wk = d.workout;
       if (!wk?.isLongRun) continue;
       const runs = w.days.filter((x) => x.workout && x.workout.type !== "race").length;
-      const fewRuns = p.availableDays.length <= 2 || runs <= 2;
-      if (wk.estDistanceM > specLongRunShareCap(w.plannedVolumeM, fewRuns) + EPS) {
+      if (wk.estDistanceM > specLongRunShareCap(w.plannedVolumeM, runs) + EPS) {
         v("long_run_share", `${wk.estDistanceM} of ${w.plannedVolumeM}`, w.index, d.date);
       }
       if (wk.estDistanceM > longCap + EPS)

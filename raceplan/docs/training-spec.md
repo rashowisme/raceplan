@@ -81,7 +81,7 @@ Weeks from plan start to race date (`n`).
 3. A **cutback week** every 4th week (every 3rd if risk-flagged or age ≥ 50): volume −20 to −25%, no new intensity.
 4. ≥ 1 rest day per week (≥ 2 where required by §6).
 5. No hard days back-to-back.
-6. Long run ≤ 30% of weekly volume (≤ 40% when weekly volume < 30 km), increase ≤ 2 km (or 15 min) per week.
+6. Long run ≤ 33% of weekly volume (≤ 40% when weekly volume < 30 km; raised from 30% by the owner on 2026-10-31), increase ≤ 2 km (or 15 min) per week.
 7. Long run caps: 5K 14 km, 10K 16 km, half 21 km, marathon 32 km, and **never > 3 h** of running.
 8. Peak volume = min(user max, distance target for level, what the progression can safely reach).
 9. Taper is always present (except `n` < 2).

@@ -91,7 +91,7 @@ export const CONFIG = {
   /** Cutback reduces volume by 20–25%; we use 22%. */
   cutbackReduction: 0.22,
   cutbackReductionRange: [0.2, 0.25] as const,
-  longRunShare: { normal: 0.3, smallVolume: 0.4 },
+  longRunShare: { normal: 0.33, smallVolume: 0.4 },
   longRunMaxIncreaseM: 2 * KM,
   longRunMaxIncreaseS: 15 * 60,
   longRunCapM: { "5k": 14 * KM, "10k": 16 * KM, half: 21 * KM, marathon: 32 * KM } satisfies Record<

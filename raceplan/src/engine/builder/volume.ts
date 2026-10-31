@@ -21,8 +21,8 @@ export interface ProgressionParams {
   startLongRunM: number;
   /** Absolute long-run cap (race cap ∧ 3 h cap). */
   longRunCapM: number;
-  /** Runner has only 2 available days (see `longRunShareCap`). */
-  twoDayRunner: boolean;
+  /** Planned runs per week (see `longRunShareCap`). */
+  runsPerWeek: number;
 }
 
 export interface WeekTarget {
@@ -53,25 +53,24 @@ export function builderIncrease(volM: number, ramp: number, smallAllowanceM: num
 }
 
 /**
- * §7.6: long run ≤ 30% of weekly volume (≤ 40% under 30 km/week).
- * With only 2 runs in a week (2 available days, or a partial first week) the
- * rule cannot be met by a long run that is also the longest run, so the
- * runs are capped at an even 50% split — the least concentrated split
- * possible (see docs/decisions.md).
+ * §7.6: long run ≤ 33% of weekly volume (≤ 40% under 30 km/week), or an even
+ * split of the week's `runs` if that is larger. The long run is also the
+ * longest run, so with n runs it can never be below 1/n of the volume: 2 runs
+ * → 50%, 3 runs → 33.3% (see docs/decisions.md).
  */
-export function longRunShareCap(volM: number, fewRuns = false): number {
+export function longRunShareCap(volM: number, runs = Infinity): number {
   const t = CONFIG.smallVolumeThresholdM;
-  if (fewRuns) {
-    const share = volM < t ? CONFIG.longRunShare.smallVolume : CONFIG.longRunShare.normal;
-    return volM * Math.max(share, 0.5);
-  }
-  if (volM >= t) return volM * CONFIG.longRunShare.normal;
+  const evenSplit = volM / runs;
+  if (volM >= t) return Math.max(volM * CONFIG.longRunShare.normal, evenSplit);
   // Builder smoothing (stricter than §7.6): just below 30 km the cap is also
-  // limited to 30% of 30 km, so the long run never shrinks when weekly volume
+  // limited to 33% of 30 km, so the long run never shrinks when weekly volume
   // crosses the threshold.
-  return Math.min(
-    volM * CONFIG.longRunShare.smallVolume,
-    Math.max(volM * CONFIG.longRunShare.normal, t * CONFIG.longRunShare.normal),
+  return Math.max(
+    Math.min(
+      volM * CONFIG.longRunShare.smallVolume,
+      Math.max(volM * CONFIG.longRunShare.normal, t * CONFIG.longRunShare.normal),
+    ),
+    evenSplit,
   );
 }
 
@@ -110,7 +109,7 @@ export class Progression {
 
   private capLong(long: number, vol: number): number {
     return roundDown(
-      Math.max(0, Math.min(long, longRunShareCap(vol, this.p.twoDayRunner), this.p.longRunCapM)),
+      Math.max(0, Math.min(long, longRunShareCap(vol, this.p.runsPerWeek), this.p.longRunCapM)),
     );
   }
 

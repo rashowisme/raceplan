@@ -56,10 +56,12 @@ describe("volume rules", () => {
     expect(builderIncrease(4000, 0.07, 3000)).toBe(2000); // +50% max for tiny weeks
   });
 
-  it("caps long run share at 30% / 40% / even split for 2-day runners", () => {
-    expect(longRunShareCap(50_000)).toBe(15_000);
+  it("caps long run share at 33% / 40% / an even split for few-run weeks", () => {
+    expect(longRunShareCap(50_000)).toBeCloseTo(16_500);
     expect(longRunShareCap(20_000)).toBe(8000);
-    expect(longRunShareCap(20_000, true)).toBe(10_000);
+    expect(longRunShareCap(20_000, 2)).toBe(10_000);
+    expect(longRunShareCap(30_000, 3)).toBe(10_000);
+    expect(longRunShareCap(30_000, 4)).toBeCloseTo(9900);
   });
 
   it("starts at current volume (or the allowance from zero)", () => {
@@ -79,7 +81,7 @@ describe("volume rules", () => {
       cutbackEvery: 4,
       startLongRunM: 12_000,
       longRunCapM: 30_000,
-      twoDayRunner: false,
+      runsPerWeek: 4,
     });
     const vols: number[] = [];
     const flags: boolean[] = [];
