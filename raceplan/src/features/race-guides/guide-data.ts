@@ -5,10 +5,12 @@
 import type { RaceGuide } from "@/content/races";
 import { buildSamples, sampleRaceDate, type Sample } from "@/content/races/samples";
 import { formatDateLong, type Translate } from "@/features/plan-calendar/format";
-import { formatDistance } from "@/lib/units";
+import { formatDistance, type DistanceUnit } from "@/lib/units";
 
 export interface GuideData {
   year: number;
+  /** Unit the page shows distances in. */
+  unit: DistanceUnit;
   samples: Sample[];
   /** Samples from the longest to the shortest preparation. */
   byLength: Sample[];
@@ -19,7 +21,8 @@ export function guideData(g: RaceGuide, t: Translate, locale: string): GuideData
   const samples = buildSamples(g);
   const year = Number(sampleRaceDate(g).slice(0, 4));
   const byLength = [...samples].sort((a, b) => b.persona.weeks - a.persona.weeks);
-  const km = (m: number) => formatDistance(m, "km", locale, 0);
+  const unit = g.unit ?? "km";
+  const dist = (m: number) => formatDistance(m, unit, locale, 0);
   const peaks = samples.map((s) => s.peakWeek.plannedVolumeM);
   const longs = samples.map((s) => s.longestRunM);
 
@@ -40,15 +43,15 @@ export function guideData(g: RaceGuide, t: Translate, locale: string): GuideData
       }),
     },
     {
-      q: t("raceGuide.faqVolumeQ", { name: g.name }),
+      q: t(unit === "mi" ? "raceGuide.faqVolumeQMi" : "raceGuide.faqVolumeQ", { name: g.name }),
       a: t("raceGuide.faqVolumeA", {
-        minPeak: km(Math.min(...peaks)),
-        maxPeak: km(Math.max(...peaks)),
-        minLong: km(Math.min(...longs)),
-        maxLong: km(Math.max(...longs)),
+        minPeak: dist(Math.min(...peaks)),
+        maxPeak: dist(Math.max(...peaks)),
+        minLong: dist(Math.min(...longs)),
+        maxLong: dist(Math.max(...longs)),
       }),
     },
     ...g.faq,
   ];
-  return { year, samples, byLength, faq };
+  return { year, unit, samples, byLength, faq };
 }

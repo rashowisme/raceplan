@@ -582,8 +582,8 @@
   },
   "raceGuide": {
     "hubTitle": "Training plans for major races",
-    "hubIntro": "Free, personalised plans for major French races. Pick your race to see what the course asks of you, your training calendar and sample plans computed for the next edition. Then create your own in a few minutes.",
-    "hubMetaDescription": "Free training plans for major French races: training calendar, sample plans computed for each race, then your personalised plan.",
+    "hubIntro": "Free, personalised plans for some of the world's biggest marathons. Pick your race to see what the course asks of you, your training calendar and sample plans computed for the next edition. Then create your own in a few minutes.",
+    "hubMetaDescription": "Free training plans for the world's biggest marathons: course notes, training calendar, sample plans computed for each race, then your personalised plan.",
     "hubLink": "Plans for major races",
     "breadcrumbHome": "Home",
     "breadcrumbHub": "Plans by race",
@@ -637,6 +637,8 @@
     "chartVolume": "Volume",
     "chartPhase": "Phase",
     "chartLegend": "Plan phases",
-    "faqStartEstimated": "The {year} date isn't announced yet. Using {date} as a reference: {list}. Recalculate once the official date is known."
+    "faqStartEstimated": "The {year} date isn't announced yet. Using {date} as a reference: {list}. Recalculate once the official date is known.",
+    "faqVolumeQMi": "How many miles a week to train for the {name}?",
+    "chartTitleMi": "Miles per week"
   }
 }

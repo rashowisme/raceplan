@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { raceGuidePath, RACE_GUIDES, RACE_GUIDES_PATH } from "@/content/races";
+import { raceGuidePath, RACE_GUIDES, RACE_GUIDES_PATHS } from "@/content/races";
 import { routing } from "@/i18n/routing";
 import { INDEXED_PATHS, localePath, SITE_URL } from "@/lib/seo";
 
@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const guideLocales = [...new Set(RACE_GUIDES.map((g) => g.locale))];
   const guides: MetadataRoute.Sitemap = [
     ...guideLocales.map((locale) => ({
-      url: url(locale, RACE_GUIDES_PATH),
+      url: url(locale, RACE_GUIDES_PATHS[locale]),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),

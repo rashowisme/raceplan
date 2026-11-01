@@ -1,7 +1,9 @@
 # Race guides (SEO landing pages)
 
 One page per well-known race, e.g. `/fr/plan-entrainement/marathon-de-paris`, for searches
-like "plan d'entraînement marathon de Paris". Hub: `/fr/plan-entrainement`.
+like "plan d'entraînement marathon de Paris". Hubs: `/fr/plan-entrainement` (French races, in
+French) and `/en/training-plans` (international marathons, in English). Each guide exists in one
+language only.
 
 ## Rules
 
@@ -21,8 +23,10 @@ like "plan d'entraînement marathon de Paris". Hub: `/fr/plan-entrainement`.
 
 1. Write `src/content/races/<slug>.ts` (see `marathon-de-paris.ts`) and list it in
    `src/content/races/index.ts`.
-2. If the race type has no personas yet (only `marathon` so far), add three in
-   `src/content/races/samples.ts`. Check their plans read well (no odd weeks, no warnings).
+2. Set `locale` (`fr` or `en`) and, if local runners think in miles, `unit: "mi"`. Pick three
+   sample runners with `personas` (ids from that language's set in `src/content/races/samples.ts`;
+   default: the first three). If the race type has none in that language, add some. Check their
+   plans read well (no odd weeks, no warnings).
 3. `pnpm test` (content checks, sample plans pass `checkPlan`, sitemap), then look at the page
    at 360px.
 
@@ -45,10 +49,23 @@ is in the past relative to the test fixture date).
 | Marathon Nice-Cannes | not announced (est. 7 November 2027) | Date; D+ (organiser: 100 m) |
 | Marathon de La Rochelle | not announced (est. 28 November 2027) | Date; start |
 
-Sample runners: marathon, half marathon, other road distances (`custom`, ~20 km, no time goals) and
+| **English** | | |
+| London Marathon | 25 April 2027 (two days, 24–25) | Course landmarks and mile positions (Canary Wharf, Tower Bridge) |
+| Boston Marathon | 19 April 2027 | Net drop (~140 m / 460 ft); Newton hills miles 16–21; wave start times |
+| Berlin Marathon | 26 September 2027 | Lottery dates (closes 12 Nov 2026, results early Dec) |
+| Chicago Marathon | 10 October 2027 | — |
+| New York City Marathon | not announced (est. 7 November 2027) | Date; bridges; that race day is usually the US clock change |
+| Tokyo Marathon | 7 March 2027 | 7 h limit and cut-offs; ~30 m drop in the first 5 km; bib pick-up in person |
+| Valencia Marathon | not announced (est. 5 December 2027) | Date; finish at the City of Arts and Sciences |
+| Rotterdam Marathon | not announced (est. 11 April 2027) | Date; start near the Erasmus Bridge, finish on the Coolsingel |
+| Amsterdam Marathon | not announced (est. 17 October 2027) | Date |
+| Barcelona Marathon | 14 March 2027 | Date (not from the official site); high point near the Sagrada Família (~km 14) |
+
+Sample runners (French pages): marathon, half marathon, other road distances (`custom`, ~20 km, no time goals) and
 trail (~30 km). Hilly courses (Marseille-Cassis, Lyon, EcoTrail) plan the samples with a preference
 for hill sessions (`likes`). The six flat marathon pages share the same three sample runners (only
-dates differ); their written content is what sets them apart.
+dates differ); their written content is what sets them apart. English pages use four marathon runners (first
+marathon, 4 h, 3 h 30, sub-3) and each guide picks three, e.g. Boston has no first-timer.
 
 Not covered: Marathon de Bordeaux (irregular dates). Out of scope (engine limit ~60 km
 flat-equivalent effort): UTMB, SaintéLyon, long Templiers and EcoTrail formats, Grand Raid.

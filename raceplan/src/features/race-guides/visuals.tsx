@@ -8,7 +8,7 @@ import type { Sample } from "@/content/races/samples";
 import type { Phase } from "@/engine/types";
 import { formatDate, formatDateLong, type Translate } from "@/features/plan-calendar/format";
 import { PHASE_CLASSES } from "@/features/plan-calendar/styles";
-import { formatDistance } from "@/lib/units";
+import { formatDistance, metersToUnit, type DistanceUnit } from "@/lib/units";
 import { cn } from "@/lib/utils";
 
 /** Big day / month tile for the race date. */
@@ -108,28 +108,41 @@ export function PhaseLegend({ phases, t }: { phases: Phase[]; t: Translate }) {
   );
 }
 
-/** Clean axis maximum: the next multiple of 20 km above the peak. */
-const axisMaxKm = (peakM: number) => Math.max(20, Math.ceil(peakM / 1000 / 20) * 20);
+/** Clean axis maximum: the next multiple of 20 km (or 10 mi) above the peak. */
+const axisMax = (peakM: number, unit: DistanceUnit) => {
+  const step = unit === "mi" ? 10 : 20;
+  return Math.max(step, Math.ceil(metersToUnit(peakM, unit) / step) * step);
+};
 
 /**
  * Weekly planned volume, one column per week coloured by phase. Race week
  * shows its training runs (the race itself isn't training volume).
  */
-export function WeeklyVolumeChart({ s, t, locale }: { s: Sample; t: Translate; locale: string }) {
+export function WeeklyVolumeChart({
+  s,
+  t,
+  locale,
+  unit,
+}: {
+  s: Sample;
+  t: Translate;
+  locale: string;
+  unit: DistanceUnit;
+}) {
   const weeks = s.plan.weeks;
-  const maxKm = axisMaxKm(s.peakWeek.plannedVolumeM);
-  const ticks = [0, maxKm / 2, maxKm];
-  const km = (m: number) => formatDistance(m, "km", locale, 0);
+  const max = axisMax(s.peakWeek.plannedVolumeM, unit);
+  const ticks = [0, max / 2, max];
+  const dist = (m: number) => formatDistance(m, unit, locale, 0);
   const label = (i: number) => {
     const w = weeks[i]!;
     const phase = t(`phase.${w.phase}`) + (w.isCutback ? `, ${t("raceGuide.chartCutback")}` : "");
-    return t("raceGuide.chartBar", { n: i + 1, distance: km(w.plannedVolumeM), phase });
+    return t("raceGuide.chartBar", { n: i + 1, distance: dist(w.plannedVolumeM), phase });
   };
   const xLabels = new Set([0, Math.floor((weeks.length - 1) / 2), weeks.length - 1]);
 
   return (
     <figure className="space-y-2">
-      <figcaption className="text-sm font-semibold">{t("raceGuide.chartTitle")}</figcaption>
+      <figcaption className="text-sm font-semibold">{t(unit === "mi" ? "raceGuide.chartTitleMi" : "raceGuide.chartTitle")}</figcaption>
       <div className="flex gap-2 pt-2">
         {/* Y axis */}
         <div className="text-muted-foreground relative h-36 w-8 shrink-0 text-right text-[10px] tabular-nums">
@@ -137,7 +150,7 @@ export function WeeklyVolumeChart({ s, t, locale }: { s: Sample; t: Translate; l
             <span
               key={v}
               className="absolute right-0 -translate-y-1/2"
-              style={{ bottom: `${(v / maxKm) * 100}%` }}
+              style={{ bottom: `${(v / max) * 100}%` }}
             >
               {v}
             </span>
@@ -150,12 +163,12 @@ export function WeeklyVolumeChart({ s, t, locale }: { s: Sample; t: Translate; l
                 key={v}
                 aria-hidden
                 className="bg-border absolute inset-x-0 h-px"
-                style={{ bottom: `${(v / maxKm) * 100}%` }}
+                style={{ bottom: `${(v / max) * 100}%` }}
               />
             ))}
             <ul className="absolute inset-0 flex items-end gap-[2px]">
               {weeks.map((w, i) => {
-                const pct = (w.plannedVolumeM / 1000 / maxKm) * 100;
+                const pct = (metersToUnit(w.plannedVolumeM, unit) / max) * 100;
                 const isPeak = w.index === s.peakWeek.index;
                 return (
                   <li
@@ -169,7 +182,7 @@ export function WeeklyVolumeChart({ s, t, locale }: { s: Sample; t: Translate; l
                         className="absolute text-[10px] font-semibold whitespace-nowrap tabular-nums"
                         style={{ bottom: `calc(${pct}% + 2px)` }}
                       >
-                        {km(w.plannedVolumeM)}
+                        {dist(w.plannedVolumeM)}
                       </span>
                     )}
                     <span
@@ -218,7 +231,7 @@ export function WeeklyVolumeChart({ s, t, locale }: { s: Sample; t: Translate; l
                   {t(`phase.${w.phase}`)}
                   {w.isCutback && ` (${t("raceGuide.chartCutback")})`}
                 </td>
-                <td className="py-1 text-right">{km(w.plannedVolumeM)}</td>
+                <td className="py-1 text-right">{dist(w.plannedVolumeM)}</td>
               </tr>
             ))}
           </tbody>

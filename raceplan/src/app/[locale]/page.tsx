@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { use } from "react";
 import { buttonVariants } from "@/components/ui/button";
-import { RACE_GUIDES, RACE_GUIDES_PATH } from "@/content/races";
+import { raceGuidesPath } from "@/content/races";
 import { Link } from "@/i18n/navigation";
 import { localePath, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,7 @@ export default function LandingPage({ params }: PageProps<"/[locale]">) {
   const t = useTranslations("landing");
   const meta = useTranslations("meta");
   const tGuides = useTranslations("raceGuide");
-  const hasGuides = RACE_GUIDES.some((g) => g.locale === locale);
+  const guidesPath = raceGuidesPath(locale);
 
   // schema.org description of the app for search engines.
   const jsonLd = {
@@ -61,9 +61,9 @@ export default function LandingPage({ params }: PageProps<"/[locale]">) {
             <CalendarDays aria-hidden />
             {t("cta")}
           </Link>
-          {hasGuides && (
+          {guidesPath && (
             <Link
-              href={RACE_GUIDES_PATH}
+              href={guidesPath}
               className={cn(
                 buttonVariants({ size: "lg", variant: "outline" }),
                 "h-12 px-6 text-base",

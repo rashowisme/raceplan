@@ -3,8 +3,14 @@
  * no brand names, and sample plans that pass every safety rule.
  */
 import { describe, expect, it } from "vitest";
-import { RACE_GUIDES, raceGuidePath } from "@/content/races";
-import { buildSamples, personasFor, sampleRaceDate } from "@/content/races/samples";
+import { RACE_GUIDES, raceGuidePath, RACE_GUIDES_PATHS } from "@/content/races";
+import {
+  buildSamples,
+  personaDescription,
+  personasFor,
+  sampleRaceDate,
+} from "@/content/races/samples";
+import { formatDistance } from "@/lib/units";
 import { checkPlan } from "@/engine";
 import { diffDays } from "@/engine/dates";
 import { DEFAULT_VALUES } from "@/features/plan-form/form-model";
@@ -14,7 +20,7 @@ import { FIXTURE_TODAY } from "../fixtures/runners";
 
 /** Sponsors and brands seen in race names: never on our pages. */
 const BRANDS =
-  /asics|schneider|hoka|harmonie mutuelle|ag2r|vredestein|brooks|salomon|adidas|nike|garmin|strava/i;
+  /asics|schneider|hoka|harmonie mutuelle|ag2r|vredestein|brooks|salomon|adidas|nike|garmin|strava|tcs|bmw|generali|bank of america|zurich|nn|abbott|marathon majors|six star/i;
 
 const allText = (g: (typeof RACE_GUIDES)[number]) =>
   [
@@ -57,7 +63,7 @@ describe("race guides", () => {
     "%s: sample plans pass every safety rule",
     (_, g) => {
       const samples = buildSamples(g);
-      expect(samples.length).toBe(personasFor(g.race.type).length);
+      expect(samples.length).toBe(personasFor(g).length);
       expect(samples.length).toBeGreaterThanOrEqual(3);
       for (const s of samples) {
         expect(checkPlan(s.plan)).toEqual([]);
@@ -75,10 +81,23 @@ describe("race guides", () => {
   it("are in the sitemap, in their own language only", () => {
     const urls = sitemap().map((e) => e.url);
     for (const g of RACE_GUIDES) {
+      const other = g.locale === "fr" ? "en" : "fr";
       expect(urls.some((u) => u.endsWith(`/${g.locale}${raceGuidePath(g)}`))).toBe(true);
-      // Guides are French only for now.
-      expect(urls.some((u) => u.endsWith(`/en${raceGuidePath(g)}`))).toBe(false);
+      expect(urls.some((u) => u.endsWith(`/${other}${raceGuidePath(g)}`))).toBe(false);
     }
+    for (const [locale, path] of Object.entries(RACE_GUIDES_PATHS)) {
+      expect(urls.some((u) => u.endsWith(`/${locale}${path}`))).toBe(true);
+    }
+  });
+
+  it("each pick three sample runners of their language", () => {
+    for (const g of RACE_GUIDES) expect(personasFor(g)).toHaveLength(3);
+    const en = RACE_GUIDES.filter((g) => g.locale === "en");
+    expect(en.length).toBeGreaterThanOrEqual(10);
+    // English runners are described in the page's unit, in round figures.
+    const first = personasFor(en.find((g) => g.unit === "mi")!)[0]!;
+    expect(personaDescription(first, (m) => formatDistance(m, "mi", "en", 0))).toContain("20 mi");
+    expect(personaDescription(first, (m) => formatDistance(m, "km", "en", 0))).toContain("32 km");
   });
 });
 

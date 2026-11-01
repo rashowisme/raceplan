@@ -8,18 +8,26 @@
  * or official wording, and every page says it is independent.
  */
 import type { IsoDate, PreferenceTag, RaceType } from "@/engine/types";
+import type { DistanceUnit } from "@/lib/units";
+
+/** Languages that have guides; each guide is written for one of them. */
+export type GuideLocale = "fr" | "en";
 
 export interface RaceGuide {
   /** URL segment, e.g. `marathon-de-paris`. */
   slug: string;
   /** Language of the page (guides are written for one language). */
-  locale: "fr";
+  locale: GuideLocale;
+  /** Unit the page shows distances in (what local runners use). Default: km. */
+  unit?: DistanceUnit;
   /** Race name as written in text, e.g. "Marathon de Paris". */
   name: string;
   city: string;
   race: { type: RaceType; distanceM?: number; elevationGainM?: number };
   /** Sessions the sample runners prefer for this course (e.g. hills for a hilly race). */
   likes?: PreferenceTag[];
+  /** Sample runners shown (persona ids for this language and race type). Default: the first three. */
+  personas?: string[];
   /** Next edition. `date` is null until it is announced. */
   nextEdition: {
     date: IsoDate | null;

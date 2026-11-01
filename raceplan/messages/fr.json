@@ -637,6 +637,8 @@
     "chartVolume": "Volume",
     "chartPhase": "Phase",
     "chartLegend": "Phases du plan",
-    "faqStartEstimated": "La date {year} n'est pas encore annoncée. En prenant le {date} comme repère : {list}. Recalculez dès que la date officielle est connue."
+    "faqStartEstimated": "La date {year} n'est pas encore annoncée. En prenant le {date} comme repère : {list}. Recalculez dès que la date officielle est connue.",
+    "faqVolumeQMi": "Combien de miles par semaine pour préparer le {name} ?",
+    "chartTitleMi": "Miles par semaine"
   }
 }

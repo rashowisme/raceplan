@@ -1,7 +1,7 @@
 import { CalendarDays, ChevronRight, Info } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { raceGuidePath, RACE_GUIDES_PATH, type RaceGuide } from "@/content/races";
-import { sampleRaceDate, type Sample } from "@/content/races/samples";
+import { raceGuidePath, RACE_GUIDES_PATHS, type RaceGuide } from "@/content/races";
+import { personaDescription, sampleRaceDate, type Sample } from "@/content/races/samples";
 import { WEEKDAYS } from "@/engine/types";
 import {
   formatDate,
@@ -34,8 +34,9 @@ export function RaceGuidePage({
   t: Translate;
   locale: string;
 }) {
-  const f: Formatter = { t, locale, unit: "km", zoneLabels: "daniels" };
-  const km = (m: number) => formatDistance(m, "km", locale, 0);
+  const unit = data.unit;
+  const f: Formatter = { t, locale, unit, zoneLabels: "daniels" };
+  const hubPath = RACE_GUIDES_PATHS[g.locale];
   const abs = (path: string) => new URL(localePath(locale, path), SITE_URL).href;
   const edition = g.nextEdition;
   const dateText = edition.date
@@ -49,9 +50,9 @@ export function RaceGuidePage({
   const maxWeeks = Math.max(...weeks);
   const distanceText = formatDistance(
     data.samples[0]?.plan.summary.raceDistanceM ?? 0,
-    "km",
+    unit,
     locale,
-    3,
+    unit === "mi" ? 1 : 3,
   );
 
   const breadcrumb = {
@@ -63,7 +64,7 @@ export function RaceGuidePage({
         "@type": "ListItem",
         position: 2,
         name: t("raceGuide.breadcrumbHub"),
-        item: abs(RACE_GUIDES_PATH),
+        item: abs(hubPath),
       },
       { "@type": "ListItem", position: 3, name: g.name, item: abs(raceGuidePath(g)) },
     ],
@@ -107,7 +108,7 @@ export function RaceGuidePage({
             <ChevronRight className="size-3.5" aria-hidden />
             <li>
               <Link
-                href={RACE_GUIDES_PATH}
+                href={hubPath}
                 className="hover:text-foreground underline-offset-4 hover:underline"
               >
                 {t("raceGuide.breadcrumbHub")}
@@ -221,7 +222,7 @@ export function RaceGuidePage({
         </div>
         <PhaseLegend phases={phasesIn(data.samples)} t={t} />
         {data.byLength.map((s) => (
-          <SampleCard key={s.persona.id} s={s} f={f} km={km} />
+          <SampleCard key={s.persona.id} s={s} f={f} />
         ))}
       </section>
 
@@ -261,7 +262,7 @@ export function RaceGuidePage({
             ))}
           </ul>
           <p>
-            <Link href={RACE_GUIDES_PATH} className="underline-offset-4 hover:underline">
+            <Link href={hubPath} className="underline-offset-4 hover:underline">
               {t("raceGuide.seeAll")}
             </Link>
           </p>
@@ -314,8 +315,9 @@ function Prose({
   );
 }
 
-function SampleCard({ s, f, km }: { s: Sample; f: Formatter; km: (m: number) => string }) {
-  const { t, locale } = f;
+function SampleCard({ s, f }: { s: Sample; f: Formatter }) {
+  const { t, locale, unit } = f;
+  const dist = (m: number, decimals = 0) => formatDistance(m, unit, locale, decimals);
   const plan = s.plan;
   const byWeekday = new Map(s.peakWeek.days.map((d) => [d.weekday, d]));
   const stats = [
@@ -325,8 +327,8 @@ function SampleCard({ s, f, km }: { s: Sample; f: Formatter; km: (m: number) => 
     },
     { label: t("raceGuide.statStart"), value: formatDateLong(locale, s.startDate) },
     { label: t("raceGuide.statRuns"), value: String(plan.summary.runningDaysPerWeek) },
-    { label: t("raceGuide.statPeak"), value: km(s.peakWeek.plannedVolumeM) },
-    { label: t("raceGuide.statLong"), value: formatDistance(s.longestRunM, "km", locale, 1) },
+    { label: t("raceGuide.statPeak"), value: dist(s.peakWeek.plannedVolumeM) },
+    { label: t("raceGuide.statLong"), value: dist(s.longestRunM, 1) },
     {
       label: t("raceGuide.statQuality"),
       value: t("raceGuide.statQualityValue", { count: s.maxQualityPerWeek }),
@@ -343,14 +345,16 @@ function SampleCard({ s, f, km }: { s: Sample; f: Formatter; km: (m: number) => 
   return (
     <div className="bg-card rounded-xl border p-5">
       <h3 className="text-lg font-semibold">{s.persona.title}</h3>
-      <p className="text-muted-foreground mt-1 text-sm">{s.persona.description}</p>
+      <p className="text-muted-foreground mt-1 text-sm">
+        {personaDescription(s.persona, (m) => dist(m))}
+      </p>
       <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
         {stats.map((x) => (
           <Fact key={x.label} label={x.label} value={x.value} />
         ))}
       </dl>
       <div className="mt-5">
-        <WeeklyVolumeChart s={s} t={t} locale={locale} />
+        <WeeklyVolumeChart s={s} t={t} locale={locale} unit={unit} />
       </div>
       <h4 className="mt-5 text-sm font-semibold">
         {t("raceGuide.peakWeekTitle", { n: s.peakWeek.index + 1 })}
@@ -368,7 +372,7 @@ function SampleCard({ s, f, km }: { s: Sample; f: Formatter; km: (m: number) => 
                   {formatMessage(f, w.title)}
                   <span className="text-muted-foreground">
                     {" "}
-                    · {formatDistance(w.estDistanceM, "km", locale, 1)}
+                    · {dist(w.estDistanceM, 1)}
                   </span>
                 </span>
               ) : (

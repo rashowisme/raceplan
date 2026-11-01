@@ -6,14 +6,14 @@
 import { checkPlan, generatePlan } from "@/engine";
 import { addDays, mondayOf } from "@/engine/dates";
 import type { IsoDate, PlanWeek, RaceType, RunnerProfile, TrainingPlan } from "@/engine/types";
-import type { RaceGuide } from "./types";
+import type { GuideLocale, RaceGuide } from "./types";
 
 export interface Persona {
   id: string;
   /** e.g. "Premier marathon". */
   title: string;
-  /** Who this is, in one sentence. */
-  description: string;
+  /** Who this is, in one sentence (given a formatter in the page's unit). */
+  description: string | ((dist: (m: number) => string) => string);
   weeks: number;
   /** Everything but the race (filled in from the guide). */
   profile: Omit<RunnerProfile, "race">;
@@ -26,7 +26,9 @@ const common = {
   preferences: { likes: [], dislikes: [] },
 } satisfies Partial<RunnerProfile>;
 
-const PERSONAS: Partial<Record<RaceType, Persona[]>> = {
+type Personas = Partial<Record<RaceType, Persona[]>>;
+
+const PERSONAS: Personas = {
   marathon: [
     {
       id: "premier",
@@ -253,7 +255,107 @@ PERSONAS.trail = [
   },
 ];
 
-export const personasFor = (type: RaceType): Persona[] => PERSONAS[type] ?? [];
+const MI = 1609.344;
+
+/**
+ * English pages (international marathons): round figures in miles, which
+ * read naturally in km too. Guides pick three of them (`RaceGuide.personas`).
+ */
+const EN_PERSONAS: Personas = {
+  marathon: [
+    {
+      id: "first",
+      title: "First marathon",
+      description: (d) =>
+        `Has been running for a year or two, about ${d(20 * MI)} a week over 4 to 5 runs, longest recent run ${d(9 * MI)}.`,
+      weeks: 20,
+      profile: {
+        ...common,
+        watchPrediction: { timeS: 4 * 3600 + 30 * 60 },
+        currentWeeklyVolumeM: 20 * MI,
+        longestRecentRunM: 9 * MI,
+        maxWeeklyVolumeM: 32 * MI,
+        availableDays: ["mon", "tue", "thu", "fri", "sun"],
+        longRunDay: "sun",
+        yearsRunning: "1to3",
+        age: 35,
+      },
+    },
+    {
+      id: "4h",
+      title: "4-hour goal",
+      description: (d) =>
+        `Regular runner, ${d(23 * MI)} a week over 5 runs, long run of ${d(11 * MI)}, aiming for 4:00.`,
+      weeks: 18,
+      profile: {
+        ...common,
+        watchPrediction: { timeS: 3 * 3600 + 58 * 60 },
+        targetTimeS: 4 * 3600,
+        currentWeeklyVolumeM: 23 * MI,
+        longestRecentRunM: 11 * MI,
+        maxWeeklyVolumeM: 37 * MI,
+        availableDays: ["tue", "wed", "fri", "sat", "sun"],
+        longRunDay: "sun",
+        yearsRunning: "1to3",
+        age: 41,
+      },
+    },
+    {
+      id: "3h30",
+      title: "3:30 goal",
+      description: (d) =>
+        `Experienced marathoner (best 3:38), ${d(31 * MI)} a week over 5 runs, aiming for 3:30.`,
+      weeks: 16,
+      profile: {
+        ...common,
+        personalRecord: { timeS: 3 * 3600 + 38 * 60 },
+        targetTimeS: 3 * 3600 + 30 * 60,
+        currentWeeklyVolumeM: 31 * MI,
+        longestRecentRunM: 14 * MI,
+        maxWeeklyVolumeM: 47 * MI,
+        availableDays: ["mon", "tue", "thu", "sat", "sun"],
+        longRunDay: "sun",
+        yearsRunning: "3plus",
+        age: 44,
+      },
+    },
+    {
+      id: "3h",
+      title: "Sub-3 goal",
+      description: (d) =>
+        `Seasoned marathoner (best 3:07), ${d(40 * MI)} a week over 6 runs, long run of ${d(16 * MI)}, aiming to break 3 hours.`,
+      weeks: 16,
+      profile: {
+        ...common,
+        personalRecord: { timeS: 3 * 3600 + 7 * 60 },
+        targetTimeS: 2 * 3600 + 59 * 60 + 30,
+        currentWeeklyVolumeM: 40 * MI,
+        longestRecentRunM: 16 * MI,
+        maxWeeklyVolumeM: 60 * MI,
+        availableDays: ["mon", "tue", "wed", "fri", "sat", "sun"],
+        longRunDay: "sun",
+        yearsRunning: "3plus",
+        age: 38,
+      },
+    },
+  ],
+};
+
+const PERSONAS_BY_LOCALE: Record<GuideLocale, Personas> = { fr: PERSONAS, en: EN_PERSONAS };
+
+/** The sample runners of a guide: its chosen personas, or the first three for its race type. */
+export function personasFor(g: RaceGuide): Persona[] {
+  const all = PERSONAS_BY_LOCALE[g.locale][g.race.type] ?? [];
+  if (!g.personas) return all.slice(0, 3);
+  return g.personas.map((id) => {
+    const p = all.find((x) => x.id === id);
+    if (!p) throw new Error(`${g.slug}: unknown persona ${id}`);
+    return p;
+  });
+}
+
+export const personaDescription = (p: Persona, dist: (m: number) => string): string =>
+  typeof p.description === "string" ? p.description : p.description(dist);
 
 export interface Sample {
   persona: Persona;
@@ -273,7 +375,7 @@ export const sampleRaceDate = (g: RaceGuide): IsoDate =>
 /** Plan every persona for this race. Throws if a plan breaks a safety rule (never shipped). */
 export function buildSamples(g: RaceGuide): Sample[] {
   const raceDate = sampleRaceDate(g);
-  return personasFor(g.race.type).map((persona) => {
+  return personasFor(g).map((persona) => {
     const startDate = addDays(mondayOf(raceDate), -7 * (persona.weeks - 1));
     const profile: RunnerProfile = {
       ...persona.profile,
