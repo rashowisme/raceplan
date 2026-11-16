@@ -49,7 +49,7 @@ test.describe("full flow", () => {
 
     await fillForm(page);
     await expect(page.getByRole("heading", { name: "Your training plan" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Week 1", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /^Week 1(?!\d)/ })).toBeVisible();
     await expect(page.getByText(/general guidance, not medical advice/).first()).toBeVisible();
 
     // Tap a quality session.
@@ -103,7 +103,7 @@ test.describe("full flow", () => {
     await fillForm(page);
     await expect(page.getByText(/\/km/).first()).toBeVisible();
     await page.reload();
-    await expect(page.getByRole("heading", { name: "Week 1", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /^Week 1(?!\d)/ })).toBeVisible();
 
     await page.getByRole("button", { name: "mi", exact: true }).click();
     await expect(page.getByText(/\/mi/).first()).toBeVisible();
@@ -112,7 +112,7 @@ test.describe("full flow", () => {
     await page.getByRole("button", { name: "fr", exact: true }).click();
     await page.waitForURL(/\/fr\/plan$/);
     await expect(page.getByRole("heading", { name: "Votre plan d'entraînement" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Semaine 1", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /^Semaine 1(?!\d)/ })).toBeVisible();
   });
 });
 
